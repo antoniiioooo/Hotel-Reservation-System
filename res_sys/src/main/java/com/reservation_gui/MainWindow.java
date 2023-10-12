@@ -128,11 +128,11 @@ public class MainWindow {
 
      public void roomsListPannel(){
         //creating new center pannel for rooms list
-        this.centerPanel = new JPanel(new GridLayout(12, 2, 10, 10));
+        this.centerPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158));
         
         //creating the labels and  image icons for each room
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < 4; i++){
            JLabel label1 = new JLabel("A picture of the room will be here");
            label1.setHorizontalTextPosition(SwingConstants.CENTER);
            label1.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -155,6 +155,10 @@ public class MainWindow {
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+        /*over riding default boreders around the scroll pane*/
+        EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   
+        scrollPane.setBorder(centerBorder);
          
         /*adding the scroll pane to main window frame */
         this.mainWin.add(scrollPane, BorderLayout.CENTER);
