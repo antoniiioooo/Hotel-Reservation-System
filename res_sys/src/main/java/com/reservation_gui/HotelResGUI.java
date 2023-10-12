@@ -1,7 +1,8 @@
-package com.gui_test;
-import javax.swing.*;
+package com.reservation_gui;
 
-public class HotelGUITest {
+import javax.swing.SwingUtilities;
+
+public class HotelResGUI {
     public static void main(String[] args) {
          //Run program on the event dispatch thread
          SwingUtilities.invokeLater(new Runnable(){
@@ -10,6 +11,6 @@ public class HotelGUITest {
             public void run() {
                 MainWindow mainWin = new MainWindow();
             }
-        });
+        });        
     }
 }
