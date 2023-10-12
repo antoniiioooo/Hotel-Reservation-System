@@ -39,7 +39,7 @@ public class MainWindow {
         /*creates label for Hotel Information */
         JLabel headerLabel = new JLabel();
         headerLabel.setText("<html>Welcome to Matador Hotels<br>Email: MatadorHotels@matador.com<br>Phone: (555)555-5555<br>Check-In: 1:00pm<br>Check-Out: 10:00am</html>");
-        headerLabel.setFont(new Font("MV Boli", Font.ITALIC, 15));
+        headerLabel.setFont(new Font("MV Boli", Font.PLAIN, 15));
         
         /*creates image icon and attaches it to the label */
         ImageIcon matadorIcon = new ImageIcon("Matador.png");
@@ -49,7 +49,7 @@ public class MainWindow {
         /*creates label for the hotel address */
         JLabel addressLabel = new JLabel();
         addressLabel.setText("<html><div style = 'text-align: center;'>Come Vist Us At:<br>12345 Some St<br>Northridge, CA<br>91330</div></html>");
-        addressLabel.setFont(new Font("MV Boli", Font.ITALIC, 18));
+        addressLabel.setFont(new Font("MV Boli", Font.PLAIN, 18));
         addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
   
         /*over riding default boreders around header labels*/
