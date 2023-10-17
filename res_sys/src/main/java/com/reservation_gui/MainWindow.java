@@ -2,10 +2,13 @@ package com.reservation_gui;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainWindow {
     private JFrame mainWin;
     private JPanel centerPanel;
+    private JScrollPane scrollPane;
  
     public MainWindow(){
        this.initialize();
@@ -23,7 +26,7 @@ public class MainWindow {
       this.createHeaderFooter();
 
       /*creating the center panel for main page */
-      this.custCenterPanel();
+      this.MainCenterPanel();
 
       /*makes all assets visible on the main window*/
       this.mainWin.setVisible(true);
@@ -76,7 +79,7 @@ public class MainWindow {
         this.mainWin.add(footerPanel, BorderLayout.SOUTH);
      }
 
-     public void custCenterPanel(){
+     public void MainCenterPanel(){
         /*creates panel for center of page and sets its color*/
         this.centerPanel = new JPanel(new GridLayout(1, 3, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158)); 
@@ -90,9 +93,15 @@ public class MainWindow {
         /*creates button for Admin Access*/
         JButton  adminButton = new JButton("Admin Access");
 
-        /*creating an action listener for rooms button and assinging it to the rooms button */
-        RoomsButtonListener roomButtonListener = new RoomsButtonListener();
-        roomsButton.addActionListener((roomButtonListener));
+        /*creating an action listener for rooms button */
+        roomsButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            MainWindow resWindow = new MainWindow();
+            resWindow.centerPanel.setVisible(false);
+            resWindow.roomsListPanel();
+         }
+        });
         
         /*creating an generic action listener and assinging it to all other buttons*/
         MyActionListener buttonListener = new MyActionListener();
@@ -122,17 +131,17 @@ public class MainWindow {
         this.mainWin.add(centerPanel, BorderLayout.CENTER);
      }
 
-     public void hideCenterPanel(){
-        this.centerPanel.setVisible(false);
-     }
-
-     public void roomsListPannel(){
-        //creating new center pannel for rooms list
+     public void roomsListPanel(){
+        /*creating new center panel for rooms list*/
         this.centerPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158));
         
-        //creating the labels and  image icons for each room
+        
         for(int i = 0; i < 4; i++){
+         /*creating the labels, image icons and reservation buttons for each room*/
+           JPanel roomPics = new JPanel(new BorderLayout());
+           roomPics.setBackground(new Color(161, 158, 158));
+
            JLabel label1 = new JLabel("A picture of the room will be here");
            label1.setHorizontalTextPosition(SwingConstants.CENTER);
            label1.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -142,31 +151,190 @@ public class MainWindow {
            label1.setIcon(matadorIcon);
            label1.setIconTextGap(0);
            
-           JLabel label2 = new JLabel("a description will be here"); 
-           label2.setHorizontalAlignment(SwingConstants.CENTER);
+           /*creating action listener for reserve button*/
+           JButton resButton = new JButton("Reserve This Room Type");
+           resButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               scrollPane.setVisible(false);
+               getCustInfoPanel();
+            }
+           });
+           resButton.setBackground(new Color(153, 153, 153));
+           resButton.setFocusable(false);
+
+           /*Overriding default boarders */
+           EmptyBorder b = new EmptyBorder(0, 100, 0, 100);
+           roomPics.setBorder(b);
+
+           /*adding label and button to picture panel */
+           roomPics.add(label1, BorderLayout.CENTER);
+           roomPics.add(resButton, BorderLayout.SOUTH);
+
+           /*creating the labels for the room information*/
+           JPanel roomInfo = new JPanel(new GridLayout(5, 2));
+           roomInfo.setBackground(new Color(161, 158, 158));
+
+           JLabel roomTypeLabel = new JLabel("Room Type: ");
+           JLabel roomTypeVar = new JLabel("Type");
+           roomTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
-           //adding each lable to the center pannel
-           this.centerPanel.add(label1);
-           this.centerPanel.add(label2);
+           JLabel roomAmountLabel = new JLabel("Rooms of this Type: ");
+           JLabel roomAmountVar = new JLabel("Number");
+           roomAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+           JLabel availableRoomsLabel = new JLabel("Total Available Rooms: ");
+           JLabel availableRoomsVar = new JLabel("Number");
+           availableRoomsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+           JLabel smokingLabel = new JLabel("Available Smoking Rooms: ");
+           JLabel smokingVar = new JLabel("Number");
+           smokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           
+           JLabel nonSmokingLabel = new JLabel("Available Non-Smoking Rooms: ");
+           JLabel nonSmokingVar = new JLabel("Number");
+           nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           
+           /*adding labels to info panel */
+           roomInfo.add(roomTypeLabel);
+           roomInfo.add(roomTypeVar);
+           roomInfo.add(roomAmountLabel);
+           roomInfo.add(roomAmountVar);
+           roomInfo.add(availableRoomsLabel);
+           roomInfo.add(availableRoomsVar);
+           roomInfo.add(smokingLabel);
+           roomInfo.add(smokingVar);
+           roomInfo.add(nonSmokingLabel);
+           roomInfo.add(nonSmokingVar);
+
+           /* adding each panel to the center panel*/
+           this.centerPanel.add(roomPics);
+           this.centerPanel.add(roomInfo);
          }
 
 
-         /* creating scroll pane and adding the center pannel to the scroll pane */
-        JScrollPane scrollPane = new JScrollPane(centerPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+         /* creating scroll pane and adding the center panel to the scroll pane */
+        scrollPane = new JScrollPane(centerPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         /*over riding default boreders around the scroll pane*/
         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   
         scrollPane.setBorder(centerBorder);
          
+
         /*adding the scroll pane to main window frame */
         this.mainWin.add(scrollPane, BorderLayout.CENTER);
         this.mainWin.setSize(800, 800);
         this.mainWin.setLocationRelativeTo(null);
      }
 
-     
+     public void getCustInfoPanel(){
+      /*creating new center panel for entering customer information*/
+         this.centerPanel = new JPanel(new BorderLayout());
+         this.centerPanel.setBackground(new Color(161, 158, 158));
+        
+         /*panel for top of the customer info panel */
+         JPanel top = new JPanel();
+         top.setBackground(new Color(161, 158, 158));
+         /*creating customer info label */
+         JLabel custInfo = new JLabel("Customer Information");
+         custInfo.setFont(new Font("MV Boli", Font.PLAIN, 30));
+         /*adding label to top panel */
+         top.add(custInfo);
+         
+         /*panel for center of the customer info panel */
+         JPanel center = new JPanel(new GridLayout(4,2, 10, 10));
+         center.setBackground(new Color(161,158, 158));
+
+         /*overridng default boarders */
+         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 200);
+         center.setBorder(centerBorder);
+         
+         /*creating labels and input boxes for the customer info */
+         JLabel fNameLabel = new JLabel("First Name:");
+         fNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+         JTextField fNameInput = new JTextField();
+         
+         JLabel lNameLabel = new JLabel("Last Name:");
+         lNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+         JTextField lNameInput = new JTextField();
+         
+
+         JLabel phoneLabel = new JLabel("Phone Number:");
+         phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+         JTextField phoneInput = new JTextField();
+         
+         JLabel emailLabel = new JLabel("Email:");
+         emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+         JTextField emailInput = new JTextField();
+
+         /*adding all labels and input boxes to the center panel */
+         center.add(fNameLabel);
+         center.add(fNameInput);
+         center.add(lNameLabel);
+         center.add(lNameInput);
+         center.add(phoneLabel);
+         center.add(phoneInput);
+         center.add(emailLabel);
+         center.add(emailInput);
+
+         /*panel for bottom of the customer info panel */
+         JPanel bottom = new JPanel();
+
+         /*creating continue button for customer info panel */
+         bottom.setBackground(new Color( 161, 158, 158));
+         JButton continueButton = new JButton("Continue");
+         continueButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for continue button */
+         continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               Customer customer = new Customer();
+               customer.setFirstName(fNameInput.getText());
+               customer.setLastName(lNameInput.getText());
+               customer.setPhoneNum(phoneInput.getText());
+               customer.setEmail(emailInput.getText());
+               
+               System.out.println(customer.getCustID());
+               System.out.println(customer.getFirstName() + " " + customer.getLastName());
+               System.out.println(customer.getPhoneNum());
+               System.out.println(customer.getEmail());
+            }
+         });
+
+         /*creating button to go back */
+         JButton backButton = new JButton("Go Back");
+         backButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for back button */
+         backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               centerPanel.setVisible(false);
+               roomsListPanel();
+            }
+         });
+
+         /*taking focus away from buttons that are not being interacted with */
+         continueButton.setFocusable(false);
+         backButton.setFocusable(false);
+
+         /*adding buttons to bottom panel */
+         bottom.add(continueButton);
+         bottom.add(backButton);
+
+         /*adding panels to customer info panel */
+         centerPanel.add(top, BorderLayout.NORTH);
+         centerPanel.add(center, BorderLayout.CENTER);
+         centerPanel.add(bottom, BorderLayout.SOUTH);
+
+         /*adding customer info panel to the main window, and setting window size and screen location */
+         this.mainWin.add(centerPanel);
+         this.mainWin.setSize(800, 400);
+         this.mainWin.setLocationRelativeTo(null);  
+     }
 }
  
 
