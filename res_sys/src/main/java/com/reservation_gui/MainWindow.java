@@ -132,6 +132,9 @@ public class MainWindow {
      }
 
      public void roomsListPanel(){
+      // temporary Room object for testing
+      Room a = new Room("King", 2, 101, 1, false, false, false, 1000);
+
         /*creating new center panel for rooms list*/
         this.centerPanel = new JPanel(new GridLayout(13, 2, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -176,34 +179,34 @@ public class MainWindow {
            roomInfo.setBackground(new Color(161, 158, 158));
 
            JLabel roomTypeLabel = new JLabel("Room Type: ");
-           JLabel roomTypeVar = new JLabel("Type");
+           JLabel roomTypeVar = new JLabel(a.GetRoomType());
            roomTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
-           JLabel roomAmountLabel = new JLabel("Rooms of this Type: ");
-           JLabel roomAmountVar = new JLabel("Number");
-           roomAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           JLabel bedAmountLabel = new JLabel("Amount of Beds: ");
+           JLabel bedAmountVar = new JLabel(a.GetBedCountString());
+           bedAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-           JLabel availableRoomsLabel = new JLabel("Total Available Rooms: ");
-           JLabel availableRoomsVar = new JLabel("Number");
-           availableRoomsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           JLabel roomFloorLabel = new JLabel("Room Floor: ");
+           JLabel roomFloorVar = new JLabel(a.GetRoomFloorString());
+           roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-           JLabel smokingLabel = new JLabel("Available Smoking Rooms: ");
-           JLabel smokingVar = new JLabel("Number");
-           smokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
+           JLabel accessibilityVar = new JLabel(a.CheckRoomAccessibleString());
+           accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
-           JLabel nonSmokingLabel = new JLabel("Available Non-Smoking Rooms: ");
-           JLabel nonSmokingVar = new JLabel("Number");
+           JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
+           JLabel nonSmokingVar = new JLabel(a.CheckRoomSmokingString());
            nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            /*adding labels to info panel */
            roomInfo.add(roomTypeLabel);
            roomInfo.add(roomTypeVar);
-           roomInfo.add(roomAmountLabel);
-           roomInfo.add(roomAmountVar);
-           roomInfo.add(availableRoomsLabel);
-           roomInfo.add(availableRoomsVar);
-           roomInfo.add(smokingLabel);
-           roomInfo.add(smokingVar);
+           roomInfo.add(bedAmountLabel);
+           roomInfo.add(bedAmountVar);
+           roomInfo.add(roomFloorLabel);
+           roomInfo.add(roomFloorVar);
+           roomInfo.add(accessibilityLabel);
+           roomInfo.add(accessibilityVar);
            roomInfo.add(nonSmokingLabel);
            roomInfo.add(nonSmokingVar);
 
