@@ -133,11 +133,11 @@ public class MainWindow {
 
      public void roomsListPanel(){
         /*creating new center panel for rooms list*/
-        this.centerPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        this.centerPanel = new JPanel(new GridLayout(13, 2, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158));
         
         
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 13; i++){
          /*creating the labels, image icons and reservation buttons for each room*/
            JPanel roomPics = new JPanel(new BorderLayout());
            roomPics.setBackground(new Color(161, 158, 158));
