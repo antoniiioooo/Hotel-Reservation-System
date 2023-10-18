@@ -133,7 +133,7 @@ public class MainWindow {
 
      public void roomsListPanel(){
       // temporary Room object for testing
-      Room a = new Room("King", 2, 101, 1, false, false, false, 1000);
+      Room a = new Room("King", 2, 101, 1, false, false, false, 999.99);
 
         /*creating new center panel for rooms list*/
         this.centerPanel = new JPanel(new GridLayout(13, 2, 10, 10));
@@ -175,7 +175,7 @@ public class MainWindow {
            roomPics.add(resButton, BorderLayout.SOUTH);
 
            /*creating the labels for the room information*/
-           JPanel roomInfo = new JPanel(new GridLayout(5, 2));
+           JPanel roomInfo = new JPanel(new GridLayout(6, 2));
            roomInfo.setBackground(new Color(161, 158, 158));
 
            JLabel roomTypeLabel = new JLabel("Room Type: ");
@@ -197,6 +197,11 @@ public class MainWindow {
            JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
            JLabel nonSmokingVar = new JLabel(a.CheckRoomSmokingString());
            nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+           JLabel roomPriceLabel = new JLabel("Room Price: ");
+           JLabel roomPriceVar = new JLabel(a.GetRoomPriceString());
+           roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           
            
            /*adding labels to info panel */
            roomInfo.add(roomTypeLabel);
@@ -209,6 +214,8 @@ public class MainWindow {
            roomInfo.add(accessibilityVar);
            roomInfo.add(nonSmokingLabel);
            roomInfo.add(nonSmokingVar);
+           roomInfo.add(roomPriceLabel);
+           roomInfo.add(roomPriceVar);
 
            /* adding each panel to the center panel*/
            this.centerPanel.add(roomPics);
