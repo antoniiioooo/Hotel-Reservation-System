@@ -3,6 +3,7 @@ package com.reservation_gui;
 public class Room 
 {
     // variables
+    private String roomType;
     private String bedType;
     private int bedCount;
     private int roomNumber;
@@ -15,6 +16,7 @@ public class Room
     // constructors
     public Room()
     {
+        roomType = "N/A";
         bedType = "N/A";
         bedCount = 0;
         roomNumber = 0;
@@ -26,6 +28,7 @@ public class Room
     }
     public Room(String bed, int count, int roomNum, int floor, boolean access, boolean smoking, boolean occupancy, double price)
     {
+        roomType = bed;
         bedType = bed;
         bedCount = count;
         roomNumber = roomNum;
@@ -35,10 +38,67 @@ public class Room
         roomOccupied = occupancy;
         roomPrice = price;
     }
+    public Room(String bed, String num, String floor)
+    {
+        roomType = bed;
+        if (bed.equals("Suite"))
+        {
+            bedType = "King";
+            bedCount = 2;
+            roomNumber = Integer.parseInt(num);
+            roomFloor = Integer.parseInt(floor);
+            disabilityOption = false;
+            smokingOption = true;
+            roomOccupied = false;
+            roomPrice = 1249.99;
+        }
+        if (bed.equals("King")){
+            bedType = "King";
+            bedCount = 1;
+            roomNumber = Integer.parseInt(num);
+            roomFloor = Integer.parseInt(floor);
+            disabilityOption = false;
+            smokingOption = false;
+            roomOccupied = false;
+            roomPrice = 999.99;
+        }
+        else if (bed.equals("Queen")){
+            bedType = "Queen";
+            bedCount = 2;
+            roomNumber = Integer.parseInt(num);
+            roomFloor = Integer.parseInt(floor);
+            disabilityOption = false;
+            smokingOption = false;
+            roomOccupied = false;
+            roomPrice = 749.99;
+        }
+        else if (bed.equals("Twin")){
+            bedType = "Twin";
+            bedCount = 2;
+            roomNumber = Integer.parseInt(num);
+            roomFloor = Integer.parseInt(floor);
+            disabilityOption = false;
+            smokingOption = false;
+            roomOccupied = false;
+            roomPrice = 499.99;
+        }
+        else {
+            bedType = "N/A";
+            bedCount = 0;
+            roomNumber = 0;
+            roomFloor = 0;
+            disabilityOption = false;
+            smokingOption = false;
+            roomOccupied = false;
+            roomPrice = 0;
+        }
 
-    // methods
+
+    }
+
+    // accessor methods
     public String GetRoomType(){
-        return bedType;
+        return roomType;
     }
     public int GetBedCount(){
         return bedCount;
@@ -87,5 +147,30 @@ public class Room
         else {return "No";}
     }
 
+    // alter methods
+    public void changeRoomNumber(int newNum){
+        roomNumber = newNum;
+    }
+    public void changeRoomFloor(int newF){
+        roomFloor = newF;
+    }
+    public void changeAccessibility(){
+        if (disabilityOption){
+            disabilityOption = false;
+        }
+        else {disabilityOption = true;}
+    }
+    public void changeSmoking(){
+        if (smokingOption){
+            smokingOption = false;
+        }
+        else {smokingOption = true;}
+    }
+    public void changeOccupancy(){
+        if (roomOccupied){
+            roomOccupied = false;
+        }
+        else {roomOccupied = true;}
+    }
 
 }
