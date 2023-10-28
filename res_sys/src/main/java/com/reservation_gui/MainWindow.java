@@ -26,7 +26,7 @@ public class MainWindow {
       this.createHeaderFooter();
 
       /*creating the center panel for main page */
-      this.MainCenterPanel();
+      this.mainCenterPanel();
 
       /*makes all assets visible on the main window*/
       this.mainWin.setVisible(true);
@@ -35,37 +35,78 @@ public class MainWindow {
 
 
     public void createHeaderFooter(){
-        /*creates panel for top of page and sets it's color*/
-        JPanel headerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        /* create variable of Hotel type to test the functionality */
+        Hotel hotelTest = new Hotel();
+
+        /* creates panel for top of page and sets it's color */
+        JPanel headerPanel = new JPanel(new GridBagLayout());
         headerPanel.setBackground(new Color(161, 158, 158));
+
+        /* panels for left, middle and right side of header */
+        JPanel leftHeaderPanel = new JPanel();
+        JPanel middleHeaderPanel = new JPanel(new GridLayout(6, 1));
+        JPanel rightHeaderPanel = new JPanel(new BorderLayout(0, 0));
+
+        /* setting background colors for header panels */
+        leftHeaderPanel.setBackground(new Color(161, 158, 158));
+        middleHeaderPanel.setBackground(new Color(161, 158, 158));
+        rightHeaderPanel.setBackground(new Color(161, 158, 158));
+
+        /* creating label to hold the matador icon, adding matador icon to the left header panel */
+        JLabel matadorIcon = new JLabel(new ImageIcon("Matador.png"));
+        leftHeaderPanel.add(matadorIcon);
+
   
-        /*creates label for Hotel Information */
-        JLabel headerLabel = new JLabel();
-        headerLabel.setText("<html>Welcome to Matador Hotels<br>Email: MatadorHotels@matador.com<br>Phone: (555)555-5555<br>Check-In: 1:00pm<br>Check-Out: 10:00am</html>");
-        headerLabel.setFont(new Font("MV Boli", Font.PLAIN, 15));
+        /*creates labels for Hotel Information */
+        JLabel headerLabel = new JLabel("Welcome to " + hotelTest.getHotelName());
+        JLabel emailLabel = new JLabel("Email: " + hotelTest.getHotelEmail());
+        JLabel phoneLabel = new JLabel("Phone: " + hotelTest.getHotelPhone());
+        JLabel checkInLabel = new JLabel("Check-In: " + hotelTest.getHotelCheckIn());
+        JLabel checkOutLabel = new JLabel("Check-Out: " + hotelTest.getHotelCheckOut());
+
+        /* sets font attributes for hotel info labels */
+        headerLabel.setFont(new Font("MV Boli", Font.BOLD, 14));
+        emailLabel.setFont(new Font("MV Boli", Font.BOLD, 14));
+        phoneLabel.setFont(new Font("MV Boli", Font.BOLD, 14));
+        checkInLabel.setFont(new Font("MV Boli", Font.BOLD, 14));
+        checkOutLabel.setFont(new Font("MV Boli", Font.BOLD, 14));
+
+        /* adding hotel info labels to the middle header panel */
+        middleHeaderPanel.add(headerLabel);
+        middleHeaderPanel.add(emailLabel);
+        middleHeaderPanel.add(phoneLabel);
+        middleHeaderPanel.add(checkInLabel);
+        middleHeaderPanel.add(checkOutLabel);
+
+        /* creating hotel address labels and setting horizontal alignment */
+        JLabel addressLabel = new JLabel("Come Visit Us At: ");
+        addressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel address = new JLabel(hotelTest.getHotelAddress());
         
-        /*creates image icon and attaches it to the label */
-        ImageIcon matadorIcon = new ImageIcon("Matador.png");
-        headerLabel.setIcon(matadorIcon);
-        headerLabel.setIconTextGap(0);
+        /* sets font attributes for address labels */
+        addressLabel.setFont(new Font("MV Boli", Font.BOLD, 18));
+        address.setFont(new Font("MV Boli", Font.BOLD , 14));
+
+        /* adds address labels to the right header panel */
+        rightHeaderPanel.add(addressLabel, BorderLayout.NORTH);
+        rightHeaderPanel.add(address, BorderLayout.CENTER);
+
+        /* overriding default boraders for middle header panel so it lays flush to the matador icon */
+        EmptyBorder middleHeaderBorder = new EmptyBorder(0, 0, 0, 80);
+        middleHeaderPanel.setBorder(middleHeaderBorder);
         
-        /*creates label for the hotel address */
-        JLabel addressLabel = new JLabel();
-        addressLabel.setText("<html><div style = 'text-align: center;'>Come Vist Us At:<br>12345 Some St<br>Northridge, CA<br>91330</div></html>");
-        addressLabel.setFont(new Font("MV Boli", Font.PLAIN, 18));
-        addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-  
-        /*over riding default boreders around header labels*/
-        EmptyBorder headerBorder = new EmptyBorder(0, 0, 0, 40);
-        headerPanel.setBorder(headerBorder);
-  
-        /*adds labels to the header panel (top of GUI) */
-        headerPanel.add(headerLabel);
-        headerPanel.add(addressLabel);
-  
+        /* adding left, middle and right panels to the header panel */
+        headerPanel.add(leftHeaderPanel);
+        headerPanel.add(middleHeaderPanel);
+        headerPanel.add(rightHeaderPanel);
+
+        /* overriding deafault boarders for header panel */
+        EmptyBorder headerPanelBorder = new EmptyBorder(0, 10, 0, 10);
+        headerPanel.setBorder(headerPanelBorder);
+        
         /*creates panel for bottom of page and sets its color*/
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        footerPanel.setBackground(new Color(153, 153, 153));
+        footerPanel.setBackground(new Color(161, 158, 158));
   
         /*creates label for our "trademark" and adds it to the footer panel (bottom of GUI) */
         JLabel trademarkLabel = new JLabel();
@@ -79,7 +120,7 @@ public class MainWindow {
         this.mainWin.add(footerPanel, BorderLayout.SOUTH);
      }
 
-     public void MainCenterPanel(){
+     public void mainCenterPanel(){
         /*creates panel for center of page and sets its color*/
         this.centerPanel = new JPanel(new GridLayout(1, 3, 10, 10));
         this.centerPanel.setBackground(new Color(161, 158, 158)); 
@@ -102,11 +143,20 @@ public class MainWindow {
             resWindow.roomsListPanel();
          }
         });
+
+        /* creating action listener for review reservation button */
+        reviewResButton.addActionListener(new ActionListener(){
+         @Override
+         public void actionPerformed(ActionEvent e){
+            MainWindow reviewResWindow = new MainWindow();
+            reviewResWindow.centerPanel.setVisible(false);
+            reviewResWindow.getReservationInfoPanel();
+         }
+        });
         
         /*creating an generic action listener and assinging it to all other buttons*/
         MyActionListener buttonListener = new MyActionListener();
-        reviewResButton.addActionListener(buttonListener);
-        adminButton.addActionListener(buttonListener);
+         adminButton.addActionListener(buttonListener);
     
         /*setting button colors*/
         roomsButton.setBackground(new Color(153, 153, 153));
@@ -160,7 +210,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e){
                scrollPane.setVisible(false);
-               getCustInfoPanel();
+               getCustInfoPanel(a);
             }
            });
            resButton.setBackground(new Color(153, 153, 153));
@@ -239,8 +289,8 @@ public class MainWindow {
         this.mainWin.setLocationRelativeTo(null);
      }
 
-     public void getCustInfoPanel(){
-      /*creating new center panel for entering customer information*/
+     public void getCustInfoPanel(Room room){
+         /*creating new center panel for entering customer information*/
          this.centerPanel = new JPanel(new BorderLayout());
          this.centerPanel.setBackground(new Color(161, 158, 158));
         
@@ -302,15 +352,19 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e){
                Customer customer = new Customer();
+               /* sets customer fields from text input */
                customer.setFirstName(fNameInput.getText());
                customer.setLastName(lNameInput.getText());
                customer.setPhoneNum(phoneInput.getText());
                customer.setEmail(emailInput.getText());
                
-               System.out.println(customer.getCustID());
-               System.out.println(customer.getFirstName() + " " + customer.getLastName());
-               System.out.println(customer.getPhoneNum());
-               System.out.println(customer.getEmail());
+               /* hides current center panel */
+               centerPanel.setVisible(false);
+
+               /* creates Receipt object and populates it with customer and room information */
+               Receipts receipts = new Receipts(customer, room);
+               /* passes the receipts object to the display receipt method */
+               displayReceipt(receipts);
             }
          });
 
@@ -345,6 +399,344 @@ public class MainWindow {
          this.mainWin.setSize(800, 400);
          this.mainWin.setLocationRelativeTo(null);  
      }
+
+     public void getReservationInfoPanel(){
+      /* creating panel for getting the reservation look up info */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+      
+      /* creating panels for top, middle, and bottom of reservaion look up panel */
+      JPanel top = new JPanel();
+      JPanel middle = new JPanel(new GridLayout(6, 1));
+      JPanel bottom = new JPanel();
+
+      /* setting background colors for top, middle, and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161,158, 158));
+      bottom.setBackground(new Color(161,158, 158));
+
+      /*creating Reservation Information label and setting font attributes */
+      JLabel reviewRes = new JLabel("Reservation Information");
+      reviewRes.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      
+      /*adding label to top panel */
+      top.add(reviewRes);
+      
+      /* creating boarder for labels */
+      EmptyBorder labelBorder = new EmptyBorder(0, 20, 0, 20);
+      
+      /* creating panels for 'first prompt' label, 'or' lable, 'second prompt' label, 'customer ID' 
+      label and input, 'confirmation number' label and input, and 'name' label and input */
+      JPanel firstPromptPanel = new JPanel();
+      JPanel orPanel = new JPanel();
+      JPanel secondPromptPanel = new JPanel();
+      JPanel custIDPanel = new JPanel();
+      JPanel confirmNumPanel = new JPanel();
+      JPanel namePanel = new JPanel();
+
+      /* setting background colors for each panel */
+      firstPromptPanel.setBackground(new Color(161,158, 158));
+      orPanel.setBackground(new Color(161,158, 158));
+      secondPromptPanel.setBackground(new Color(161,158, 158));
+      custIDPanel.setBackground(new Color(161,158, 158));
+      confirmNumPanel.setBackground(new Color(161,158, 158));
+      namePanel.setBackground(new Color(161,158, 158));
+
+      /* creating first prompt label, setting font attributes and label border,
+      adding label to appropiate panel */
+      JLabel firstPrompt = new JLabel("Enter Customer ID or Confirmation Number");
+      firstPrompt.setFont(new Font("MV Boli", Font.PLAIN, 20));
+      firstPrompt.setBorder(labelBorder);
+      firstPromptPanel.add(firstPrompt);
+
+      /* creating 'or' label, setting font attributes and label border,
+      adding label to appropiate panel */
+      JLabel or = new JLabel("OR");
+      or.setFont(new Font("MV Boli", Font.PLAIN, 20));
+      or.setBorder(labelBorder);
+      orPanel.add(or);
+
+      /* creating second prompt label, setting font attributes and label border,
+      adding label to appropiate panel */
+      JLabel secondPrompt = new JLabel("Enter The first and last name associated with the Reservation");
+      secondPrompt.setFont(new Font("MV Boli", Font.PLAIN, 20));
+      secondPrompt.setBorder(labelBorder);
+      secondPromptPanel.add(secondPrompt);
+
+      /* creating customer ID label and textfield, setting font attributes,
+      adding label and textfield to appropiate panel */
+      JLabel custIDLabel = new JLabel("Customer ID: ");
+      JTextField custID = new JTextField(25);
+      custIDPanel.add(custIDLabel);
+      custIDPanel.add(custID);
+
+      /* creating confirmation number label and textfield, setting font attributes,
+      adding label to appropiate panel */
+      JLabel confirmNumLabel = new JLabel("Confirmation Number: ");
+      JTextField confirmNum = new JTextField(20);
+      confirmNumPanel.add(confirmNumLabel);
+      confirmNumPanel.add(confirmNum);
+
+      /* creating name label and textfield, setting font attributes,
+      adding label to appropiate panel */
+      JLabel nameLabel = new JLabel("Full Name: ");
+      JTextField name = new JTextField(50);
+      namePanel.add(nameLabel);
+      namePanel.add(name);
+
+      /* adding each attribute panel to the middle panel in the order they will appear */
+      middle.add(firstPromptPanel);
+      middle.add(custIDPanel);
+      middle.add(orPanel);
+      middle.add(confirmNumPanel);
+      middle.add(secondPromptPanel);
+      middle.add(namePanel);
+      
+
+      /* creating continue button and setting background color */
+      JButton continueButton = new JButton("Continue");
+      continueButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for continue button */
+      continueButton.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e){    
+
+            /* creating test customer and room objects  */
+            Customer cust = new Customer("First", "Last", "(818)555-5555", "email@email.com");
+            Room room = new Room("King", 2, 101, 1, false, false, false, 999.99);
+            
+            /* if both the customer id and confirmation number fields or the name field is empty */          
+            if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
+               System.out.println(e.getActionCommand() + " was pressed.\n");
+            }
+            /* if there is input in the Customer ID field, but not the Confirmation number field */
+            else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
+               System.out.println(custID.getText());
+               System.out.println(name.getText());
+               scrollPane.setVisible(false);
+               reviewReservationPanel(cust, room);
+            }
+            /* if there is input in the Confirmation number field but not the Customer ID field*/
+            else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
+               System.out.println(confirmNum.getText());
+               System.out.println(name.getText());
+               scrollPane.setVisible(false);
+               reviewReservationPanel(cust, room);
+            }
+            /* if there is input in both the Customer ID and Confirmation number fields
+            else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
+         }
+      });
+
+      /* taking focus away from button */
+      continueButton.setFocusable(false);
+      
+      /*adding buttons to bottom panel */
+      bottom.add(continueButton);
+
+
+
+      /* adding panels to review reservation panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane, BorderLayout.CENTER);
+      this.mainWin.setSize(800, 600);
+      this.mainWin.setLocationRelativeTo(null);
+
+     }
+     
+     public void reviewReservationPanel(Customer cust, Room room){   
+      /* creating panel for getting the reservation look up info */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating top, middle and bottom panels */
+      JPanel top = new JPanel();
+      JPanel bottom = new JPanel();
+      /* creating report and placing it in middle panel */
+      JPanel middle = reservationReport(cust, room);
+
+      /* setting background colors for top and bottom panels */
+      top.setBackground(new Color( 161, 158, 158));
+      bottom.setBackground(new Color( 161, 158, 158));
+
+      /* creating header label, setting font attributes and adding it to top panel */
+      JLabel reviewResLabel = new JLabel("Review Reservation");
+      reviewResLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(reviewResLabel);
+
+      
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            getReservationInfoPanel();
+         }
+      });
+
+      /* adding back button to bottom panel */
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to the center panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane);
+      this.mainWin.setSize(800, 550);
+      this.mainWin.setLocationRelativeTo(null);
+     }
+
+     public JPanel reservationReport(Customer cust, Room room){
+      /* creating panel for report and setting background color*/
+      JPanel reportPanel = new JPanel();
+      reportPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating textPane for review report and setting backgroung color */
+      JTextPane textPane = new JTextPane();
+      textPane.setBackground(new Color(161, 158, 158)); 
+
+      /* adding review report info to text pane */
+      textPane.setText(
+        "\t\t\tMatador Hotels Receipt for " + cust.getFirstName() + " " + cust.getLastName() + "\n" +
+        "-----------------------------------------------------------------------------------------------------------------------------\n" +
+        "Customer ID: " + cust.getCustID() +
+        "\t\tConfirmation Number: " + cust.getConfrimNum() +
+        "\t\tTransaction ID: " + cust.getTransID() + "\n" +
+        "Phone Number: " + cust.getPhoneNum() +
+        "\tEmail: " + cust.getEmail() + "\n" +
+        "-----------------------------------------------------------------------------------------------------------------------------\n" +
+        "Check-In Date: 10/27/23\t\t" +
+        "Check-Out Date: 10/28/23\n" +
+        "Bed Type: " + room.GetRoomType() + "\t\t" +
+        "Bed Count: " + room.GetBedCount() + "\n" +
+        "Room Number: " + room.GetRoomNumberString() + "\t\t" +
+        "Floor Number: " + room.GetRoomFloorString() + "\n" +
+        "Accessibility: " + room.CheckRoomAccessibleString() + "\t\t" +
+        "Smoking / Non-Smoking: " + room.CheckRoomSmokingString() + "\n" +
+        "\n\t\tPrice: $" + room.GetRoomPriceString()
+        );
+      
+        /* setting font for text pane */
+        textPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
+
+        /* adding text pane to report panel */
+        reportPanel.add(textPane);
+
+      
+      return reportPanel;
+     }
+     
+     public void displayReceipt(Receipts receipt){
+      /* creating panel for displaying reciept */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating top, middle and bottom panels */
+      JPanel top = new JPanel();
+      JPanel middle = new JPanel();
+      JPanel bottom = new JPanel();
+
+      /* setting background colors for top and bottom panels */
+      top.setBackground(new Color( 161, 158, 158));
+      middle.setBackground(new Color( 161, 158, 158));
+      bottom.setBackground(new Color( 161, 158, 158));
+
+      /* creating header label, setting font attributes and adding it to top panel */
+      JLabel receiptLabel = new JLabel("Review Receipt: ");
+      receiptLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(receiptLabel);
+
+      /* creating text pane for reciept setting backgroud color, and adding it to middle panel */
+      JTextPane receiptTextPane = receipt.GetReceipt();
+      receiptTextPane.setBackground(new Color( 161, 158, 158));
+      receiptTextPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
+      middle.add(receiptTextPane);
+
+      /*creating buttons and setting background color */
+      JButton backButton = new JButton("Go Back");
+      JButton downloadAndPrint = new JButton("Download or Print Receipt");
+      backButton.setBackground(new Color(153, 153, 153));
+      downloadAndPrint.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            roomsListPanel();
+         }
+      });
+
+      /*creating action listener for download and print button */
+      downloadAndPrint.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            receipt.downloadOrPrintReceipt();
+         }
+      });
+
+      /* adding buttons to bottom panel */
+      bottom.add(backButton);
+      bottom.add(downloadAndPrint);
+
+      /* adding top, middle and bottom panels to the center panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane);
+      this.mainWin.setSize(800, 550);
+      this.mainWin.setLocationRelativeTo(null);
+     }
+
 }
  
 

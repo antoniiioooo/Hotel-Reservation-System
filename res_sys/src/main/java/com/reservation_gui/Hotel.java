@@ -8,26 +8,26 @@ public class Hotel
     private String hotelPhone = "555-555-5555";
     private String checkIn = "1:00 PM";
     private String checkOut = "10:00 AM";
-    private Customer[] customerList = new Customer[50];
-    private Room[] roomList = new Room[13];
+    //private Customer[] customerList = new Customer[50];
+    //private Room[] roomList = new Room[13];
     //private ReservationOptions[] reservations = new ReservationOptions[50];
-    private ManipFile files;
+    //private ManipFile files;
 
     // constructors
     public Hotel()
     {
-        files = new ManipFile("resFile.txt", "cusFile.txt", "roomFile.txt");
+        /* files = new ManipFile("resFile.txt", "cusFile.txt", "roomFile.txt");
         //files.PopulateResContainer(reservations);
         files.PopulateCusContainer(customerList);
-        files.PopulateRoomContainer(roomList);
+        files.PopulateRoomContainer(roomList); */
     }
 
     public Hotel(String resFileLoc, String cusFileLoc, String roomFileLoc)
     {
-        files = new ManipFile(resFileLoc, cusFileLoc, roomFileLoc);
+        /* files = new ManipFile(resFileLoc, cusFileLoc, roomFileLoc);
         //files.PopulateResContainer(reservations);
         files.PopulateCusContainer(customerList);
-        files.PopulateRoomContainer(roomList);
+        files.PopulateRoomContainer(roomList); */
     }
 
     // methods
@@ -37,5 +37,24 @@ public class Hotel
     public void UpdateCheckInOut(String in, String out){
         checkIn = in;
         checkOut = out;
+    }
+
+    public String getHotelName(){
+        return hotelName;
+    }
+        public String getHotelAddress(){
+        return hotelAddress;
+    }
+        public String getHotelEmail(){
+        return hotelEmail;
+    }
+        public String getHotelPhone(){
+        return hotelPhone;
+    }
+        public String getHotelCheckIn(){
+        return checkIn;
+    }
+        public String getHotelCheckOut(){
+        return checkOut;
     }
 }

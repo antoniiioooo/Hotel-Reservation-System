@@ -4,6 +4,7 @@ import java.util.*;
 
 
 class Customer{
+    /* private  member variables */
     private String fName;
     private String lName;
     private String phoneNum;
@@ -13,18 +14,38 @@ class Customer{
     private String confirmation;
     //private Payment paymentInfo;
 
+    /* Default ontructor */
     public Customer(){
+        /* randomize customer ID, Transaction ID, and Confirmation Number */
         this.custID = Integer.toString(createCustID());
+        this.transID = Integer.toString(createCustID());
+        this.confirmation = Integer.toString(createCustID());
     }
 
+    /* parameterized constructor, takes first name, last name, phone number, and email */
+    public Customer(String first, String last, String phone, String email){
+        this.fName = first;
+        this.lName = last;
+        this.phoneNum = phone;
+        this. email = email;
+        /* randomize customer ID, Transaction ID, and Confirmation Number */
+        this.custID = Integer.toString(createCustID());
+        this.transID = Integer.toString(createCustID());
+        this.confirmation = Integer.toString(createCustID());
+    }
+
+    /* randomized Customer ID */
     private int createCustID(){
         Random rand = new Random();
         return rand.nextInt(9000000) + 1000000;
     } 
+
+    /* customer ID getter */
     public String getCustID(){
         return this.custID;
     }
 
+    /* first name setter and getter */
     public void setFirstName(String fNameInput){
         this.fName = fNameInput;
     }
@@ -32,6 +53,7 @@ class Customer{
         return this.fName;
     }
 
+    /* last name setter and getter */
     public void setLastName(String lNameInput){
         this.lName = lNameInput;
     }
@@ -39,6 +61,7 @@ class Customer{
         return this.lName;
     }
 
+    /* phone number setter and getter */
     public void setPhoneNum(String phoneInput){
         this.phoneNum = phoneInput;
     }
@@ -46,6 +69,7 @@ class Customer{
         return this.phoneNum;
     }
 
+    /* email setter and getter */
     public void setEmail(String emailInput){
         this.email = emailInput;
     }
@@ -53,6 +77,7 @@ class Customer{
         return this.email;
     }
 
+    /* transaction ID setter and getter */
     public void setTransID(String id){
         this.transID = id;
     }
@@ -60,6 +85,7 @@ class Customer{
         return this.transID;
     }
 
+    /* confirmation number setter and getter */
     public void setConfirmNum(String confirmNum){
         this.confirmation = confirmNum;
     }
@@ -67,7 +93,8 @@ class Customer{
         return this.confirmation;
     }
 
-    /* public void setPaymentInfo(Payment payInfo){
+    /* payment info setter and getter 
+    public void setPaymentInfo(Payment payInfo){
         this.paymentInfo = payInfo;
     }
     public Payment getPaymentInfo(){
