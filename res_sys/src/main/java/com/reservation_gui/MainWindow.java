@@ -55,7 +55,7 @@ public class MainWindow {
         rightHeaderPanel.setBackground(new Color(161, 158, 158));
 
         /* creating label to hold the matador icon, adding matador icon to the left header panel */
-        JLabel matadorIcon = new JLabel(new ImageIcon("C:\\Users\\Joshua\\Desktop\\COMP 380\\HotelReservation\\Hotel-Reservation-System\\Matador.png"));
+        JLabel matadorIcon = new JLabel(new ImageIcon("Matador.png"));
         leftHeaderPanel.add(matadorIcon);
 
   
