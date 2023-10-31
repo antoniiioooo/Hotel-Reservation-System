@@ -9,6 +9,7 @@ public class MainWindow {
     private JFrame mainWin;
     private JPanel centerPanel;
     private JScrollPane scrollPane;
+    private Hotel hotelTest;
  
     public MainWindow(){
        this.initialize();
@@ -21,6 +22,9 @@ public class MainWindow {
       this.mainWin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       this.mainWin.setSize(800, 300);
       this.mainWin.setLocationRelativeTo(null);
+
+      /* create variable of Hotel type to test the functionality */
+      hotelTest = new Hotel();
       
       /*creating header and footer panels */
       this.createHeaderFooter();
@@ -35,8 +39,6 @@ public class MainWindow {
 
 
     public void createHeaderFooter(){
-        /* create variable of Hotel type to test the functionality */
-        Hotel hotelTest = new Hotel();
 
         /* creates panel for top of page and sets it's color */
         JPanel headerPanel = new JPanel(new GridBagLayout());
@@ -53,7 +55,7 @@ public class MainWindow {
         rightHeaderPanel.setBackground(new Color(161, 158, 158));
 
         /* creating label to hold the matador icon, adding matador icon to the left header panel */
-        JLabel matadorIcon = new JLabel(new ImageIcon("Matador.png"));
+        JLabel matadorIcon = new JLabel(new ImageIcon("C:\\Users\\Joshua\\Desktop\\COMP 380\\HotelReservation\\Hotel-Reservation-System\\Matador.png"));
         leftHeaderPanel.add(matadorIcon);
 
   

@@ -38,11 +38,7 @@ public class ManipFile {
             while ((line = reader.readLine()) != null)
             {
                 String[] split = line.split(", ");
-                customers[track].setFirstName(split[0]);
-                customers[track].setLastName(split[1]);
-                customers[track].setPhoneNum(split[2]);
-                customers[track].setEmail(split[3]);
-                customers[track].setTransID(split[4]);
+                customers[track] = new Customer(split[0], split[1], split[2], split[3]);
                 track++;
             }
             reader.close();
