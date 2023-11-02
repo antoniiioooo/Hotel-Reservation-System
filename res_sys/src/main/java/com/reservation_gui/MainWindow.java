@@ -628,11 +628,13 @@ public class MainWindow {
       reportPanel.setBackground(new Color(161, 158, 158));
 
       /* creating textPane for review report and setting backgroung color */
-      JTextPane textPane = new JTextPane();
+      ReviewReservation R = new ReviewReservation(cust,room);
+      JTextPane textPane = R.getReviewReservation(); 
+     
       textPane.setBackground(new Color(161, 158, 158)); 
 
       /* adding review report info to text pane */
-      textPane.setText(
+      /* textPane.setText(
         "\t\t\tMatador Hotels Receipt for " + cust.getFirstName() + " " + cust.getLastName() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------------------\n" +
         "Customer ID: " + cust.getCustID() +
@@ -650,8 +652,8 @@ public class MainWindow {
         "Accessibility: " + room.CheckRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + room.CheckRoomSmokingString() + "\n" +
         "\n\t\tPrice: $" + room.GetRoomPriceString()
-        );
-      
+        ); */
+
         /* setting font for text pane */
         textPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
 
