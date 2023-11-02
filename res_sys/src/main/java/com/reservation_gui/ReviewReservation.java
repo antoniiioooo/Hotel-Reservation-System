@@ -47,39 +47,7 @@ public class ReviewReservation {
         return GenerateReviewReservation();
     }
 
-    public void getfirstName(String firstName){
-        //grabbing the customers first name 
-        Scanner scan = new Scanner(System.in);
-        firstName = scan.nextLine();
+}
 
 
-    }
-    public String getLastName(String lastName){
-        //grabbing the customer last name 
-        Scanner scan = new Scanner(System.in);
-        lastName = scan.nextLine();
-        return lastName; 
-
-    }
-    public void getConfirmationNumber(String customerConfirmation){
-        Scanner scan = new Scanner(System.in);
-
-        //waiting on the customer confirmation number 
-        int confirmationNum = scan.nextInt();
-
-        //chaninging the int to a string 
-        customerConfirmation = Integer.toString(confirmationNum);
-
-    }
-    public void getCustomerID(String customerID){
-        Scanner scan = new Scanner(System.in);
-
-        //getting the gustomer ID 
-        int ID = scan.nextInt();
-
-        //changing the int to a string 
-        customerID = Integer.toString(ID);
-
-    }
- }
 
