@@ -1,30 +1,10 @@
 package com.reservation_gui;
- 
 import java.util.Scanner;
-
 import javax.swing.JTextPane;
 
 public class ReviewReservation {
-
-    // instances from customer 
-    // instances of the room
-    /* //String customerConfirmation;
-    //String customerID; 
-    //String firstName;
-    //String lastName;
-    //String email; 
-    //String custID;  */
-
     private Customer cust; 
     private Room room; 
-
-
-   /*  public ReviewReservation(String customerConfirmation, String firstName, String lastName, String custID){
-        this.customerConfirmation = customerConfirmation;
-        this.firstName = firstName; 
-        this.lastName = lastName; 
-        this.custID = custID; 
-    } */
 
     public ReviewReservation () {
         this.cust = new Customer("FirstName", "LastName", "(818)555-5555", "email@email.com");
@@ -101,20 +81,5 @@ public class ReviewReservation {
         customerID = Integer.toString(ID);
 
     }
-    /* public void Review(){
-            //going to compare the conformation number to the file number 
-        Customer first = new Customer();
-        Customer last = new Customer();
-        Customer confirmation = new Customer(); 
-
-        if(firstName.equals(first) && lastName.equals(last) && customerConfirmation.equals(confirmation)){
-            System.out.println("Verification Successful. Receipt is loading.");
-            } else {
-                System.out.println("Verification failed. The information does not match our records. ");
-            } */
-        public actionReviewReservation(){
-            return 
-        }
-    
  }
 
