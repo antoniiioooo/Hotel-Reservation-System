@@ -325,7 +325,7 @@ public class MainWindow {
          /* creating first name label and textfield, adding border to label and adding label and textfield to appropiate panel */
          JLabel fNameLabel = new JLabel("First Name:");
          JTextField fNameInput = new JTextField(20);
-         fNameLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+         fNameLabel.setBorder(new EmptyBorder(0, 0, 0, 24));
          fNamePanel.add(fNameLabel);
          fNamePanel.add(fNameInput);
 
