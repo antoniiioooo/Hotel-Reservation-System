@@ -37,7 +37,6 @@ public class MainWindow {
 
     }
 
-
     public void createHeaderFooter(){
 
         /* creates panel for top of page and sets it's color */
@@ -296,60 +295,71 @@ public class MainWindow {
          this.centerPanel = new JPanel(new BorderLayout());
          this.centerPanel.setBackground(new Color(161, 158, 158));
         
-         /*panel for top of the customer info panel */
+         /* creating panels for top, middle, and bottom of customer information panel */
          JPanel top = new JPanel();
-         top.setBackground(new Color(161, 158, 158));
-         /*creating customer info label */
-         JLabel custInfo = new JLabel("Customer Information");
-         custInfo.setFont(new Font("MV Boli", Font.PLAIN, 30));
-         /*adding label to top panel */
-         top.add(custInfo);
-         
-         /*panel for center of the customer info panel */
-         JPanel center = new JPanel(new GridLayout(4,2, 10, 10));
-         center.setBackground(new Color(161,158, 158));
-
-         /*overridng default boarders */
-         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 200);
-         center.setBorder(centerBorder);
-         
-         /*creating labels and input boxes for the customer info */
-         JLabel fNameLabel = new JLabel("First Name:");
-         fNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-         JTextField fNameInput = new JTextField();
-         
-         JLabel lNameLabel = new JLabel("Last Name:");
-         lNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-         JTextField lNameInput = new JTextField();
-         
-
-         JLabel phoneLabel = new JLabel("Phone Number:");
-         phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-         JTextField phoneInput = new JTextField();
-         
-         JLabel emailLabel = new JLabel("Email:");
-         emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-         JTextField emailInput = new JTextField();
-
-         /*adding all labels and input boxes to the center panel */
-         center.add(fNameLabel);
-         center.add(fNameInput);
-         center.add(lNameLabel);
-         center.add(lNameInput);
-         center.add(phoneLabel);
-         center.add(phoneInput);
-         center.add(emailLabel);
-         center.add(emailInput);
-
-         /*panel for bottom of the customer info panel */
+         JPanel middle = new JPanel(new GridLayout(4,1));
          JPanel bottom = new JPanel();
 
-         /*creating continue button for customer info panel */
+         /* setting background colors for top, middle, and bottom panels */
+         top.setBackground(new Color(161, 158, 158));
+         middle.setBackground(new Color(161,158, 158));
          bottom.setBackground(new Color( 161, 158, 158));
+         
+         /*creating customer info label and adding it to top panel*/
+         JLabel custInfo = new JLabel("Customer Information");
+         custInfo.setFont(new Font("MV Boli", Font.PLAIN, 30));
+         top.add(custInfo);
+         
+         /* creating panels for first name, last name, phone, and email labels and input boxes */
+         JPanel fNamePanel = new JPanel();
+         JPanel lNamePanel = new JPanel();
+         JPanel phonePanel = new JPanel();
+         JPanel emailPanel = new JPanel();
+
+         /* setting background color for each panel */
+         fNamePanel.setBackground(new Color(161,158, 158));
+         lNamePanel.setBackground(new Color(161,158, 158));
+         phonePanel.setBackground(new Color(161,158, 158));
+         emailPanel.setBackground(new Color(161,158, 158));
+
+         /* creating first name label and textfield, adding border to label and adding label and textfield to appropiate panel */
+         JLabel fNameLabel = new JLabel("First Name:");
+         JTextField fNameInput = new JTextField(20);
+         fNameLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+         fNamePanel.add(fNameLabel);
+         fNamePanel.add(fNameInput);
+
+         /* creating last name label and textfield adding border to label and adding label and textfield to appropiate panel */
+         JLabel lNameLabel = new JLabel("Last Name:");
+         JTextField lNameInput = new JTextField(20);
+         lNameLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+         lNamePanel.add(lNameLabel);
+         lNamePanel.add(lNameInput);
+
+         /* creating phone number label and textfield adding label and textfield to appropiate panel */
+         JLabel phoneLabel = new JLabel("Phone Number:");
+         JTextField phoneInput = new JTextField(20);
+         phonePanel.add(phoneLabel);
+         phonePanel.add(phoneInput);
+
+         /* creating email label and textfield adding border to label and adding label and textfield to appropiate panel */
+         JLabel emailLabel = new JLabel("Email:");
+         JTextField emailInput = new JTextField(20);
+         emailLabel.setBorder(new EmptyBorder(0, 0, 0, 55));
+         emailPanel.add(emailLabel);
+         emailPanel.add(emailInput);
+
+         /* adding each attribute panel to the middle panel */
+         middle.add(fNamePanel);
+         middle.add(lNamePanel);
+         middle.add(phonePanel);
+         middle.add(emailPanel);
+      
+         /* creating continue button for customer info panel */      
          JButton continueButton = new JButton("Continue");
          continueButton.setBackground(new Color(153, 153, 153));
 
-         /*creating action listener for continue button */
+         /* creating action listener for continue button */
          continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -393,7 +403,7 @@ public class MainWindow {
 
          /*adding panels to customer info panel */
          centerPanel.add(top, BorderLayout.NORTH);
-         centerPanel.add(center, BorderLayout.CENTER);
+         centerPanel.add(middle, BorderLayout.CENTER);
          centerPanel.add(bottom, BorderLayout.SOUTH);
 
          /*adding customer info panel to the main window, and setting window size and screen location */
