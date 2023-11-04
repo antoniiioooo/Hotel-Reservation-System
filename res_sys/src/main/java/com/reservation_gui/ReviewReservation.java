@@ -1,5 +1,4 @@
 package com.reservation_gui;
-import java.util.Scanner;
 import javax.swing.JTextPane;
 
 public class ReviewReservation {
@@ -21,7 +20,7 @@ public class ReviewReservation {
         JTextPane reportTextPane = new JTextPane();
 
         reportTextPane.setText(
-        "\t\t\tMatador Hotels Receipt for " + this.cust.getFirstName() + " " + this.cust.getLastName() + "\n" +
+        "\t\t\tMatador Hotels Reservation Review for " + this.cust.getFirstName() + " " + this.cust.getLastName() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------------------\n" +
         "Customer ID: " + this.cust.getCustID() +
         "\t\tConfirmation Number: " + this.cust.getConfrimNum() +

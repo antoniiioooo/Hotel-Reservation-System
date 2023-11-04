@@ -151,7 +151,7 @@ public class MainWindow {
          public void actionPerformed(ActionEvent e){
             MainWindow reviewResWindow = new MainWindow();
             reviewResWindow.centerPanel.setVisible(false);
-            reviewResWindow.getReservationInfoPanel();
+            reviewResWindow.idConfirmChoicePanel();
          }
         });
         
@@ -252,8 +252,7 @@ public class MainWindow {
            JLabel roomPriceLabel = new JLabel("Room Price: ");
            JLabel roomPriceVar = new JLabel(a.GetRoomPriceString());
            roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-           
-           
+                      
            /*adding labels to info panel */
            roomInfo.add(roomTypeLabel);
            roomInfo.add(roomTypeVar);
@@ -273,7 +272,6 @@ public class MainWindow {
            this.centerPanel.add(roomInfo);
          }
 
-
          /* creating scroll pane and adding the center panel to the scroll pane */
         scrollPane = new JScrollPane(centerPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -283,10 +281,9 @@ public class MainWindow {
         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   
         scrollPane.setBorder(centerBorder);
          
-
         /*adding the scroll pane to main window frame */
         this.mainWin.add(scrollPane, BorderLayout.CENTER);
-        this.mainWin.setSize(800, 800);
+        this.mainWin.setSize(815, 800);
         this.mainWin.setLocationRelativeTo(null);
      }
 
@@ -412,14 +409,93 @@ public class MainWindow {
          this.mainWin.setLocationRelativeTo(null);  
      }
 
-     public void getReservationInfoPanel(){
+     public void idConfirmChoicePanel(){
+      /* creating panel for user to choose which search option they'd like to use */
+      this.centerPanel = new JPanel(new BorderLayout(10, 10));
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating panel for Customer ID or Confirmation choice  and setting background color*/
+      JPanel choicePanel = new JPanel(new GridLayout(1, 2, 50, 10));
+      choicePanel.setBackground(new Color(161, 158, 158));
+
+      /* creating label for options, setting font and alignment attributes */
+      JLabel idORConfirm = new JLabel("Would you like to look up your reservation by Customer ID or Confirmation Number?");
+      idORConfirm.setFont(new Font("MV Boli", Font.PLAIN, 16));
+      idORConfirm.setHorizontalAlignment(SwingConstants.CENTER);
+      
+      /* creating buttons for options */
+      JButton idButton = new JButton("Customer ID");
+      JButton confirmButton = new JButton("Confirmation Number");
+
+      /*setting button colors */
+      idButton.setBackground(new Color(153, 153, 153));
+      confirmButton.setBackground(new Color(153, 153, 153));
+
+      /* taking automatic focus away from buttons */
+      idButton.setFocusable(false);
+      confirmButton.setFocusable(false);
+
+      /* action listener for id button */
+      idButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            /* creating label for Customer ID choice */
+            JLabel idLabel = new JLabel("Customer ID:");
+            /* hiding current scroll pane */
+            scrollPane.setVisible(false);
+            /* creates panels for getting reservation information with customer id lable passed */
+            getReservationInfoPanel(idLabel);
+         }
+      });
+
+      /* action listener for conifmation number button */
+      confirmButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed (ActionEvent e){
+            /* creating label for confirmation number choice */
+            JLabel confirmLabel = new JLabel("Confirmation Number:");
+            /* hiding current scroll pane */
+            scrollPane.setVisible(false);
+            /* creates panels for getting reservation information with confirmation lable passed */
+            getReservationInfoPanel(confirmLabel);
+         }
+      });
+
+      /* adding buttons to the choice panel */
+      choicePanel.add(idButton);
+      choicePanel.add(confirmButton);
+      
+      /*overriding default borders for choice panel */
+      EmptyBorder choiceBorder = new EmptyBorder(10, 150, 10, 150);
+      choicePanel.setBorder(choiceBorder);
+
+      /* adding options label and choice panel to center panel */
+      centerPanel.add(idORConfirm, BorderLayout.NORTH);
+      centerPanel.add(choicePanel);
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      this.scrollPane = new JScrollPane(centerPanel);
+      this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      this.scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+      
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane, BorderLayout.CENTER);
+      this.mainWin.setSize(800, 300);
+      this.mainWin.setLocationRelativeTo(null);
+     }
+
+     public void getReservationInfoPanel(JLabel typeToVerify){
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
       this.centerPanel.setBackground(new Color(161, 158, 158));
       
       /* creating panels for top, middle, and bottom of reservaion look up panel */
       JPanel top = new JPanel();
-      JPanel middle = new JPanel(new GridLayout(6, 1));
+      JPanel middle = new JPanel(new GridLayout(3, 1));
       JPanel bottom = new JPanel();
 
       /* setting background colors for top, middle, and bottom panels */
@@ -427,81 +503,41 @@ public class MainWindow {
       middle.setBackground(new Color(161,158, 158));
       bottom.setBackground(new Color(161,158, 158));
 
-      /*creating Reservation Information label and setting font attributes */
+      /*creating Reservation Information label, setting font attributes and adding label to top panel */
       JLabel reviewRes = new JLabel("Reservation Information");
       reviewRes.setFont(new Font("MV Boli", Font.PLAIN, 30));
-      
-      /*adding label to top panel */
       top.add(reviewRes);
       
-      /* creating boarder for labels */
-      EmptyBorder labelBorder = new EmptyBorder(0, 20, 0, 20);
-      
-      /* creating panels for 'first prompt' label, 'or' lable, 'second prompt' label, 'customer ID' 
-      label and input, 'confirmation number' label and input, and 'name' label and input */
-      JPanel firstPromptPanel = new JPanel();
-      JPanel orPanel = new JPanel();
-      JPanel secondPromptPanel = new JPanel();
-      JPanel custIDPanel = new JPanel();
-      JPanel confirmNumPanel = new JPanel();
+      /* creating panels for the verify , prompt, and name labes and textfields */
+      JPanel verifyPanel = new JPanel();
+      JPanel promptPanel = new JPanel();
       JPanel namePanel = new JPanel();
 
       /* setting background colors for each panel */
-      firstPromptPanel.setBackground(new Color(161,158, 158));
-      orPanel.setBackground(new Color(161,158, 158));
-      secondPromptPanel.setBackground(new Color(161,158, 158));
-      custIDPanel.setBackground(new Color(161,158, 158));
-      confirmNumPanel.setBackground(new Color(161,158, 158));
+      verifyPanel.setBackground(new Color(161, 158, 158));
+      promptPanel.setBackground(new Color(161,158, 158));
       namePanel.setBackground(new Color(161,158, 158));
 
-      /* creating first prompt label, setting font attributes and label border,
-      adding label to appropiate panel */
-      JLabel firstPrompt = new JLabel("Enter Customer ID or Confirmation Number");
-      firstPrompt.setFont(new Font("MV Boli", Font.PLAIN, 20));
-      firstPrompt.setBorder(labelBorder);
-      firstPromptPanel.add(firstPrompt);
+      /* creating prompt label, setting font attributes and adding to prompt panel */
+      JLabel prompt = new JLabel("Enter The first and last name associated with the Reservation");
+      prompt.setFont(new Font("MV Boli", Font.PLAIN, 20));
+      promptPanel.add(prompt);
 
-      /* creating 'or' label, setting font attributes and label border,
-      adding label to appropiate panel */
-      JLabel or = new JLabel("OR");
-      or.setFont(new Font("MV Boli", Font.PLAIN, 20));
-      or.setBorder(labelBorder);
-      orPanel.add(or);
+      /* creating textfield for id/confirmation input, adding the label and textfield to verify panel */
+      JTextField inputToVerify = new JTextField(20);
+      verifyPanel.add(typeToVerify);
+      verifyPanel.add(inputToVerify);
+      
 
-      /* creating second prompt label, setting font attributes and label border,
-      adding label to appropiate panel */
-      JLabel secondPrompt = new JLabel("Enter The first and last name associated with the Reservation");
-      secondPrompt.setFont(new Font("MV Boli", Font.PLAIN, 20));
-      secondPrompt.setBorder(labelBorder);
-      secondPromptPanel.add(secondPrompt);
-
-      /* creating customer ID label and textfield, setting font attributes,
-      adding label and textfield to appropiate panel */
-      JLabel custIDLabel = new JLabel("Customer ID: ");
-      JTextField custID = new JTextField(25);
-      custIDPanel.add(custIDLabel);
-      custIDPanel.add(custID);
-
-      /* creating confirmation number label and textfield, setting font attributes,
-      adding label to appropiate panel */
-      JLabel confirmNumLabel = new JLabel("Confirmation Number: ");
-      JTextField confirmNum = new JTextField(20);
-      confirmNumPanel.add(confirmNumLabel);
-      confirmNumPanel.add(confirmNum);
-
-      /* creating name label and textfield, setting font attributes,
-      adding label to appropiate panel */
+      /* creating name label and textfield, adding label to appropiate panel */
       JLabel nameLabel = new JLabel("Full Name: ");
       JTextField name = new JTextField(50);
       namePanel.add(nameLabel);
       namePanel.add(name);
 
       /* adding each attribute panel to the middle panel in the order they will appear */
-      middle.add(firstPromptPanel);
-      middle.add(custIDPanel);
-      middle.add(orPanel);
-      middle.add(confirmNumPanel);
-      middle.add(secondPromptPanel);
+      middle.add(verifyPanel);
+      middle.add(promptPanel);
       middle.add(namePanel);
       
 
@@ -513,41 +549,58 @@ public class MainWindow {
       continueButton.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e){    
-
+            
+            System.out.println(e.getActionCommand() + " was pressed");
             /* creating test customer and room objects  */
             Customer cust = new Customer("First", "Last", "(818)555-5555", "email@email.com");
             Room room = new Room("King", 2, 101, 1, false, false, false, 999.99);
-            
+            scrollPane.setVisible(false);
+            reviewReservationPanel(cust, room);
+
             /* if both the customer id and confirmation number fields or the name field is empty */          
-            if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
+            /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
                System.out.println(e.getActionCommand() + " was pressed.\n");
-            }
+            } */
             /* if there is input in the Customer ID field, but not the Confirmation number field */
-            else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
+           /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
                System.out.println(custID.getText());
                System.out.println(name.getText());
                scrollPane.setVisible(false);
                reviewReservationPanel(cust, room);
-            }
+            } */
             /* if there is input in the Confirmation number field but not the Customer ID field*/
-            else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
+            /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
                System.out.println(confirmNum.getText());
                System.out.println(name.getText());
                scrollPane.setVisible(false);
                reviewReservationPanel(cust, room);
-            }
+            } */
             /* if there is input in both the Customer ID and Confirmation number fields
             else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
+         }
+      });
+      
+      
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            idConfirmChoicePanel();
          }
       });
 
       /* taking focus away from button */
       continueButton.setFocusable(false);
+      backButton.setFocusable(false);
       
       /*adding buttons to bottom panel */
       bottom.add(continueButton);
-
-
+      bottom.add(backButton);
 
       /* adding panels to review reservation panel */
       centerPanel.add(top, BorderLayout.NORTH);
@@ -566,11 +619,11 @@ public class MainWindow {
 
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane, BorderLayout.CENTER);
-      this.mainWin.setSize(800, 600);
+      this.mainWin.setSize(800, 500);
       this.mainWin.setLocationRelativeTo(null);
 
      }
-     
+
      public void reviewReservationPanel(Customer cust, Room room){   
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -591,7 +644,6 @@ public class MainWindow {
       reviewResLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
       top.add(reviewResLabel);
 
-      
       /*creating button to go back */
       JButton backButton = new JButton("Go Back");
       backButton.setBackground(new Color(153, 153, 153));
@@ -601,7 +653,8 @@ public class MainWindow {
          @Override
          public void actionPerformed(ActionEvent e){
             scrollPane.setVisible(false);
-            getReservationInfoPanel();
+            //getReservationInfoPanel();
+            idConfirmChoicePanel();
          }
       });
 
@@ -613,19 +666,15 @@ public class MainWindow {
       centerPanel.add(middle, BorderLayout.CENTER);
       centerPanel.add(bottom, BorderLayout.SOUTH);
 
-
-
       /* creating scroll pane and adding the center panel to the scroll pane */
       scrollPane = new JScrollPane(centerPanel);
       scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
-
       /* over riding default boreders around the scroll pane */
       EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
       scrollPane.setBorder(scrollPaneBorder);
          
-
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
       this.mainWin.setSize(800, 550);
@@ -642,35 +691,13 @@ public class MainWindow {
       JTextPane textPane = R.getReviewReservation(); 
      
       textPane.setBackground(new Color(161, 158, 158)); 
-
-      /* adding review report info to text pane */
-      /* textPane.setText(
-        "\t\t\tMatador Hotels Receipt for " + cust.getFirstName() + " " + cust.getLastName() + "\n" +
-        "-----------------------------------------------------------------------------------------------------------------------------\n" +
-        "Customer ID: " + cust.getCustID() +
-        "\t\tConfirmation Number: " + cust.getConfrimNum() +
-        "\t\tTransaction ID: " + cust.getTransID() + "\n" +
-        "Phone Number: " + cust.getPhoneNum() +
-        "\tEmail: " + cust.getEmail() + "\n" +
-        "-----------------------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
-        "Bed Type: " + room.GetRoomType() + "\t\t" +
-        "Bed Count: " + room.GetBedCount() + "\n" +
-        "Room Number: " + room.GetRoomNumberString() + "\t\t" +
-        "Floor Number: " + room.GetRoomFloorString() + "\n" +
-        "Accessibility: " + room.CheckRoomAccessibleString() + "\t\t" +
-        "Smoking / Non-Smoking: " + room.CheckRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + room.GetRoomPriceString()
-        ); */
-
-        /* setting font for text pane */
-        textPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
-
-        /* adding text pane to report panel */
-        reportPanel.add(textPane);
-
       
+      /* setting font for text pane */
+      textPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
+
+      /* adding text pane to report panel */
+      reportPanel.add(textPane);
+
       return reportPanel;
      }
      
