@@ -1,9 +1,13 @@
 package com.reservation_gui;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.text.MaskFormatter;
+
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public class MainWindow {
     private JFrame mainWin;
@@ -335,78 +339,93 @@ public class MainWindow {
 
          /* creating phone number label and textfield adding label and textfield to appropiate panel */
          JLabel phoneLabel = new JLabel("Phone Number:");
-         JTextField phoneInput = new JTextField(20);
          phonePanel.add(phoneLabel);
-         phonePanel.add(phoneInput);
+         try{
+            /* creating text field with input mask for phone number */
+            JFormattedTextField phoneInput = new JFormattedTextField(new MaskFormatter("(###) ###-####"));
+            phoneInput.setColumns(20);
+            phonePanel.add(phoneInput);
+         
+            /* creating email label and textfield adding border to label and adding label and textfield to appropiate panel */
+            JLabel emailLabel = new JLabel("Email:");
+            JTextField emailInput = new JTextField(20);
+            emailLabel.setBorder(new EmptyBorder(0, 0, 0, 55));
+            emailPanel.add(emailLabel);
+            emailPanel.add(emailInput);
 
-         /* creating email label and textfield adding border to label and adding label and textfield to appropiate panel */
-         JLabel emailLabel = new JLabel("Email:");
-         JTextField emailInput = new JTextField(20);
-         emailLabel.setBorder(new EmptyBorder(0, 0, 0, 55));
-         emailPanel.add(emailLabel);
-         emailPanel.add(emailInput);
+            /* adding each attribute panel to the middle panel */
+            middle.add(fNamePanel);
+            middle.add(lNamePanel);
+            middle.add(phonePanel);
+            middle.add(emailPanel);
+         
+            /* creating continue button for customer info panel */      
+            JButton continueButton = new JButton("Continue");
+            continueButton.setBackground(new Color(153, 153, 153));
+            
+            /* creating action listener for continue button */
+            continueButton.addActionListener(new ActionListener() {
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  Customer customer = new Customer();
+                  /* sets customer fields from text input */
+                  customer.setFirstName(fNameInput.getText());
+                  customer.setLastName(lNameInput.getText());
+                  customer.setPhoneNum(phoneInput.getText());
+                  /* checking if email is valild */
+                  if(emailInput.getText().contains("@") && emailInput.getText().contains(".com")){
+                     customer.setEmail(emailInput.getText());
+                     /* hides current center panel */
+                     centerPanel.setVisible(false);
+                     /* creates Receipt object and populates it with customer and room information */
+                     Receipts receipts = new Receipts(customer, room);
+                     /* passes the receipts object to the display receipt method */
+                     displayReceipt(receipts);
+                  }
+                  else{
+                     /* if email input does not have vaild characters then error message will be shown
+                        and user will be allowed to try again once the "ok" button has been pressed */
+                     JOptionPane.showMessageDialog(null,
+                     "Error: Not a vaild email, please try again", "Error Message", 
+                     JOptionPane.ERROR_MESSAGE);
+                  }
+               }
+            });
+            
+            /*creating button to go back */
+            JButton backButton = new JButton("Go Back");
+            backButton.setBackground(new Color(153, 153, 153));
 
-         /* adding each attribute panel to the middle panel */
-         middle.add(fNamePanel);
-         middle.add(lNamePanel);
-         middle.add(phonePanel);
-         middle.add(emailPanel);
-      
-         /* creating continue button for customer info panel */      
-         JButton continueButton = new JButton("Continue");
-         continueButton.setBackground(new Color(153, 153, 153));
+            /*creating action listener for back button */
+            backButton.addActionListener(new ActionListener() {
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  centerPanel.setVisible(false);
+                  roomsListPanel();
+               }
+            });
 
-         /* creating action listener for continue button */
-         continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               Customer customer = new Customer();
-               /* sets customer fields from text input */
-               customer.setFirstName(fNameInput.getText());
-               customer.setLastName(lNameInput.getText());
-               customer.setPhoneNum(phoneInput.getText());
-               customer.setEmail(emailInput.getText());
-               
-               /* hides current center panel */
-               centerPanel.setVisible(false);
+            /*taking focus away from buttons that are not being interacted with */
+            continueButton.setFocusable(false);
+            backButton.setFocusable(false);
 
-               /* creates Receipt object and populates it with customer and room information */
-               Receipts receipts = new Receipts(customer, room);
-               /* passes the receipts object to the display receipt method */
-               displayReceipt(receipts);
-            }
-         });
+            /*adding buttons to bottom panel */
+            bottom.add(continueButton);
+            bottom.add(backButton);
 
-         /*creating button to go back */
-         JButton backButton = new JButton("Go Back");
-         backButton.setBackground(new Color(153, 153, 153));
+            /*adding panels to customer info panel */
+            centerPanel.add(top, BorderLayout.NORTH);
+            centerPanel.add(middle, BorderLayout.CENTER);
+            centerPanel.add(bottom, BorderLayout.SOUTH);
 
-         /*creating action listener for back button */
-         backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               centerPanel.setVisible(false);
-               roomsListPanel();
-            }
-         });
-
-         /*taking focus away from buttons that are not being interacted with */
-         continueButton.setFocusable(false);
-         backButton.setFocusable(false);
-
-         /*adding buttons to bottom panel */
-         bottom.add(continueButton);
-         bottom.add(backButton);
-
-         /*adding panels to customer info panel */
-         centerPanel.add(top, BorderLayout.NORTH);
-         centerPanel.add(middle, BorderLayout.CENTER);
-         centerPanel.add(bottom, BorderLayout.SOUTH);
-
-         /*adding customer info panel to the main window, and setting window size and screen location */
-         this.mainWin.add(centerPanel);
-         this.mainWin.setSize(800, 400);
-         this.mainWin.setLocationRelativeTo(null);  
+            /*adding customer info panel to the main window, and setting window size and screen location */
+            this.mainWin.add(centerPanel);
+            this.mainWin.setSize(800, 400);
+            this.mainWin.setLocationRelativeTo(null);  
+         }catch(ParseException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
      }
 
      public void idConfirmChoicePanel(){
@@ -524,103 +543,109 @@ public class MainWindow {
       promptPanel.add(prompt);
 
       /* creating textfield for id/confirmation input, adding the label and textfield to verify panel */
-      JTextField inputToVerify = new JTextField(20);
-      verifyPanel.add(typeToVerify);
-      verifyPanel.add(inputToVerify);
-      
-
-      /* creating name label and textfield, adding label to appropiate panel */
-      JLabel nameLabel = new JLabel("Full Name: ");
-      JTextField name = new JTextField(50);
-      namePanel.add(nameLabel);
-      namePanel.add(name);
-
-      /* adding each attribute panel to the middle panel in the order they will appear */
-      middle.add(verifyPanel);
-      middle.add(promptPanel);
-      middle.add(namePanel);
-      
-
-      /* creating continue button and setting background color */
-      JButton continueButton = new JButton("Continue");
-      continueButton.setBackground(new Color(153, 153, 153));
-
-      /*creating action listener for continue button */
-      continueButton.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e){    
-            
-            System.out.println(e.getActionCommand() + " was pressed");
-            /* creating test customer and room objects  */
-            Customer cust = new Customer("First", "Last", "(818)555-5555", "email@email.com");
-            Room room = new Room("King", 2, 101, 1, false, false, false, 999.99);
-            scrollPane.setVisible(false);
-            reviewReservationPanel(cust, room);
-
-            /* if both the customer id and confirmation number fields or the name field is empty */          
-            /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
-               System.out.println(e.getActionCommand() + " was pressed.\n");
-            } */
-            /* if there is input in the Customer ID field, but not the Confirmation number field */
-           /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
-               System.out.println(custID.getText());
-               System.out.println(name.getText());
-               scrollPane.setVisible(false);
-               reviewReservationPanel(cust, room);
-            } */
-            /* if there is input in the Confirmation number field but not the Customer ID field*/
-            /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
-               System.out.println(confirmNum.getText());
-               System.out.println(name.getText());
-               scrollPane.setVisible(false);
-               reviewReservationPanel(cust, room);
-            } */
-            /* if there is input in both the Customer ID and Confirmation number fields
-            else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
-         }
-      });
-      
-      
-      /*creating button to go back */
-      JButton backButton = new JButton("Go Back");
-      backButton.setBackground(new Color(153, 153, 153));
-
-      /*creating action listener for back button */
-      backButton.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e){
-            scrollPane.setVisible(false);
-            idConfirmChoicePanel();
-         }
-      });
-
-      /* taking focus away from button */
-      continueButton.setFocusable(false);
-      backButton.setFocusable(false);
-      
-      /*adding buttons to bottom panel */
-      bottom.add(continueButton);
-      bottom.add(backButton);
-
-      /* adding panels to review reservation panel */
-      centerPanel.add(top, BorderLayout.NORTH);
-      centerPanel.add(middle, BorderLayout.CENTER);
-      centerPanel.add(bottom, BorderLayout.SOUTH);
-
-      /* creating scroll pane and adding the center panel to the scroll pane */
-      scrollPane = new JScrollPane(centerPanel);
-      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        
-      /* over riding default boreders around the scroll pane */
-      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
-      scrollPane.setBorder(scrollPaneBorder);
+      try{
+         /* creating text field with input mask for cust id and confirm num */
+         JFormattedTextField inputToVerify = new JFormattedTextField(new MaskFormatter("AAAAAAA"));
+         inputToVerify.setColumns(20);
+         verifyPanel.add(typeToVerify);
+         verifyPanel.add(inputToVerify);
          
+         /* creating name label and textfield, adding label to appropiate panel */
+         JLabel nameLabel = new JLabel("Full Name: ");
+         JTextField name = new JTextField(50);
+         namePanel.add(nameLabel);
+         namePanel.add(name);
 
-      /* adding the scroll pane to main window frame */
-      this.mainWin.add(scrollPane, BorderLayout.CENTER);
-      this.mainWin.setSize(800, 500);
-      this.mainWin.setLocationRelativeTo(null);
+         /* adding each attribute panel to the middle panel in the order they will appear */
+         middle.add(verifyPanel);
+         middle.add(promptPanel);
+         middle.add(namePanel);
+         
+         /* creating continue button and setting background color */
+         JButton continueButton = new JButton("Continue");
+         continueButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for continue button */
+         continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){    
+               
+               System.out.println(e.getActionCommand() + " was pressed");
+               /* creating test customer and room objects  */
+               Customer cust = new Customer("First", "Last", "(818)555-5555", "email@email.com");
+               Room room = new Room("King", 2, 101, 1, false, false, false, 999.99);
+               scrollPane.setVisible(false);
+               reviewReservationPanel(cust, room);
+
+               /* if both the customer id and confirmation number fields or the name field is empty */          
+               /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
+                  System.out.println(e.getActionCommand() + " was pressed.\n");
+               } */
+               /* if there is input in the Customer ID field, but not the Confirmation number field */
+               /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
+                  System.out.println(custID.getText());
+                  System.out.println(name.getText());
+                  scrollPane.setVisible(false);
+                  reviewReservationPanel(cust, room);
+               } */
+               /* if there is input in the Confirmation number field but not the Customer ID field*/
+               /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
+                  System.out.println(confirmNum.getText());
+                  System.out.println(name.getText());
+                  scrollPane.setVisible(false);
+                  reviewReservationPanel(cust, room);
+               } */
+               /* if there is input in both the Customer ID and Confirmation number fields
+               else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
+            }
+         });
+         
+         
+         /*creating button to go back */
+         JButton backButton = new JButton("Go Back");
+         backButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for back button */
+         backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               scrollPane.setVisible(false);
+               idConfirmChoicePanel();
+            }
+         });
+
+         /* taking focus away from button */
+         continueButton.setFocusable(false);
+         backButton.setFocusable(false);
+         
+         /*adding buttons to bottom panel */
+         bottom.add(continueButton);
+         bottom.add(backButton);
+
+         /* adding panels to review reservation panel */
+         centerPanel.add(top, BorderLayout.NORTH);
+         centerPanel.add(middle, BorderLayout.CENTER);
+         centerPanel.add(bottom, BorderLayout.SOUTH);
+
+         /* creating scroll pane and adding the center panel to the scroll pane */
+         scrollPane = new JScrollPane(centerPanel);
+         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+         
+         /* over riding default boreders around the scroll pane */
+         EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+         scrollPane.setBorder(scrollPaneBorder);
+            
+
+         /* adding the scroll pane to main window frame */
+         this.mainWin.add(scrollPane, BorderLayout.CENTER);
+         this.mainWin.setSize(800, 500);
+         this.mainWin.setLocationRelativeTo(null);
+      }
+      catch(ParseException e){
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
 
      }
 
