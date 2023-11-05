@@ -1,13 +1,23 @@
 package com.reservation_gui;
 import javax.swing.*;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.*;
+import javax.swing.text.DateFormatter;
 import javax.swing.text.MaskFormatter;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 public class MainWindow {
     private JFrame mainWin;
@@ -161,8 +171,8 @@ public class MainWindow {
         
         /*creating an generic action listener and assinging it to all other buttons*/
         MyActionListener buttonListener = new MyActionListener();
-         adminButton.addActionListener(buttonListener);
-    
+        adminButton.addActionListener(buttonListener);
+
         /*setting button colors*/
         roomsButton.setBackground(new Color(153, 153, 153));
         reviewResButton.setBackground(new Color(153, 153, 153));
@@ -190,10 +200,128 @@ public class MainWindow {
       // temporary Room object for testing
       Room a = new Room("King", 2, 101, 1, false, false, false, 999.99);
 
-        /*creating new center panel for rooms list*/
-        this.centerPanel = new JPanel(new GridLayout(13, 2, 10, 10));
+       
+        this.centerPanel = new JPanel(new BorderLayout());
         this.centerPanel.setBackground(new Color(161, 158, 158));
         
+        /* creating new top panel to hold check in and check out panels */
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
+        top.setBackground(new Color(161, 158, 158));
+
+        /* creating check in and check out panels to hold check in and check out date picker and label */
+        JPanel checkIPanel = new JPanel();
+        JPanel checkOutPanel = new JPanel();
+
+        /* setting background colors for check in/out labels */
+        checkIPanel.setBackground(new Color(161, 158, 158));
+        checkOutPanel.setBackground(new Color(161, 158, 158));
+
+        /* creating check in/out labels */
+        JLabel checkInLabel = new JLabel("Check-In Date:");
+        JLabel checkOutLabel = new JLabel("Check-Out Date:");
+      
+        /* creating date models for check in/out */
+        UtilDateModel checkInModel = new UtilDateModel();
+        UtilDateModel checkOutModel = new UtilDateModel();
+        
+        /* creating date to hold current day's date */
+        Date today = new Date();
+
+        /* creating date to hold next day's date */
+        Date tomorrow = new Date();
+        /* adding one day to current date to get next day's date */
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, 1);
+        tomorrow = cal.getTime();
+
+        /* adding today's date and tommorrow's date to the date model so they show up on creation */
+        checkInModel.setValue(today);
+        checkOutModel.setValue(tomorrow);
+        
+
+        /* creating starting properties for the calendar */
+        Properties props=new Properties();
+        props.put("text.today","Today");
+        props.put("text.month","Month");
+        props.put("text.year","Year");
+
+        /* creating calendar objects and setting starting properties */
+        JDatePanelImpl checkInDatePanel = new JDatePanelImpl(checkInModel, props);
+        JDatePanelImpl checkOutDatePanel = new JDatePanelImpl(checkOutModel, props); 
+
+        /* creating check in/out date pickers (input bars and buttons) and adding previously created calendar objects */ 
+        JDatePickerImpl checkInDatePicker = new JDatePickerImpl(checkInDatePanel, new DateFormatter(){
+            //creating format for date display
+            private String datePatern = "MM/dd/yyyy";
+            private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
+         
+            @Override
+            public String valueToString(Object value) throws ParseException {
+               if (value != null) {
+                  Calendar cal = (Calendar) value;
+                  return dateFormatter.format(cal.getTime());
+               }
+               return "";
+            }
+         });
+        JDatePickerImpl checkOutDatePicker = new JDatePickerImpl(checkOutDatePanel, new DateFormatter(){
+            //creating format for date display
+            private String datePatern = "MM/dd/yyyy";
+            private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
+
+            @Override
+            public String valueToString(Object value) throws ParseException {
+               if (value != null) {
+                  Calendar cal = (Calendar) value;
+                  return dateFormatter.format(cal.getTime());
+               }
+               return "";
+            }
+         });  
+         
+         /* creating action listeners for the  date calendar objects so date can be saved when chosen */
+         checkInDatePanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               String checkInDate = Integer.toString(checkInDatePicker.getModel().getMonth() + 1) + "/" 
+               + Integer.toString(checkInDatePicker.getModel().getDay()) + "/"
+               + Integer.toString(checkInDatePicker.getModel().getYear()); 
+ 
+               System.out.println(checkInDate);
+            }
+         });
+
+         checkOutDatePanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               String checkOutDate = Integer.toString(checkOutDatePicker.getModel().getMonth() + 1) + "/" 
+               + Integer.toString(checkOutDatePicker.getModel().getDay()) + "/"
+               + Integer.toString(checkOutDatePicker.getModel().getYear()); 
+ 
+               System.out.println(checkOutDate);
+            }
+         });
+         
+
+        /* adding check in label and date picker to check in panel */
+        checkIPanel.add(checkInLabel);
+        checkIPanel.add(checkInDatePicker);
+
+        /* adding check out label and date picker to check out panel */
+        checkOutPanel.add(checkOutLabel);
+        checkOutPanel.add(checkOutDatePicker);
+   
+        /* adding check in/out panels to top panel */
+        top.add(checkIPanel);
+        top.add(checkOutPanel);
+
+        /* adding top panel to center panel */
+        centerPanel.add(top, BorderLayout.NORTH);
+        
+         /*creating new middle panel for rooms list*/
+        JPanel middle = new JPanel(new GridLayout(13, 2, 10, 10));
+        middle.setBackground(new Color(161, 158, 158));
         
         for(int i = 0; i < 13; i++){
          /*creating the labels, image icons and reservation buttons for each room*/
@@ -210,7 +338,7 @@ public class MainWindow {
            label1.setIconTextGap(0);
            
            /*creating action listener for reserve button*/
-           JButton resButton = new JButton("Reserve This Room Type");
+           JButton resButton = new JButton("Reserve This Room");
            resButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -222,8 +350,8 @@ public class MainWindow {
            resButton.setFocusable(false);
 
            /*Overriding default boarders */
-           EmptyBorder b = new EmptyBorder(0, 100, 0, 100);
-           roomPics.setBorder(b);
+           EmptyBorder rpBorder = new EmptyBorder(0, 100, 0, 100);
+           roomPics.setBorder(rpBorder);
 
            /*adding label and button to picture panel */
            roomPics.add(label1, BorderLayout.CENTER);
@@ -272,8 +400,11 @@ public class MainWindow {
            roomInfo.add(roomPriceVar);
 
            /* adding each panel to the center panel*/
-           this.centerPanel.add(roomPics);
-           this.centerPanel.add(roomInfo);
+           middle.add(roomPics);
+           middle.add(roomInfo);
+
+           //this.centerPanel.add(top, BorderLayout.NORTH);
+           this.centerPanel.add(middle, BorderLayout.CENTER);
          }
 
          /* creating scroll pane and adding the center panel to the scroll pane */
@@ -784,25 +915,20 @@ public class MainWindow {
       centerPanel.add(middle, BorderLayout.CENTER);
       centerPanel.add(bottom, BorderLayout.SOUTH);
 
-
-
       /* creating scroll pane and adding the center panel to the scroll pane */
       scrollPane = new JScrollPane(centerPanel);
       scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
-
       /* over riding default boreders around the scroll pane */
       EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
       scrollPane.setBorder(scrollPaneBorder);
          
-
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
       this.mainWin.setSize(800, 550);
       this.mainWin.setLocationRelativeTo(null);
      }
-
 }
  
 
