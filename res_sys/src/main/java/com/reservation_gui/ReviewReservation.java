@@ -28,15 +28,15 @@ public class ReviewReservation {
         "Phone Number: " + this.cust.getPhoneNum() +
         "\tEmail: " + this.cust.getEmail() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
-        "Bed Type: " + this.room.GetRoomType() + "\t\t" +
+        "Check-In Date: " + this.cust.getCheckInDate() +
+        "\t\tCheck-Out Date: " + this.cust.getCheckOutDate() +
+        "\nBed Type: " + this.room.GetRoomType() + "\t\t" +
         "Bed Count: " + this.room.GetBedCount() + "\n" +
         "Room Number: " + this.room.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + this.room.GetRoomFloorString() + "\n" +
         "Accessibility: " + this.room.CheckRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + this.room.CheckRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + this.room.GetRoomPriceString()
+        "\n\t\tPrice: $" + this.room.GetRoomPriceString() + " a night"
         );
 
         return reportTextPane; 

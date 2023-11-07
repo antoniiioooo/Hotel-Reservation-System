@@ -38,15 +38,15 @@ public class Receipts{
         "Phone Number: " + custInfo.getPhoneNum() +
         "\tEmail: " + custInfo.getEmail() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
-        "Bed Type: " + roomInfo.GetRoomType() + "\t\t" +
+        "Check-In Date: " + custInfo.getCheckInDate() +
+        "\tCheck-Out Date: " + custInfo.getCheckOutDate() + 
+        "\nBed Type: " + roomInfo.GetRoomType() + "\t\t" +
         "Bed Count: " + roomInfo.GetBedCount() + "\n" +
         "Room Number: " + roomInfo.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + roomInfo.GetRoomFloorString() + "\n" +
         "Accessibility: " + roomInfo.CheckRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + roomInfo.CheckRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + roomInfo.GetRoomPriceString()
+        "\n\t\tPrice: $" + roomInfo.GetRoomPriceString() + " a night"
         );
         return reportTextPane;
      }
@@ -67,15 +67,15 @@ public class Receipts{
         "Phone Number: " + this.custInfo.getPhoneNum() +
         "\tEmail: " + this.custInfo.getEmail() + "\n" +
         "------------------------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
-        "Bed Type: " + this.roomInfo.GetRoomType() + "\t\t" +
+        "Check-In Date: " + custInfo.getCheckInDate() +
+        "\tCheck-Out Date: " + custInfo.getCheckOutDate() +
+        "\nBed Type: " + this.roomInfo.GetRoomType() + "\t\t" +
         "Bed Count: " + this.roomInfo.GetBedCount() + "\n" +
         "Room Number: " + this.roomInfo.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + this.roomInfo.GetRoomFloorString() + "\n" +
         "Accessibility: " + this.roomInfo.CheckRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + this.roomInfo.CheckRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + this.roomInfo.GetRoomPriceString()
+        "\n\t\tPrice: $" + this.roomInfo.GetRoomPriceString() + " a night"
         );
       return reportTextPane;
      }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ManipFile {
     
@@ -29,17 +30,18 @@ public class ManipFile {
     //public void PopulateResContainer(ReservationOptions[] reservations)
     //{
     //}
-    public void PopulateCusContainer(Customer[] customers)
+    public void PopulateCusContainer(LinkedList<Customer> customers)
     {
         try {
             reader = new BufferedReader(new FileReader(cusFileLoc));
-            int track = 0;
+            //int track = 0;
             String line;
             while ((line = reader.readLine()) != null)
             {
                 String[] split = line.split(", ");
-                customers[track] = new Customer(split[0], split[1], split[2], split[3]);
-                track++;
+                //customers[track] = new Customer(split[0], split[1], split[2], split[3]);
+                customers.add(new Customer(split[0], split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8], split[9]));
+                //track++;
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -59,7 +61,8 @@ public class ManipFile {
             while ((line = reader.readLine()) != null)
             {
                 String[] split = line.split(", ");
-                rooms[track] = new Room(split[0], split[1], split[2]);
+                rooms[track] = new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Boolean.parseBoolean(split[4]), Boolean.parseBoolean(split[5]), Boolean.parseBoolean(split[6]), Double.parseDouble(split[7]));
+                track++;
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -74,12 +77,12 @@ public class ManipFile {
     //public void UpdateResFile()
     //{
     //}
-    public void UpdateCusFile(Customer[] customers)
+    public void UpdateCusFile(LinkedList<Customer> customers)
     {
         try {
             writer = new BufferedWriter(new FileWriter(cusFileLoc));
-            int track = 0;
-            while (customers[track].getFirstName() != null)
+            //int track = 0;
+            /* while (customers[track].getFirstName() != null)
             {
                 writer.write(customers[track].getFirstName() + ", ");
                 writer.write(customers[track].getLastName() + ", ");
@@ -87,6 +90,18 @@ public class ManipFile {
                 writer.write(customers[track].getEmail() + ", ");
                 writer.write(customers[track].getTransID() + "\n");
                 track++;
+            } */
+            for(Customer cust : customers){
+                writer.write(cust.getFirstName() + ", ");
+                writer.write(cust.getLastName() + ", ");
+                writer.write(cust.getPhoneNum() + ", ");
+                writer.write(cust.getEmail() + ", ");
+                writer.write(cust.getCustID() + ", ");
+                writer.write(cust.getConfrimNum() + ", ");
+                writer.write(cust.getTransID() + ", ");
+                writer.write(cust.getRoomNum() + ", ");
+                writer.write(cust.getCheckInDate() + ", ");
+                writer.write(cust.getCheckOutDate() + "\n");
             }
             writer.close();
         } catch (IOException e) {
