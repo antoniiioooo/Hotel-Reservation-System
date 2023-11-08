@@ -96,6 +96,7 @@ public class Room
 
     }
 
+    
     // accessor methods
     public String GetRoomType(){
         return roomType;
