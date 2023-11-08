@@ -43,6 +43,7 @@ public class Room
         roomType = bed;
         if (bed.equals("Suite"))
         {
+            roomType = bed;
             bedType = "King";
             bedCount = 2;
             roomNumber = Integer.parseInt(num);
@@ -52,7 +53,8 @@ public class Room
             roomOccupied = false;
             roomPrice = 1249.99;
         }
-        if (bed.equals("King")){
+        else if (bed.equals("King")){
+            roomType = bed;
             bedType = "King";
             bedCount = 1;
             roomNumber = Integer.parseInt(num);
@@ -63,6 +65,7 @@ public class Room
             roomPrice = 999.99;
         }
         else if (bed.equals("Queen")){
+            roomType = bed;
             bedType = "Queen";
             bedCount = 2;
             roomNumber = Integer.parseInt(num);
@@ -73,6 +76,7 @@ public class Room
             roomPrice = 749.99;
         }
         else if (bed.equals("Twin")){
+            roomType = bed;
             bedType = "Twin";
             bedCount = 2;
             roomNumber = Integer.parseInt(num);
@@ -167,11 +171,8 @@ public class Room
         }
         else {smokingOption = true;}
     }
-    public void changeOccupancy(){
-        if (roomOccupied){
-            roomOccupied = false;
-        }
-        else {roomOccupied = true;}
+    public void changeOccupancy(boolean state){
+        roomOccupied = state;
     }
 
 }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ManipFile {
     
@@ -50,16 +51,15 @@ public class ManipFile {
             e.printStackTrace();
         }
     }
-    public void PopulateRoomContainer(Room[] rooms)
+    public void PopulateRoomContainer(LinkedList<Room> rooms)
     {
         try {
             reader = new BufferedReader(new FileReader(roomFileLoc));
-            int track = 0;
             String line;
             while ((line = reader.readLine()) != null)
             {
                 String[] split = line.split(", ");
-                rooms[track] = new Room(split[0], split[1], split[2]);
+                rooms.add(new Room(split[0], split[1], split[2]));
             }
             reader.close();
         } catch (FileNotFoundException e) {

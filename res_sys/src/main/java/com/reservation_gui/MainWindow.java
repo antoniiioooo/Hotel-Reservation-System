@@ -198,7 +198,7 @@ public class MainWindow {
 
      public void roomsListPanel(){
       // temporary Room object for testing
-      Room a = new Room("King", 2, 101, 1, false, false, false, 999.99);
+      //Room a = new Room("King", 2, 101, 1, false, false, false, 999.99);
 
        
         this.centerPanel = new JPanel(new BorderLayout());
@@ -323,7 +323,7 @@ public class MainWindow {
         JPanel middle = new JPanel(new GridLayout(13, 2, 10, 10));
         middle.setBackground(new Color(161, 158, 158));
         
-        for(int i = 0; i < 13; i++){
+        for(Room room : hotelTest.getRoomsList()){
          /*creating the labels, image icons and reservation buttons for each room*/
            JPanel roomPics = new JPanel(new BorderLayout());
            roomPics.setBackground(new Color(161, 158, 158));
@@ -343,7 +343,7 @@ public class MainWindow {
             @Override
             public void actionPerformed(ActionEvent e){
                scrollPane.setVisible(false);
-               getCustInfoPanel(a);
+               getCustInfoPanel(room);
             }
            });
            resButton.setBackground(new Color(153, 153, 153));
@@ -362,27 +362,27 @@ public class MainWindow {
            roomInfo.setBackground(new Color(161, 158, 158));
 
            JLabel roomTypeLabel = new JLabel("Room Type: ");
-           JLabel roomTypeVar = new JLabel(a.GetRoomType());
+           JLabel roomTypeVar = new JLabel(room.GetRoomType());
            roomTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            JLabel bedAmountLabel = new JLabel("Amount of Beds: ");
-           JLabel bedAmountVar = new JLabel(a.GetBedCountString());
+           JLabel bedAmountVar = new JLabel(room.GetBedCountString());
            bedAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel roomFloorLabel = new JLabel("Room Floor: ");
-           JLabel roomFloorVar = new JLabel(a.GetRoomFloorString());
+           JLabel roomFloorVar = new JLabel(room.GetRoomFloorString());
            roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
-           JLabel accessibilityVar = new JLabel(a.CheckRoomAccessibleString());
+           JLabel accessibilityVar = new JLabel(room.CheckRoomAccessibleString());
            accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
-           JLabel nonSmokingVar = new JLabel(a.CheckRoomSmokingString());
+           JLabel nonSmokingVar = new JLabel(room.CheckRoomSmokingString());
            nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel roomPriceLabel = new JLabel("Room Price: ");
-           JLabel roomPriceVar = new JLabel(a.GetRoomPriceString());
+           JLabel roomPriceVar = new JLabel(room.GetRoomPriceString());
            roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
                       
            /*adding labels to info panel */
