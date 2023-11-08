@@ -5,6 +5,7 @@ public class ReviewReservation {
     private Customer cust; 
     private Room room; 
 
+    /* constructors */
     public ReviewReservation () {
         this.cust = new Customer("FirstName", "LastName", "(818)555-5555", "email@email.com");
         this.room = new Room("King", 2, 101, 1, false, false, false, 999.99);
