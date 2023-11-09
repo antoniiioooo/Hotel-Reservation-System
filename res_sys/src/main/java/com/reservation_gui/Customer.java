@@ -14,7 +14,7 @@ class Customer{
     private String confirmation;
     //private Payment paymentInfo;
 
-    /* Default ontructor */
+    /* Default contructor */
     public Customer(){
         /* randomize customer ID, Transaction ID, and Confirmation Number */
         this.custID = Integer.toString(createCustID());
@@ -28,10 +28,23 @@ class Customer{
         this.lName = last;
         this.phoneNum = phone;
         this. email = email;
+
         /* randomize customer ID, Transaction ID, and Confirmation Number */
         this.custID = Integer.toString(createCustID());
         this.transID = Integer.toString(createCustID());
         this.confirmation = Integer.toString(createCustID());
+    }
+
+    /* parameterized constructor, takes first name, last name, phone number, and email along with the ID values of the customer and reservation itself*/
+    public Customer(String first, String last, String phone, String email, String cID, String cNum, String tID){
+        this.fName = first;
+        this.lName = last;
+        this.phoneNum = phone;
+        this. email = email;
+        
+        this.custID = cID;
+        this.transID = tID;
+        this.confirmation = cNum;
     }
 
     /* randomized Customer ID */

@@ -12,7 +12,7 @@ public class Hotel
     private String checkIn = "1:00 PM";
     private String checkOut = "10:00 AM";
     private LinkedList<Customer> customerList = new LinkedList<Customer>();
-    private LinkedList<Room> roomList = new LinkedList<Room>();
+    private Room[] roomList = new Room[13];
     private LinkedList<ReservationOptions> reservations = new LinkedList<ReservationOptions>();
     private ManipFile files;
 
@@ -20,51 +20,66 @@ public class Hotel
     // constructors
     public Hotel()
     {
+        // default initialization of the ManipFile object with location values of the data files
         files = new ManipFile("resFile.txt", "cusFile.txt", "roomFile.txt");
-        //files.PopulateResContainer(reservations);
-        //files.PopulateCusContainer(customerList);
+
+        // calls to the ManipFile object methods in order to populate the lists for customers, rooms, and reservations within the hotel
+        files.PopulateCusContainer(customerList);
         files.PopulateRoomContainer(roomList);
+        //files.PopulateResContainer(reservations);
     }
 
     public Hotel(String resFileLoc, String cusFileLoc, String roomFileLoc)
     {
+        // initialization of the ManipFile object with location values of the data files passed as variables
         files = new ManipFile(resFileLoc, cusFileLoc, roomFileLoc);
-        //files.PopulateResContainer(reservations);
-        //files.PopulateCusContainer(customerList);
+
+        files.PopulateCusContainer(customerList);
         files.PopulateRoomContainer(roomList);
+        //files.PopulateResContainer(reservations);
     }
 
     // methods
-    public void UpdateHotelPhone(String newPhone){
+
+    // sets the hotel phone number value as a String
+    public void setHotelPhone(String newPhone){
         hotelPhone = newPhone;
     }
-    public void UpdateCheckInOut(String in, String out){
+    // sets the hotel check in & check out times as Strings
+    public void setCheckInOut(String in, String out){
         checkIn = in;
         checkOut = out;
     }
+    // adds a made reservation into the reservations list
     public void addReservation(ReservationOptions reservation){
         reservations.add(reservation);
     }
-
-    public LinkedList<Room> getRoomsList(){
+    // gets the list of rooms within the hotel
+    public Room[] getRoomsList(){
         return roomList;
     }
+    // gets the name of the hotel
     public String getHotelName(){
         return hotelName;
     }
-        public String getHotelAddress(){
+    // gets address of hotel
+    public String getHotelAddress(){
         return hotelAddress;
     }
-        public String getHotelEmail(){
+    // gets hotel email
+    public String getHotelEmail(){
         return hotelEmail;
     }
-        public String getHotelPhone(){
+    // gets the hotel phone number
+    public String getHotelPhone(){
         return hotelPhone;
     }
-        public String getHotelCheckIn(){
+    // gets the hotel check in date
+    public String getHotelCheckIn(){
         return checkIn;
     }
-        public String getHotelCheckOut(){
+    // gets the hotel check out date
+    public String getHotelCheckOut(){
         return checkOut;
     }
 }

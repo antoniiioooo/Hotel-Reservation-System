@@ -35,8 +35,8 @@ public class ReviewReservation {
         "Bed Count: " + this.room.GetBedCount() + "\n" +
         "Room Number: " + this.room.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + this.room.GetRoomFloorString() + "\n" +
-        "Accessibility: " + this.room.CheckRoomAccessibleString() + "\t\t" +
-        "Smoking / Non-Smoking: " + this.room.CheckRoomSmokingString() + "\n" +
+        "Accessibility: " + this.room.GetRoomAccessibleString() + "\t\t" +
+        "Smoking / Non-Smoking: " + this.room.GetRoomSmokingString() + "\n" +
         "\n\t\tPrice: $" + this.room.GetRoomPriceString()
         );
 

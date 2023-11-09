@@ -22,7 +22,7 @@ public class ReservationOptions {
     public void updateRoomAvailability(Hotel hotel) {
         /* Craete method in Hotel class to update room availability
         and a method in Room to change room unavailablilty */
-        roomChosen.changeOccupancy(false); //Room class
+        roomChosen.SetOccupancy(false); //Room class
         //hotel.updateRoomAvailability(roomChosen);  // Hotel class
     }
 

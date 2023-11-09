@@ -26,6 +26,7 @@ public class Room
         roomOccupied = false;
         roomPrice = 0.0;
     }
+    // initialize object with all passed values
     public Room(String bed, int count, int roomNum, int floor, boolean access, boolean smoking, boolean occupancy, double price)
     {
         roomType = bed;
@@ -38,140 +39,93 @@ public class Room
         roomOccupied = occupancy;
         roomPrice = price;
     }
-    public Room(String bed, String num, String floor)
-    {
-        roomType = bed;
-        if (bed.equals("Suite"))
-        {
-            roomType = bed;
-            bedType = "King";
-            bedCount = 2;
-            roomNumber = Integer.parseInt(num);
-            roomFloor = Integer.parseInt(floor);
-            disabilityOption = false;
-            smokingOption = true;
-            roomOccupied = false;
-            roomPrice = 1249.99;
-        }
-        else if (bed.equals("King")){
-            roomType = bed;
-            bedType = "King";
-            bedCount = 1;
-            roomNumber = Integer.parseInt(num);
-            roomFloor = Integer.parseInt(floor);
-            disabilityOption = false;
-            smokingOption = false;
-            roomOccupied = false;
-            roomPrice = 999.99;
-        }
-        else if (bed.equals("Queen")){
-            roomType = bed;
-            bedType = "Queen";
-            bedCount = 2;
-            roomNumber = Integer.parseInt(num);
-            roomFloor = Integer.parseInt(floor);
-            disabilityOption = false;
-            smokingOption = false;
-            roomOccupied = false;
-            roomPrice = 749.99;
-        }
-        else if (bed.equals("Twin")){
-            roomType = bed;
-            bedType = "Twin";
-            bedCount = 2;
-            roomNumber = Integer.parseInt(num);
-            roomFloor = Integer.parseInt(floor);
-            disabilityOption = false;
-            smokingOption = false;
-            roomOccupied = false;
-            roomPrice = 499.99;
-        }
-        else {
-            bedType = "N/A";
-            bedCount = 0;
-            roomNumber = 0;
-            roomFloor = 0;
-            disabilityOption = false;
-            smokingOption = false;
-            roomOccupied = false;
-            roomPrice = 0;
-        }
 
-
-    }
-
-    
     // accessor methods
+
+    // gets room/bed type
     public String GetRoomType(){
         return roomType;
     }
+    // gets bed count
     public int GetBedCount(){
         return bedCount;
     }
+    // gets the bed count but parsed into String
     public String GetBedCountString(){
         return Integer.toString(bedCount);
     }
+    // gets the price per night of the room
     public double GetRoomPrice(){
         return roomPrice;
     }
+    // room price String option
     public String GetRoomPriceString(){
         return Double.toString(roomPrice);
     }
+    // gets the room number
     public int GetRoomNumber(){
         return roomNumber;
     }
+    // room number String option
     public String GetRoomNumberString(){
         return Integer.toString(roomNumber);
     }
+    // gets floor where room is
     public int GetRoomFloor(){
         return roomFloor;
     }
+    // room floor as String
     public String GetRoomFloorString()
     {
         return Integer.toString(roomFloor);
     }
-    public boolean CheckRoomOccupied(){
+    // check if the room is occupied
+    public boolean GetRoomOccupied(){
         return roomOccupied;
     }
-    public String CheckRoomOccupiedString(){
+    // check occupancy as string
+    public String GetRoomOccupiedString(){
         if (roomOccupied) {return "Yes";}
         else {return "No";}
     }
-    public boolean CheckRoomAccessible(){
+    // get accessibilty/disability option
+    public boolean GetRoomAccessible(){
         return disabilityOption;
     }
-    public String CheckRoomAccessibleString(){
-        if (roomOccupied) {return "Yes";}
+    // get accessibilty/disability option as string
+    public String GetRoomAccessibleString(){
+        if (disabilityOption) {return "Yes";}
         else {return "No";}
     }
-    public boolean CheckRoomSmoking(){
+    // check if room allows smoking
+    public boolean GetRoomSmoking(){
         return smokingOption;
     }
-    public String CheckRoomSmokingString(){
+    // smoking availability as string
+    public String GetRoomSmokingString(){
         if (smokingOption) {return "Yes";}
         else {return "No";}
     }
 
     // alter methods
-    public void changeRoomNumber(int newNum){
+    // sets the room's number
+    public void SetRoomNumber(int newNum){
         roomNumber = newNum;
     }
-    public void changeRoomFloor(int newF){
+    // sets the room floor
+    public void SetRoomFloor(int newF){
         roomFloor = newF;
     }
-    public void changeAccessibility(){
-        if (disabilityOption){
-            disabilityOption = false;
-        }
-        else {disabilityOption = true;}
+    // sets whether the room is accessible for disabled individuals or not by passed variable
+    public void SetAccessibility(boolean state){
+        disabilityOption = state;
     }
-    public void changeSmoking(){
-        if (smokingOption){
-            smokingOption = false;
-        }
-        else {smokingOption = true;}
+    // sets if room is smoking or non-smoking
+    public void SetSmoking(boolean state){
+        smokingOption = state;
     }
-    public void changeOccupancy(boolean state){
+    // sets if the room is currently occupied
+    public void SetOccupancy(boolean state){
         roomOccupied = state;
     }
 

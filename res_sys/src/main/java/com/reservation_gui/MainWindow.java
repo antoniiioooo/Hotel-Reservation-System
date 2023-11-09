@@ -374,11 +374,11 @@ public class MainWindow {
            roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
-           JLabel accessibilityVar = new JLabel(room.CheckRoomAccessibleString());
+           JLabel accessibilityVar = new JLabel(room.GetRoomAccessibleString());
            accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
-           JLabel nonSmokingVar = new JLabel(room.CheckRoomSmokingString());
+           JLabel nonSmokingVar = new JLabel(room.GetRoomSmokingString());
            nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel roomPriceLabel = new JLabel("Room Price: ");

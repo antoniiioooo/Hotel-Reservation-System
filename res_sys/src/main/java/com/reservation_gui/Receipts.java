@@ -44,8 +44,8 @@ public class Receipts{
         "Bed Count: " + roomInfo.GetBedCount() + "\n" +
         "Room Number: " + roomInfo.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + roomInfo.GetRoomFloorString() + "\n" +
-        "Accessibility: " + roomInfo.CheckRoomAccessibleString() + "\t\t" +
-        "Smoking / Non-Smoking: " + roomInfo.CheckRoomSmokingString() + "\n" +
+        "Accessibility: " + roomInfo.GetRoomAccessibleString() + "\t\t" +
+        "Smoking / Non-Smoking: " + roomInfo.GetRoomSmokingString() + "\n" +
         "\n\t\tPrice: $" + roomInfo.GetRoomPriceString()
         );
         return reportTextPane;
@@ -73,8 +73,8 @@ public class Receipts{
         "Bed Count: " + this.roomInfo.GetBedCount() + "\n" +
         "Room Number: " + this.roomInfo.GetRoomNumberString() + "\t\t" +
         "Floor Number: " + this.roomInfo.GetRoomFloorString() + "\n" +
-        "Accessibility: " + this.roomInfo.CheckRoomAccessibleString() + "\t\t" +
-        "Smoking / Non-Smoking: " + this.roomInfo.CheckRoomSmokingString() + "\n" +
+        "Accessibility: " + this.roomInfo.GetRoomAccessibleString() + "\t\t" +
+        "Smoking / Non-Smoking: " + this.roomInfo.GetRoomSmokingString() + "\n" +
         "\n\t\tPrice: $" + this.roomInfo.GetRoomPriceString()
         );
       return reportTextPane;
