@@ -1,4 +1,5 @@
 package com.reservation_gui;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.*;
@@ -12,6 +13,9 @@ import org.jdatepicker.impl.UtilDateModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -197,9 +201,6 @@ public class MainWindow {
      }
 
      public void roomsListPanel(){
-      // temporary Room object for testing
-      //Room a = new Room("King", 2, 101, 1, false, false, false, 999.99);
-
        
         this.centerPanel = new JPanel(new BorderLayout());
         this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -328,29 +329,60 @@ public class MainWindow {
            JPanel roomPics = new JPanel(new BorderLayout());
            roomPics.setBackground(new Color(161, 158, 158));
 
-           JLabel label1 = new JLabel("A picture of the room will be here");
+           JLabel label1 = new JLabel();
            label1.setHorizontalTextPosition(SwingConstants.CENTER);
            label1.setVerticalTextPosition(SwingConstants.BOTTOM);
            label1.setHorizontalAlignment(SwingConstants.CENTER);
-  
-           ImageIcon matadorIcon = new ImageIcon("Matador.png");
-           label1.setIcon(matadorIcon);
-           label1.setIconTextGap(0);
            
+           try {
+            BufferedImage roomImg = null;
+           switch(room.GetRoomType().toLowerCase()){
+            case "king":
+               roomImg = ImageIO.read(new File("King.jpg"));
+               break;
+            case "queen":
+               roomImg = ImageIO.read(new File("Queen.jpg"));
+               break;
+            case "twin":
+               roomImg = ImageIO.read(new File("Twin.jpg"));
+               break;
+            case "suite":
+               roomImg = ImageIO.read(new File("Suite.jpg"));
+               break;
+            default:
+               roomImg = ImageIO.read(new File("Matador.png"));
+            }
+             
+           label1.setIcon(new ImageIcon(roomImg));
+           label1.setText(room.GetRoomType());
+           label1.setIconTextGap(0);
+
+           }
+           catch(IOException e1){
+                  //TODO Auto-generated catch block
+                  e1.printStackTrace();
+           }
            /*creating action listener for reserve button*/
            JButton resButton = new JButton("Reserve This Room");
            resButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                scrollPane.setVisible(false);
-               getCustInfoPanel(room);
+               String checkInDate = Integer.toString(checkInDatePicker.getModel().getMonth() + 1) + "/" 
+               + Integer.toString(checkInDatePicker.getModel().getDay()) + "/"
+               + Integer.toString(checkInDatePicker.getModel().getYear());
+
+               String checkOutDate = Integer.toString(checkOutDatePicker.getModel().getMonth() + 1) + "/" 
+               + Integer.toString(checkOutDatePicker.getModel().getDay()) + "/"
+               + Integer.toString(checkOutDatePicker.getModel().getYear());
+               getCustInfoPanel(room, checkInDate,checkOutDate);
             }
            });
            resButton.setBackground(new Color(153, 153, 153));
            resButton.setFocusable(false);
 
            /*Overriding default boarders */
-           EmptyBorder rpBorder = new EmptyBorder(0, 100, 0, 100);
+           EmptyBorder rpBorder = new EmptyBorder(0, 50, 0, 100);
            roomPics.setBorder(rpBorder);
 
            /*adding label and button to picture panel */
@@ -358,31 +390,51 @@ public class MainWindow {
            roomPics.add(resButton, BorderLayout.SOUTH);
 
            /*creating the labels for the room information*/
-           JPanel roomInfo = new JPanel(new GridLayout(6, 2));
+           JPanel roomInfo = new JPanel(new GridLayout(7, 2,0,-200));
            roomInfo.setBackground(new Color(161, 158, 158));
 
+           Font font = new Font("MV Boli", Font.PLAIN ,15);
+          
            JLabel roomTypeLabel = new JLabel("Room Type: ");
            JLabel roomTypeVar = new JLabel(room.GetRoomType());
+           roomTypeLabel.setFont(font);
+           roomTypeVar.setFont(font);
            roomTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            JLabel bedAmountLabel = new JLabel("Amount of Beds: ");
            JLabel bedAmountVar = new JLabel(room.GetBedCountString());
+           bedAmountLabel.setFont(font);
+           bedAmountVar.setFont(font);
            bedAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+           JLabel roomNumLabel = new JLabel("Room Number: ");
+           JLabel roomNumVar = new JLabel(room.GetRoomNumberString());
+           roomNumLabel.setFont(font);
+           roomNumVar.setFont(font);
+           roomNumLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel roomFloorLabel = new JLabel("Room Floor: ");
            JLabel roomFloorVar = new JLabel(room.GetRoomFloorString());
+           roomFloorLabel.setFont(font);
+           roomFloorVar.setFont(font);
            roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
            JLabel accessibilityVar = new JLabel(room.GetRoomAccessibleString());
+           accessibilityLabel.setFont(font);
+           accessibilityVar.setFont(font);
            accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
            
            JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
            JLabel nonSmokingVar = new JLabel(room.GetRoomSmokingString());
+           nonSmokingLabel.setFont(font);
+           nonSmokingVar.setFont(font);
            nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
            JLabel roomPriceLabel = new JLabel("Room Price: ");
            JLabel roomPriceVar = new JLabel(room.GetRoomPriceString());
+           roomPriceLabel.setFont(font);
+           roomPriceVar.setFont(font);
            roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
                       
            /*adding labels to info panel */
@@ -390,6 +442,8 @@ public class MainWindow {
            roomInfo.add(roomTypeVar);
            roomInfo.add(bedAmountLabel);
            roomInfo.add(bedAmountVar);
+           roomInfo.add(roomNumLabel);
+           roomInfo.add(roomNumVar);
            roomInfo.add(roomFloorLabel);
            roomInfo.add(roomFloorVar);
            roomInfo.add(accessibilityLabel);
@@ -418,11 +472,11 @@ public class MainWindow {
          
         /*adding the scroll pane to main window frame */
         this.mainWin.add(scrollPane, BorderLayout.CENTER);
-        this.mainWin.setSize(815, 800);
+        this.mainWin.setSize(1000, 800);
         this.mainWin.setLocationRelativeTo(null);
      }
 
-     public void getCustInfoPanel(Room room){
+     public void getCustInfoPanel(Room room, String checkIn, String checkOu){
          /*creating new center panel for entering customer information*/
          this.centerPanel = new JPanel(new BorderLayout());
          this.centerPanel.setBackground(new Color(161, 158, 158));
