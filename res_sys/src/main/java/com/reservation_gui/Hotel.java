@@ -26,7 +26,7 @@ public class Hotel
         // calls to the ManipFile object methods in order to populate the lists for customers, rooms, and reservations within the hotel
         files.PopulateCusContainer(customerList);
         files.PopulateRoomContainer(roomList);
-        //files.PopulateResContainer(reservations);
+        files.PopulateResContainer(reservations, customerList, roomList);
     }
 
     public Hotel(String resFileLoc, String cusFileLoc, String roomFileLoc)
@@ -36,7 +36,7 @@ public class Hotel
 
         files.PopulateCusContainer(customerList);
         files.PopulateRoomContainer(roomList);
-        //files.PopulateResContainer(reservations);
+        files.PopulateResContainer(reservations, customerList, roomList);
     }
 
     // methods

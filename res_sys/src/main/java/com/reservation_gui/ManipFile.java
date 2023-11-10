@@ -31,15 +31,35 @@ public class ManipFile {
     // methods
 
     // populates the reservation list with information from the reservations data file; passed the list to update for the hotel
-    public void PopulateResContainer(LinkedList<ReservationOptions> reservations)
+    public void PopulateResContainer(LinkedList<ReservationOptions> reservations, LinkedList<Customer> customers, Room[] rooms)
     {
         try {
             reader = new BufferedReader(new FileReader(resFileLoc));
             String line;
+            reader.readLine();
+
+            // variables to store customer and room for the reservation to be put into the reservation list
+            Customer custChosen = new Customer();
+            Room roomChosen = new Room();
+
             while ((line = reader.readLine()) != null)
             {
                 String[] split = line.split(", ");
-                //reservations.add();
+                
+                // loop through the customer list to find specific customer with unique ID, retrieve the full customer
+                for (Customer cust : customers){
+                    if (cust.getCustID().equals(split[0]))
+                        custChosen = cust;
+                }
+
+                // loop through rooms list to find specific room number, retrieve the full room
+                for (Room room : rooms){
+                    if (room.GetRoomNumberString().equals(split[1]))
+                        roomChosen = room;
+                }
+
+                // add reservation to the list with appropriate information retrieved
+                reservations.add(new ReservationOptions(custChosen, roomChosen, split[2], split[3]));
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -56,6 +76,7 @@ public class ManipFile {
         try {
             reader = new BufferedReader(new FileReader(cusFileLoc));
             String line;
+            reader.readLine();
             while ((line = reader.readLine()) != null)
             {
                 // line input from file is split, where order goes from (firstName, lastName, phone, email, customer ID, confirmation number, transaction ID)
@@ -77,6 +98,7 @@ public class ManipFile {
         try {
             reader = new BufferedReader(new FileReader(roomFileLoc));
             String line;
+            reader.readLine();
             int track = 0;
             while ((line = reader.readLine()) != null)
             {
@@ -97,14 +119,31 @@ public class ManipFile {
     }
 
     // method to update the reservation data file with the new reservation list
-    //public void UpdateResFile()
-    //{
-    //}
+    public void UpdateResFile(LinkedList<ReservationOptions> reservations)
+    {
+         try {
+            writer = new BufferedWriter(new FileWriter(cusFileLoc));
+            writer.write("CustID, RoomNum, CheckIn, CheckOut\n");
+            for (ReservationOptions res : reservations)
+            {
+                // syntax for the reservation data file with all the required info for populating the list in another run of the program
+                writer.write(res.getCustomer().getCustID() + ", ");
+                writer.write(res.getRoomChosen().GetRoomNumberString() + ", ");
+                writer.write(res.getCheckInDate().toString() + ", ");
+                writer.write(res.getCheckOutDate().toString() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     // method to update the customer data file with the new customer list
     public void UpdateCusFile(LinkedList<Customer> customers)
     {
         try {
             writer = new BufferedWriter(new FileWriter(cusFileLoc));
+            writer.write("First, Last, Phone, Email, CustID, ConfirmNum, TransID\n");
             for (Customer cus : customers)
             {
                 // syntax for the customer data file with all the required info for populating the list in another run of the program
@@ -127,6 +166,7 @@ public class ManipFile {
     {
         try {
             writer = new BufferedWriter(new FileWriter(roomFileLoc));
+            writer.write("BedType, BedCount, RoomNum, RoomFloor, Accessibility, Smoking, Occupancy, Price");
             for(int i = 0; i < rooms.length; i++)
             {
                 // array list progression for room details needed to make new room objects once back in the populate functions

@@ -1,3 +1,4 @@
+BedType, BedCount, RoomNum, RoomFloor, Accessibility, Smoking, Occupancy, Price
 King, 1, 101, 1, true, false, false, 999.99
 Twin, 2, 102, 1, true, true, false, 499.99
 Queen, 2, 103, 1, true, false, false, 749.99

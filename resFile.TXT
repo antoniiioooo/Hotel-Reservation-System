@@ -1,0 +1,2 @@
+CustID, RoomNum, CheckIn, CheckOut
+0000001, 101, 11/07/2023, 11/08/2023

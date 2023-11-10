@@ -465,6 +465,7 @@ public class MainWindow {
         scrollPane = new JScrollPane(centerPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         
         /*over riding default boreders around the scroll pane*/
         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   

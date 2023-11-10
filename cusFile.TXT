@@ -1,1 +1,2 @@
+First, Last, Phone, Email, CustID, ConfirmNum, TransID
 John, Doe, 555-555-5555, johndoe@johndoe.com, 0000001, 1000001, 2000001

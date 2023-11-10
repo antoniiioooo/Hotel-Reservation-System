@@ -9,6 +9,8 @@ public class ReservationOptions {
     private Room roomChosen;
     private Date checkInDate;
     private Date checkOutDate;
+    private String checkInString;
+    private String checkOutString;
 
     /* Constructor */
     public ReservationOptions(Customer customer, Room room, Date checkIn, Date checkOut) {
@@ -16,6 +18,16 @@ public class ReservationOptions {
         this.roomChosen = room;
         this.checkInDate = checkIn;
         this.checkOutDate = checkOut;
+        this.checkInString = checkIn.toString();
+        this.checkOutString = checkOut.toString();
+    }
+
+    /* Constructor for string dates*/
+    public ReservationOptions(Customer customer, Room room, String checkIn, String checkOut) {
+        this.customer = customer;
+        this.roomChosen = room;
+        this.checkInString = checkIn;
+        this.checkOutString = checkOut;
     }
 
     /* Methods */
