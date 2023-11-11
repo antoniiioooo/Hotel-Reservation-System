@@ -1,7 +1,6 @@
 package com.reservation_gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.MaskFormatter;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -210,6 +208,8 @@ public class MainWindow{
   
         /*adds panels to the main window*/
         this.mainWin.add(centerPanel, BorderLayout.CENTER);
+        this.mainWin.setSize(800, 300);
+        this.mainWin.setLocationRelativeTo(null);
      }
 
      public void roomsListPanel(){
@@ -474,6 +474,34 @@ public class MainWindow{
            this.centerPanel.add(middle, BorderLayout.CENTER);
          }
 
+
+         JPanel bottom = new JPanel();
+         bottom.setBackground(new Color(161, 158,158));
+         /*creating button to go back */
+         JButton backButton = new JButton("Go Back");
+         backButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for back button */
+         backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //centerPanel.setVisible(false);
+               scrollPane.setVisible(false);
+               mainCenterPanel();
+            }
+         });
+
+         /* adding back button to bottom panel */
+         bottom.add(backButton);
+         
+         /* taking automatic focus away from back button */
+         backButton.setFocusable(false);
+
+
+         /* adding bottom panel to center panel */
+         this.centerPanel.add(bottom, BorderLayout.SOUTH);
+
+
          /* creating scroll pane and adding the center panel to the scroll pane */
         scrollPane = new JScrollPane(centerPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -490,7 +518,7 @@ public class MainWindow{
         this.mainWin.setLocationRelativeTo(null);
      }
 
-     public void getCustInfoPanel(Room room, String checkIn, String checkOu){
+     public void getCustInfoPanel(Room room, String checkIn, String checkOut){
          /*creating new center panel for entering customer information*/
          this.centerPanel = new JPanel(new BorderLayout());
          this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -576,7 +604,7 @@ public class MainWindow{
                      customer.setEmail(emailInput.getText());
                      
                      // creation of the reservation with all information received needed for the object
-                     ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOu);
+                     ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut);
                      // adding the reservation into the list within the hotel
                      hotelTest.addReservation(reserve);
                      hotelTest.addCustomer(customer);
@@ -694,9 +722,32 @@ public class MainWindow{
       EmptyBorder choiceBorder = new EmptyBorder(10, 150, 10, 150);
       choicePanel.setBorder(choiceBorder);
 
-      /* adding options label and choice panel to center panel */
-      centerPanel.add(idORConfirm, BorderLayout.NORTH);
-      centerPanel.add(choicePanel);
+      /*creating panel for back button */
+      JPanel backPanel = new JPanel();
+      backPanel.setBackground(new Color(161, 158,158));
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            mainCenterPanel();
+         }
+      });
+
+      /* adding back button to back panel */
+      backPanel.add(backButton);
+
+      /* taking automatic focus away from back button */
+      backButton.setFocusable(false);
+      
+      /* adding options label and choice panel, and back panel to center panel */
+      this.centerPanel.add(idORConfirm, BorderLayout.NORTH);
+      this.centerPanel.add(choicePanel, BorderLayout.CENTER);
+      this.centerPanel.add(backPanel, BorderLayout.SOUTH);
 
       /* creating scroll pane and adding the center panel to the scroll pane */
       this.scrollPane = new JScrollPane(centerPanel);
@@ -709,7 +760,7 @@ public class MainWindow{
       
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane, BorderLayout.CENTER);
-      this.mainWin.setSize(800, 300);
+      this.mainWin.setSize(800, 350);
       this.mainWin.setLocationRelativeTo(null);
      }
 
