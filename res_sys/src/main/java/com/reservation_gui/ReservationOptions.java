@@ -1,6 +1,11 @@
 package com.reservation_gui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 public class ReservationOptions {
 
@@ -14,12 +19,15 @@ public class ReservationOptions {
 
     /* Constructor */
     public ReservationOptions(Customer customer, Room room, Date checkIn, Date checkOut) {
+        // to format the Date objects into proper Strings
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        
         this.customer = customer;
         this.roomChosen = room;
         this.checkInDate = checkIn;
         this.checkOutDate = checkOut;
-        this.checkInString = checkIn.toString();
-        this.checkOutString = checkOut.toString();
+        this.checkInString = df.format(checkIn);
+        this.checkOutString = df.format(checkOut);
     }
 
     /* Constructor for string dates*/
@@ -61,12 +69,18 @@ public class ReservationOptions {
     public Date getCheckInDate() {
         return checkInDate;
     }
+    public String getCheckInString(){
+        return checkInString;
+    }
     public void setCheckInDate(Date checkIn) {
         this.checkInDate = checkIn;
     }
 
     public Date getCheckOutDate() {
         return checkOutDate;
+    }
+    public String getCheckOutString(){
+        return checkOutString;
     }
     public void setCheckOutDate(Date checkOut) {
         this.checkOutDate = checkOut;

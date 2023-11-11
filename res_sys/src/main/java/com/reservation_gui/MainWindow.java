@@ -13,6 +13,8 @@ import org.jdatepicker.impl.UtilDateModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,26 +25,38 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-public class MainWindow {
+public class MainWindow{
     private JFrame mainWin;
     private JPanel centerPanel;
     private JScrollPane scrollPane;
     private Hotel hotelTest;
  
-    public MainWindow(){
-       this.initialize();
+    public MainWindow(Hotel hotelChosen){
+      hotelTest = hotelChosen;
+      this.initialize();
     }
  
     private void initialize(){
       /* Creates and designs the main window */
       mainWin = new JFrame();
       this.mainWin.setTitle("Hotel Reservation System");
+
+      // sets up updates to the data files at termination of the program
+      mainWin.addWindowListener(new WindowAdapter()
+      {
+          @Override
+          public void windowClosing(WindowEvent e)
+          {
+            // updates the data files through use of manipFile within the hotel object
+            hotelTest.getManipFile().UpdateResFile(hotelTest.getReservationList());
+            hotelTest.getManipFile().UpdateCusFile(hotelTest.getCustomerList());
+            hotelTest.getManipFile().UpdateRoomFile(hotelTest.getRoomsList());
+            e.getWindow().dispose();
+          }
+      });
       this.mainWin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       this.mainWin.setSize(800, 300);
       this.mainWin.setLocationRelativeTo(null);
-
-      /* create variable of Hotel type to test the functionality */
-      hotelTest = new Hotel();
       
       /*creating header and footer panels */
       this.createHeaderFooter();
@@ -157,9 +171,8 @@ public class MainWindow {
         roomsButton.addActionListener(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e){
-            MainWindow resWindow = new MainWindow();
-            resWindow.centerPanel.setVisible(false);
-            resWindow.roomsListPanel();
+            centerPanel.setVisible(false);
+            roomsListPanel();
          }
         });
 
@@ -167,9 +180,8 @@ public class MainWindow {
         reviewResButton.addActionListener(new ActionListener(){
          @Override
          public void actionPerformed(ActionEvent e){
-            MainWindow reviewResWindow = new MainWindow();
-            reviewResWindow.centerPanel.setVisible(false);
-            reviewResWindow.idConfirmChoicePanel();
+            centerPanel.setVisible(false);
+            idConfirmChoicePanel();
          }
         });
         
@@ -201,7 +213,7 @@ public class MainWindow {
      }
 
      public void roomsListPanel(){
-       
+
         this.centerPanel = new JPanel(new BorderLayout());
         this.centerPanel.setBackground(new Color(161, 158, 158));
         
@@ -378,6 +390,7 @@ public class MainWindow {
                getCustInfoPanel(room, checkInDate,checkOutDate);
             }
            });
+
            resButton.setBackground(new Color(153, 153, 153));
            resButton.setFocusable(false);
 
@@ -465,7 +478,7 @@ public class MainWindow {
         scrollPane = new JScrollPane(centerPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         
         /*over riding default boreders around the scroll pane*/
         EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   
@@ -561,10 +574,17 @@ public class MainWindow {
                   /* checking if email is valild */
                   if(emailInput.getText().contains("@") && emailInput.getText().contains(".com")){
                      customer.setEmail(emailInput.getText());
+                     
+                     // creation of the reservation with all information received needed for the object
+                     ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOu);
+                     // adding the reservation into the list within the hotel
+                     hotelTest.addReservation(reserve);
+                     hotelTest.addCustomer(customer);
+
                      /* hides current center panel */
                      centerPanel.setVisible(false);
                      /* creates Receipt object and populates it with customer and room information */
-                     Receipts receipts = new Receipts(customer, room);
+                     Receipts receipts = new Receipts(reserve);
                      /* passes the receipts object to the display receipt method */
                      displayReceipt(receipts);
                   }

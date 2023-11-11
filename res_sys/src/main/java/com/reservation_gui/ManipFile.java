@@ -104,8 +104,8 @@ public class ManipFile {
             {
                 // line split in this order: (String bed, int count, int roomNum, int floor, boolean access, boolean smoking, boolean occupancy, double price)
                 String[] split = line.split(", ");
-                rooms[track] = new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Boolean.parseBoolean(split[4]), 
-                Boolean.parseBoolean(split[5]), Boolean.parseBoolean(split[6]), Double.parseDouble(split[7]));
+                rooms[track] = new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), 
+                Boolean.parseBoolean(split[4]), Boolean.parseBoolean(split[5]), Boolean.parseBoolean(split[6]), Double.parseDouble(split[7]));
                 track++;
             }
             reader.close();
@@ -122,15 +122,15 @@ public class ManipFile {
     public void UpdateResFile(LinkedList<ReservationOptions> reservations)
     {
          try {
-            writer = new BufferedWriter(new FileWriter(cusFileLoc));
+            writer = new BufferedWriter(new FileWriter(resFileLoc));
             writer.write("CustID, RoomNum, CheckIn, CheckOut\n");
             for (ReservationOptions res : reservations)
             {
                 // syntax for the reservation data file with all the required info for populating the list in another run of the program
                 writer.write(res.getCustomer().getCustID() + ", ");
                 writer.write(res.getRoomChosen().GetRoomNumberString() + ", ");
-                writer.write(res.getCheckInDate().toString() + ", ");
-                writer.write(res.getCheckOutDate().toString() + "\n");
+                writer.write(res.getCheckInString() + ", ");
+                writer.write(res.getCheckOutString() + "\n");
             }
             writer.close();
         } catch (IOException e) {
@@ -166,7 +166,7 @@ public class ManipFile {
     {
         try {
             writer = new BufferedWriter(new FileWriter(roomFileLoc));
-            writer.write("BedType, BedCount, RoomNum, RoomFloor, Accessibility, Smoking, Occupancy, Price");
+            writer.write("BedType, BedCount, RoomNum, RoomFloor, Accessibility, Smoking, Occupancy, Price\n");
             for(int i = 0; i < rooms.length; i++)
             {
                 // array list progression for room details needed to make new room objects once back in the populate functions
@@ -176,7 +176,8 @@ public class ManipFile {
                 writer.write(rooms[i].GetRoomFloorString() + ", ");
                 writer.write(rooms[i].GetRoomAccessibleString() + ", ");
                 writer.write(rooms[i].GetRoomSmokingString() + ", ");
-                writer.write(rooms[i].GetRoomOccupiedString() + "\n");
+                writer.write(rooms[i].GetRoomOccupiedString() + ", ");
+                writer.write(rooms[i].GetRoomPriceString() + "\n");
             }
             writer.close();
         } catch (IOException e) {

@@ -7,6 +7,7 @@ import java.awt.*;
 public class Receipts{
     private Customer custInfo;
     private Room roomInfo;
+    private String checkInInfo, checkOutInfo;
     //private Payment paymentInfo;
 
     /* default constructor */
@@ -20,6 +21,15 @@ public class Receipts{
     public Receipts(Customer cust, Room room /* Payment pay */){
         this.custInfo = cust;
         this.roomInfo = room;
+        //this.paymentInfo = pay;
+    }
+
+    /* paramiterized constructor takes reservation info */
+    public Receipts(ReservationOptions res){
+        this.custInfo = res.getCustomer();
+        this.roomInfo = res.getRoomChosen();
+        this.checkInInfo = res.getCheckInString();
+        this.checkOutInfo = res.getCheckOutString();
         //this.paymentInfo = pay;
     }
     
@@ -38,8 +48,8 @@ public class Receipts{
         "Phone Number: " + custInfo.getPhoneNum() +
         "\tEmail: " + custInfo.getEmail() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
+        "Check-In Date: " + this.checkInInfo + "\t\t" +
+        "Check-Out Date: " + this.checkOutInfo + "\n" +
         "Bed Type: " + roomInfo.GetRoomType() + "\t\t" +
         "Bed Count: " + roomInfo.GetBedCount() + "\n" +
         "Room Number: " + roomInfo.GetRoomNumberString() + "\t\t" +

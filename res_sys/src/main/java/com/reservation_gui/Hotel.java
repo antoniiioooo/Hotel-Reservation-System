@@ -54,9 +54,21 @@ public class Hotel
     public void addReservation(ReservationOptions reservation){
         reservations.add(reservation);
     }
+    // adds a customer into the customer list
+    public void addCustomer(Customer cus){
+        customerList.add(cus);
+    }
+    // gets the list of customers
+    public LinkedList<Customer> getCustomerList(){
+        return customerList;
+    }
     // gets the list of rooms within the hotel
     public Room[] getRoomsList(){
         return roomList;
+    }
+    // gets the list of customers
+    public LinkedList<ReservationOptions> getReservationList(){
+        return reservations;
     }
     // gets the name of the hotel
     public String getHotelName(){
@@ -81,5 +93,9 @@ public class Hotel
     // gets the hotel check out date
     public String getHotelCheckOut(){
         return checkOut;
+    }
+    // gets the manipFile object for end of program where the updates to the lists are uploaded into the data files
+    public ManipFile getManipFile(){
+        return files;
     }
 }
