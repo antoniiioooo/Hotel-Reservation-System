@@ -98,4 +98,33 @@ public class Hotel
     public ManipFile getManipFile(){
         return files;
     }
+    // retrieves the reservation within the reservation list based on customer name, either customer id or confirmation number, and a flag to specify between id or confirmation
+    public ReservationOptions getReservation(String first, String last, String id, String flag){
+        switch (flag) {
+            case "Customer ID":
+                for (ReservationOptions res : reservations){
+                    // confirms that the name and the id number is matching within the list of reservations
+                    if (res.getCustomer().getFirstName().equals(first) && res.getCustomer().getLastName().equals(last) 
+                        && res.getCustomer().getCustID().equals(id)){
+                            return res;
+                        }
+                }
+                break;
+            case "Confirmation Number":
+                for (ReservationOptions res : reservations){
+                    // confirms that the name and the confirmation number is matching within the list of reservations
+                    if (res.getCustomer().getFirstName().equals(first) && res.getCustomer().getLastName().equals(last) 
+                        && res.getCustomer().getConfrimNum().equals(id)){
+                            return res;
+                        }
+                }
+                break;
+            default:
+                break;
+        }
+
+        // error trigger if the reservation with those specific name and id/confirmation was not found
+        ReservationOptions empty = new ReservationOptions();
+        return empty;
+    }
 }

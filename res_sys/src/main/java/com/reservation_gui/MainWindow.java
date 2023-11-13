@@ -808,10 +808,14 @@ public class MainWindow{
          verifyPanel.add(inputToVerify);
          
          /* creating name label and textfield, adding label to appropiate panel */
-         JLabel nameLabel = new JLabel("Full Name: ");
-         JTextField name = new JTextField(50);
-         namePanel.add(nameLabel);
-         namePanel.add(name);
+         JLabel firstNameLabel = new JLabel("First Name: ");
+         JLabel lastNameLabel = new JLabel("Last Name: ");
+         JTextField firstName = new JTextField(25);
+         JTextField lastName = new JTextField(25);
+         namePanel.add(firstNameLabel);
+         namePanel.add(firstName);
+         namePanel.add(lastNameLabel);
+         namePanel.add(lastName);
 
          /* adding each attribute panel to the middle panel in the order they will appear */
          middle.add(verifyPanel);
@@ -826,13 +830,26 @@ public class MainWindow{
          continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){    
-               
-               System.out.println(e.getActionCommand() + " was pressed");
-               /* creating test customer and room objects  */
-               Customer cust = new Customer("First", "Last", "(818)555-5555", "email@email.com");
-               Room room = new Room("King", 2, 101, 1, false, false, false, 999.99);
-               scrollPane.setVisible(false);
-               reviewReservationPanel(cust, room);
+               // checks if there is missing input for the first and last name
+               if (firstName.getText().equals("") || lastName.getText().equals("")){
+                  System.out.println("Please enter a first and last name");
+               }
+               else if (typeToVerify.getText().equals("Confirmation Number:")){
+                  // verifies for confirmation number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
+                  ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Confirmation Number");
+                  scrollPane.setVisible(false);
+                  reviewReservationPanel(res);
+               }
+               else if (typeToVerify.getText().equals("Customer ID:")){
+                  // verifies for id number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
+                  ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Customer ID");
+                  scrollPane.setVisible(false);
+                  reviewReservationPanel(res);
+               }
+               else {
+                  // error message for any potential misinputs
+                  System.out.println("Please enter a first and last name");
+               }
 
                /* if both the customer id and confirmation number fields or the name field is empty */          
                /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
@@ -906,7 +923,7 @@ public class MainWindow{
 
      }
 
-     public void reviewReservationPanel(Customer cust, Room room){   
+     public void reviewReservationPanel(ReservationOptions reservation){   
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
       this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -915,7 +932,7 @@ public class MainWindow{
       JPanel top = new JPanel();
       JPanel bottom = new JPanel();
       /* creating report and placing it in middle panel */
-      JPanel middle = reservationReport(cust, room);
+      JPanel middle = reservationReport(reservation);
 
       /* setting background colors for top and bottom panels */
       top.setBackground(new Color( 161, 158, 158));
@@ -963,14 +980,14 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
      }
 
-     public JPanel reservationReport(Customer cust, Room room){
+     public JPanel reservationReport(ReservationOptions res){
       /* creating panel for report and setting background color*/
       JPanel reportPanel = new JPanel();
       reportPanel.setBackground(new Color(161, 158, 158));
 
       /* creating textPane for review report and setting backgroung color */
-      ReviewReservation R = new ReviewReservation(cust,room);
-      JTextPane textPane = R.getReviewReservation(); 
+      ReviewReservation R = new ReviewReservation(res);
+      JTextPane textPane = R.getReviewReservation();
      
       textPane.setBackground(new Color(161, 158, 158)); 
       

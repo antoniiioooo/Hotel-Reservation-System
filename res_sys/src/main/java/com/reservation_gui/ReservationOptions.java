@@ -38,6 +38,15 @@ public class ReservationOptions {
         this.checkOutString = checkOut;
     }
 
+    /* Constructor for default state*/
+    public ReservationOptions() {
+        this.customer = null;
+        this.roomChosen = null;
+        this.checkInString = null;
+        this.checkOutString = null;
+    }
+
+
     /* Methods */
     public void updateRoomAvailability(Hotel hotel) {
         /* Craete method in Hotel class to update room availability
@@ -84,5 +93,14 @@ public class ReservationOptions {
     }
     public void setCheckOutDate(Date checkOut) {
         this.checkOutDate = checkOut;
+    }
+    // checks if the reservation is empty i.e. there is no customer or room associated with the reservation itself
+    public boolean isEmpty(){
+        if (customer == null || roomChosen == null){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

@@ -3,22 +3,26 @@ import javax.swing.JTextPane;
 
 public class ReviewReservation {
     private Customer cust; 
-    private Room room; 
+    private Room room;
+    private ReservationOptions res; 
 
     /* constructors */
-    public ReviewReservation () {
-        this.cust = new Customer("FirstName", "LastName", "(818)555-5555", "email@email.com");
-        this.room = new Room("King", 2, 101, 1, false, false, false, 999.99);
+    // default that makes an empty reservation to review and pass an error flag
+    public ReviewReservation(){
+        this.res = new ReservationOptions();
+        this.cust = res.getCustomer();
+        this.room = res.getRoomChosen();
     }
-
-    public ReviewReservation(Customer cust, Room room){
-        this.cust = cust;
-        this.room = room;
-
+    // takes a reservation to check and review
+    public ReviewReservation(ReservationOptions reserve){
+        this.cust = reserve.getCustomer();
+        this.room = reserve.getRoomChosen();
+        this.res = reserve;
     }
 
     private JTextPane GenerateReviewReservation(){
         JTextPane reportTextPane = new JTextPane();
+        reportTextPane.setEditable(false);
 
         reportTextPane.setText(
         "\t\t\tMatador Hotels Reservation Review for " + this.cust.getFirstName() + " " + this.cust.getLastName() + "\n" +
@@ -29,8 +33,8 @@ public class ReviewReservation {
         "Phone Number: " + this.cust.getPhoneNum() +
         "\tEmail: " + this.cust.getEmail() + "\n" +
         "-----------------------------------------------------------------------------------------------------------------------------\n" +
-        "Check-In Date: 10/27/23\t\t" +
-        "Check-Out Date: 10/28/23\n" +
+        "Check-In Date: " + this.res.getCheckInString() + "\t\t" +
+        "Check-Out Date: " + this.res.getCheckOutString() + "\n" +
         "Bed Type: " + this.room.GetRoomType() + "\t\t" +
         "Bed Count: " + this.room.GetBedCount() + "\n" +
         "Room Number: " + this.room.GetRoomNumberString() + "\t\t" +
@@ -42,9 +46,24 @@ public class ReviewReservation {
 
         return reportTextPane; 
     }
+    // creates a text pane for GUI when an error in which a reservation cannot be found due to misinputs
+    public JTextPane GenerateErrorReview(){
+        JTextPane errorTextPane = new JTextPane();
+        errorTextPane.setEditable(false);
 
+        errorTextPane.setText("This reservation was not found.\nPlease re-enter the information.");
+
+        return errorTextPane;
+    }
+    // calls the appropriate review message for the reservation
     public JTextPane getReviewReservation(){
+        // error check when the reservation does not exist i.e no customer or room is connected to the reservation
+        if (this.cust == null || this.room == null){
+            return GenerateErrorReview();
+        }
+        else {
         return GenerateReviewReservation();
+        }
     }
 
 }
