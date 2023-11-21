@@ -33,6 +33,11 @@ public class Receipts{
         //this.paymentInfo = pay;
     }
     
+    
+    /** 
+     * @author Nexaly
+     * @return JTextPane 
+     */
     /* generates receipt report for display */
     private JTextPane GenerateDisplayReceipt(){
         /* creating text pane for report */

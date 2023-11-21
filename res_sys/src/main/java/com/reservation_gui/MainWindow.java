@@ -53,7 +53,7 @@ public class MainWindow{
           }
       });
       this.mainWin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-      this.mainWin.setSize(800, 300);
+      this.mainWin.setSize(825, 300);
       this.mainWin.setLocationRelativeTo(null);
       
       /*creating header and footer panels */
@@ -183,9 +183,14 @@ public class MainWindow{
          }
         });
         
-        /*creating an generic action listener and assinging it to all other buttons*/
-        MyActionListener buttonListener = new MyActionListener();
-        adminButton.addActionListener(buttonListener);
+        /* creating action listener for the admin access button */
+        adminButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            adminAccessPanel();
+         }
+        });
 
         /*setting button colors*/
         roomsButton.setBackground(new Color(153, 153, 153));
@@ -208,7 +213,7 @@ public class MainWindow{
   
         /*adds panels to the main window*/
         this.mainWin.add(centerPanel, BorderLayout.CENTER);
-        this.mainWin.setSize(800, 300);
+        this.mainWin.setSize(825, 300);
         this.mainWin.setLocationRelativeTo(null);
      }
 
@@ -654,7 +659,7 @@ public class MainWindow{
 
             /*adding customer info panel to the main window, and setting window size and screen location */
             this.mainWin.add(centerPanel);
-            this.mainWin.setSize(800, 400);
+            this.mainWin.setSize(825, 400);
             this.mainWin.setLocationRelativeTo(null);  
          }catch(ParseException e){
             // TODO Auto-generated catch block
@@ -760,7 +765,7 @@ public class MainWindow{
       
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane, BorderLayout.CENTER);
-      this.mainWin.setSize(800, 350);
+      this.mainWin.setSize(825, 350);
       this.mainWin.setLocationRelativeTo(null);
      }
 
@@ -913,7 +918,7 @@ public class MainWindow{
 
          /* adding the scroll pane to main window frame */
          this.mainWin.add(scrollPane, BorderLayout.CENTER);
-         this.mainWin.setSize(800, 500);
+         this.mainWin.setSize(825, 500);
          this.mainWin.setLocationRelativeTo(null);
       }
       catch(ParseException e){
@@ -976,7 +981,7 @@ public class MainWindow{
          
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
-      this.mainWin.setSize(800, 550);
+      this.mainWin.setSize(825, 550);
       this.mainWin.setLocationRelativeTo(null);
      }
 
@@ -1069,9 +1074,353 @@ public class MainWindow{
          
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
-      this.mainWin.setSize(800, 550);
+      this.mainWin.setSize(825, 550);
       this.mainWin.setLocationRelativeTo(null);
      }
-}
- 
 
+   public void adminAccessPanel() {
+      /*creating new center panel for entering admin access password*/
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+        
+      /* creating panels for top, middle, and bottom of admin access panel */
+      JPanel top = new JPanel();
+      JPanel middle = new JPanel();
+      JPanel bottom = new JPanel();
+
+      /* setting background colors for top, middle, and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161,158, 158));
+      bottom.setBackground(new Color( 161, 158, 158));
+      
+      /*creating admin access label and adding it to top panel*/
+      JLabel adminLabel = new JLabel("Admin Access");
+      adminLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(adminLabel);
+
+      /* creating the label and text field for entering admin password */
+      JLabel passwordLabel = new JLabel("Password:  ");
+      JPasswordField passwordField = new JPasswordField(25);
+      middle.add(passwordLabel);
+      middle.add(passwordField);
+
+      /*creating buttons and setting background color */
+      JButton continueButton = new JButton("Continue");
+      JButton backButton = new JButton("Go Back");
+      continueButton.setBackground(new Color(153, 153, 153));
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for continue button */
+      continueButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+
+            AdminAccess check = new AdminAccess(String.valueOf(passwordField.getPassword()));
+
+            /* if the entered password is correct, it will allow access to the Manager Report menu */
+            if (check.confirmAccess()) {
+               System.out.println("Passed");
+               centerPanel.setVisible(false);
+               managerReportsPanel();
+            }
+            /* when the password entered is incorrect */
+            else {
+               System.out.println("Failed");
+               centerPanel.setVisible(false);
+               mainCenterPanel();
+            }
+         }
+      });
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            mainCenterPanel();
+         }
+      });
+
+      /* adding the buttons to the bottom panel */
+      bottom.add(continueButton);
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to the center panel */
+      this.centerPanel.add(top, BorderLayout.NORTH);
+      this.centerPanel.add(middle, BorderLayout.CENTER);
+      this.centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /* displaying the center panel along with resizing the window */
+      this.mainWin.add(centerPanel);
+      this.mainWin.setSize(825, 350);
+      this.mainWin.setLocationRelativeTo(null);
+   }
+
+   public void managerReportsPanel() {
+      /* instatiation of ManagerReport object for use of displaying and downloading or printing reports */
+      ManagerReport reports = new ManagerReport(hotelTest.getReservationList(), hotelTest.getCustomerList(), hotelTest.getRoomsList());
+
+      /*creates panel for center of page and sets its color*/
+      this.centerPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+      this.centerPanel.setBackground(new Color(161, 158, 158)); 
+        
+      /*creates button for the report for hotel reservations*/
+      JButton resReportButton = new JButton("Reservations Report");
+  
+      /*creates button for report of the hotel customers*/
+      JButton cusReportButton = new JButton("Customer Report");
+  
+      /*creates button for the report of the hotel rooms*/
+      JButton roomReportButton = new JButton("Room Report");
+
+      /* creates a back button to go back to the main menu */
+      JButton backButton = new JButton("Go Back");
+
+      /* action listener for the back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            mainCenterPanel();
+         }
+      });
+
+      /*creating an action listener for reservation report button */
+      resReportButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            displayResReport(reports);
+         }
+      });
+
+      /* creating action listener for customer report button */
+      cusReportButton.addActionListener(new ActionListener() {
+
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            displayCusReport(reports);
+         }
+        });
+        
+      /* creating action listener for the room report button */
+      roomReportButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            centerPanel.setVisible(false);
+            displayRoomReport(reports);
+         }
+        });
+
+      /*setting button colors*/
+      backButton.setBackground(new Color(153,153,153));
+      resReportButton.setBackground(new Color(153, 153, 153));
+      cusReportButton.setBackground(new Color(153, 153, 153));
+      roomReportButton.setBackground(new Color(153, 153, 153));
+  
+      /*taking focus away from buttons that are not being interacted with*/
+      backButton.setFocusable(false);
+      resReportButton.setFocusable(false);
+      cusReportButton.setFocusable(false);
+      roomReportButton.setFocusable(false);
+  
+      /*adding buttons to the center panel (center of GUI)*/
+      this.centerPanel.add(resReportButton);
+      this.centerPanel.add(cusReportButton);
+      this.centerPanel.add(roomReportButton);
+      this.centerPanel.add(backButton);
+  
+      /*over riding default boreders around buttons*/
+      EmptyBorder centerBorder = new EmptyBorder(10, 10, 10, 10);   
+      this.centerPanel.setBorder(centerBorder);
+  
+      /*adds panels to the main window*/
+      this.mainWin.add(centerPanel, BorderLayout.CENTER);
+      this.mainWin.setSize(825, 600);
+      this.mainWin.setLocationRelativeTo(null);
+   }
+
+   public void displayResReport(ManagerReport reports) {
+      /* creating panel for displaying the reservation report */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating top, middle and bottom panels */
+      JPanel top = new JPanel();
+      JPanel bottom = new JPanel();
+      JPanel middle = new JPanel();
+
+      /* retrieves the report and adds it to the middle panel for display */
+      JTextPane resRep = reports.getReservationList();
+      middle.add(resRep);
+
+      /* setting background colors for top and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161, 158, 158));
+      bottom.setBackground(new Color(161, 158, 158));
+
+      /* creating header label, setting font attributes and adding it to top panel */
+      JLabel resRepLabel = new JLabel("Reservations Report");
+      resRepLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(resRepLabel);
+
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            managerReportsPanel();
+         }
+      });
+
+      /* adding back button to bottom panel */
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to the center panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+        
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane);
+      this.mainWin.setSize(825, 750);
+      this.mainWin.setLocationRelativeTo(null);
+   }
+
+   public void displayCusReport(ManagerReport reports) {
+      /* creating panel for customer report display */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating top, middle and bottom panels */
+      JPanel top = new JPanel();
+      JPanel bottom = new JPanel();
+      JPanel middle = new JPanel();
+
+      /* retrieves the customer report and add to the middle panel */
+      JTextPane cusRep = reports.getCustomerList();
+      middle.add(cusRep);
+
+      /* setting background colors for top and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161, 158, 158));
+      bottom.setBackground(new Color(161, 158, 158));
+
+      /* creating header label, setting font attributes and adding it to top panel */
+      JLabel cusRepLabel = new JLabel("Customer Report");
+      cusRepLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(cusRepLabel);
+
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            managerReportsPanel();
+         }
+      });
+
+      /* adding back button to bottom panel */
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to the center panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+        
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane);
+      this.mainWin.setSize(825, 750);
+      this.mainWin.setLocationRelativeTo(null);
+   }
+
+   public void displayRoomReport(ManagerReport reports) {
+      /* creating panel for getting the room report */
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating top, middle and bottom panels */
+      JPanel top = new JPanel();
+      JPanel bottom = new JPanel();
+      JPanel middle = new JPanel();
+
+      /* retrieves the room report and adds to the middle panel */
+      JTextPane roomRep = reports.getRoomList();
+      middle.add(roomRep);
+
+      /* setting background colors for top and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161, 158, 158));
+      bottom.setBackground(new Color(161, 158, 158));
+
+      /* creating header label, setting font attributes and adding it to top panel */
+      JLabel roomRepLabel = new JLabel("Room Report");
+      roomRepLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(roomRepLabel);
+
+      /*creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
+
+      /*creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            managerReportsPanel();
+         }
+      });
+
+      /* adding back button to bottom panel */
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to the center panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      scrollPane = new JScrollPane(centerPanel);
+      scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+        
+      /* over riding default boreders around the scroll pane */
+      EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
+      scrollPane.setBorder(scrollPaneBorder);
+         
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane);
+      this.mainWin.setSize(825, 750);
+      this.mainWin.setLocationRelativeTo(null);
+   }
+}
