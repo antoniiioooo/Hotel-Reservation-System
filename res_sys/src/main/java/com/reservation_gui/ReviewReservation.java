@@ -1,6 +1,12 @@
 package com.reservation_gui;
 import javax.swing.JTextPane;
 
+/** 
+  * class generates the reservation for the cutomer to review 
+  * @author Antonio Olivera
+  * @version 1.1     
+  */
+
 public class ReviewReservation {
     private Customer cust; 
     private Room room;
@@ -19,7 +25,10 @@ public class ReviewReservation {
         this.room = reserve.getRoomChosen();
         this.res = reserve;
     }
-
+     /** 
+     * this method is generating the reservation to be shown to the customer 
+     * @return JTextPane 
+     */
     private JTextPane GenerateReviewReservation(){
         JTextPane reportTextPane = new JTextPane();
         reportTextPane.setEditable(false);
@@ -46,7 +55,11 @@ public class ReviewReservation {
 
         return reportTextPane; 
     }
-    // creates a text pane for GUI when an error in which a reservation cannot be found due to misinputs
+
+     /** 
+     * generating a error notification if the information that was entered wrong and it will prompt to the customer 
+     * @return JTextPane
+     */
     public JTextPane GenerateErrorReview(){
         JTextPane errorTextPane = new JTextPane();
         errorTextPane.setEditable(false);
@@ -55,7 +68,10 @@ public class ReviewReservation {
 
         return errorTextPane;
     }
-    // calls the appropriate review message for the reservation
+    /** 
+     * this will call the appropriate review of the customer 
+     * @return JTextPane
+     */
     public JTextPane getReviewReservation(){
         // error check when the reservation does not exist i.e no customer or room is connected to the reservation
         if (this.cust == null || this.room == null){
