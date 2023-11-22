@@ -6,6 +6,11 @@ import java.util.LinkedList;
 
 import javax.swing.JTextPane;
 
+/** 
+ * ManagerReport provides the displays of reports within the "Admin Access" system feature
+ * @author Joshua
+ * @version 1.1
+ */
 public class ManagerReport {
     
     private LinkedList<ReservationOptions> resList;
@@ -19,7 +24,13 @@ public class ManagerReport {
         roomList = room;
     }
 
-    // displays the list of reservations for the hotel
+    
+    /** 
+     * displays the list of reservations for the hotel
+     * @author Joshua
+     * @return JTextPane for reservation list report display for the GUI framework
+     * @version 1.1
+     */
     public JTextPane getReservationList() {
         JTextPane reservations = new JTextPane();
         reservations.setEditable(false);
@@ -46,7 +57,13 @@ public class ManagerReport {
         return reservations;
     }
 
-    // displays the list of customers within the hotel
+    
+    /** 
+     * displays the list of customers for within he hotel
+     * @author Joshua
+     * @return JTextPane for customer list report display for the GUI framework
+     * @version 1.1
+     */
     public JTextPane getCustomerList() {
 
         JTextPane customers = new JTextPane();
@@ -71,6 +88,13 @@ public class ManagerReport {
         return customers;
     }
 
+    
+    /** 
+     * displays the list of rooms for within he hotel
+     * @author Joshua
+     * @return JTextPane for room list report display for the GUI framework
+     * @version 1.1
+     */
     // displays the rooms within the hotel
     public JTextPane getRoomList() {
 
