@@ -8,6 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/** 
+     * ManipFile is used to read and write information to and from the data text files to preserve and update the information of the
+     * containers for reservations, customers, and rooms
+     * @author Joshua
+     * @version 1.1
+     */
 public class ManipFile {
     
     // members
@@ -28,9 +34,15 @@ public class ManipFile {
         roomFileLoc = roomFile;
     }
 
-    // methods
-
-    // populates the reservation list with information from the reservations data file; passed the list to update for the hotel
+    
+    /** 
+     * populates the reservation list with information from the reservations data file; passed the list to update for the hotel
+     * @author Joshua
+     * @param reservations is a linked list containing the reservations list to be populated for the Hotel object
+     * @param customers is a Customer object linked list that is used to populate the ReservationOptions objects with their customers
+     * @param rooms is the list of rooms of the hotel used to put the respective room info into the ReservationOptions objects
+     * @version 1.1
+     */
     public void PopulateResContainer(LinkedList<ReservationOptions> reservations, LinkedList<Customer> customers, Room[] rooms)
     {
         try {
@@ -70,7 +82,13 @@ public class ManipFile {
             e.printStackTrace();
         }
     }
-    // populates the customer list with information from the customers data file; passed the list to update for the hotel
+    
+    /** 
+     * populates the customer list with information from the customers data file; passed the list to update for the hotel
+     * @author Joshua
+     * @param customers is the linked list Customer container to be updated/populated with the data file
+     * @version 1.1
+     */
     public void PopulateCusContainer(LinkedList<Customer> customers)
     {
         try {
@@ -92,7 +110,13 @@ public class ManipFile {
             e.printStackTrace();
         }
     }
-    // populates the rooms list with information from the room data file; passed the list to update for the hotel
+    
+    /** 
+     * populates the rooms list with information from the room data file; passed the list to update for the hotel
+     * @author Joshua
+     * @param rooms is the Room array to be filled with the pertinent Room objects from the data file
+     * @version 1.1
+     */
     public void PopulateRoomContainer(Room[] rooms)
     {
         try {
@@ -118,7 +142,12 @@ public class ManipFile {
         }
     }
 
-    // method to update the reservation data file with the new reservation list
+    
+    /** method to update the reservation data file with the new reservation list
+     * @author Joshua
+     * @param reservations is the linked list of ReservationOptions objects used to update the data file
+     * @version 1.1
+     */
     public void UpdateResFile(LinkedList<ReservationOptions> reservations)
     {
          try {
@@ -138,7 +167,13 @@ public class ManipFile {
             e.printStackTrace();
         }
     }
-    // method to update the customer data file with the new customer list
+    
+    /** 
+     * method to update the customer data file with the new customer list
+     * @author Joshua
+     * @param customers linked list of Customer objects used to update the appropriate data file
+     * @version 1.1
+     */
     public void UpdateCusFile(LinkedList<Customer> customers)
     {
         try {
@@ -161,7 +196,13 @@ public class ManipFile {
             e.printStackTrace();
         }
     }
-    // method to update the room data file with the new room list
+    
+    /** 
+     * method to update the room data file with the new room list
+     * @author Joshua
+     * @param rooms Room array used to write into data file
+     * @version 1.1
+     */
     public void UpdateRoomFile(Room[] rooms)
     {
         try {
