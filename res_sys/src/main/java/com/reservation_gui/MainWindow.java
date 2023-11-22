@@ -23,6 +23,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Currently creates and handles all GUI aspects for the system
+ * @author Nexaly Orellana
+ * @author Joshua Itchon
+ * @version 1.1
+ */
+
 public class MainWindow{
     private JFrame mainWin;
     private JPanel centerPanel;
@@ -33,7 +40,11 @@ public class MainWindow{
       hotelTest = hotelChosen;
       this.initialize();
     }
- 
+    
+    /**
+     * @author Nexaly Orellana
+     * Creates and designs the GUI's main window on start up
+     */
     private void initialize(){
       /* Creates and designs the main window */
       mainWin = new JFrame();
@@ -67,6 +78,12 @@ public class MainWindow{
 
     }
 
+    /**
+     * @author Nexaly Orellana
+     * Creates header and footer panels that will be displayed on every page of our GUI
+     * header displays important Hotel Information
+     * footer displays name of development team "Matador Technologies"
+     */
     public void createHeaderFooter(){
 
         /* creates panel for top of page and sets it's color */
@@ -151,6 +168,11 @@ public class MainWindow{
         this.mainWin.add(footerPanel, BorderLayout.SOUTH);
      }
 
+     /**
+      * @author Nexaly Orellana
+      * creates center panel for homepage of our GUI
+      * has buttons for all different options available for the System
+      */
      public void mainCenterPanel(){
         /*creates panel for center of page and sets its color*/
         this.centerPanel = new JPanel(new GridLayout(1, 3, 10, 10));
@@ -217,6 +239,11 @@ public class MainWindow{
         this.mainWin.setLocationRelativeTo(null);
      }
 
+     /**
+      * @author Nexaly Orellana
+      *  creates center panel for displaying our list of rooms
+      * allows users to choose a room to reserve and displays date pickers
+      */
      public void roomsListPanel(){
 
         this.centerPanel = new JPanel(new BorderLayout());
@@ -523,6 +550,14 @@ public class MainWindow{
         this.mainWin.setLocationRelativeTo(null);
      }
 
+     
+     /** 
+      * @author Nexaly Orellana
+      * creates center panel for obtaining user input for customer information
+      * @param room to associate the customer to a room they want to reserve
+      * @param checkIn  to associate the customer and room to a reservation check in day
+      * @param checkOut to associate the customer and room to a reservation check out day
+      */
      public void getCustInfoPanel(Room room, String checkIn, String checkOut){
          /*creating new center panel for entering customer information*/
          this.centerPanel = new JPanel(new BorderLayout());
@@ -667,6 +702,12 @@ public class MainWindow{
          }
      }
 
+     /**
+      * @author Nexaly Orellana
+      * creates center panel for user to choose if they want to review their reservations
+      * based on their customer ID or Confirmation Number
+      * displays a promt and 3 buttons
+      */
      public void idConfirmChoicePanel(){
       /* creating panel for user to choose which search option they'd like to use */
       this.centerPanel = new JPanel(new BorderLayout(10, 10));
@@ -769,6 +810,11 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
      }
 
+     /**
+      * @author Nexaly Orellana
+      * creates a center panel to obtain user input to review reservation, ensures those inputs are valid
+      * @param typeToVerify allows program to know which search option (Confirmation Number or Customer ID) was chosen
+      */
      public void getReservationInfoPanel(JLabel typeToVerify){
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -928,6 +974,11 @@ public class MainWindow{
 
      }
 
+     /**
+      * @author Nexaly Orellana
+      * Creating panel to display full reservation report
+      * @param reservation to store the reservation information
+      */
      public void reviewReservationPanel(ReservationOptions reservation){   
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -985,6 +1036,12 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
      }
 
+     /**
+      * @author Nexaly Orellana
+      * creating panel and adding textPane with populated report to send back to the reviewReservation panel
+      * @param res to store the reservation information
+      * @return JPanel to display the report on a textpane 
+      */
      public JPanel reservationReport(ReservationOptions res){
       /* creating panel for report and setting background color*/
       JPanel reportPanel = new JPanel();
@@ -1004,7 +1061,12 @@ public class MainWindow{
 
       return reportPanel;
      }
-     
+   
+     /**
+      * @author Nexaly Orellana
+      * Creating panel to display the receipt report and gives users options to download or print the report
+      * @param receipt to store the infomation needed to generate the receipt
+      */
      public void displayReceipt(Receipts receipt){
       /* creating panel for displaying reciept */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -1078,6 +1140,10 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
      }
 
+     /**
+      * @author Joshua Itchon
+      * creates center panel to obtain password input and validate password
+      */
    public void adminAccessPanel() {
       /*creating new center panel for entering admin access password*/
       this.centerPanel = new JPanel(new BorderLayout());
@@ -1156,6 +1222,11 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
 
+   /**
+    * @author Joshua Itchon
+    * creating center panel to display manager options
+    * displays 4 buttons
+    */
    public void managerReportsPanel() {
       /* instatiation of ManagerReport object for use of displaying and downloading or printing reports */
       ManagerReport reports = new ManagerReport(hotelTest.getReservationList(), hotelTest.getCustomerList(), hotelTest.getRoomsList());
@@ -1241,6 +1312,11 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
 
+   /**
+    * @author Joshua Itchon
+    * creates center panel to generate and display report of all reservations in the system
+    * @param reports to store the information for the report
+    */
    public void displayResReport(ManagerReport reports) {
       /* creating panel for displaying the reservation report */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -1302,6 +1378,11 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
 
+   /**
+    * @author Joshua Itchon
+    * creates center panel to generate and display report of all customers in the system
+    * @param reports to store the information for the report
+    */
    public void displayCusReport(ManagerReport reports) {
       /* creating panel for customer report display */
       this.centerPanel = new JPanel(new BorderLayout());
@@ -1363,6 +1444,11 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
 
+   /**
+    * @author Joshua Itchon
+    * creates center panel to generate and display report of all rooms in the system
+    * @param reports to store the information for the report
+    */
    public void displayRoomReport(ManagerReport reports) {
       /* creating panel for getting the room report */
       this.centerPanel = new JPanel(new BorderLayout());
