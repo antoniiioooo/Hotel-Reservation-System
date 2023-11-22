@@ -2,6 +2,11 @@ package com.reservation_gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * class to generate, display and print receipts
+ * @author Nexaly Orellana
+ * @version 1.1
+ */
 
 
 public class Receipts{
@@ -35,10 +40,9 @@ public class Receipts{
     
     
     /** 
-     * @author Nexaly
-     * @return JTextPane 
+     * generates receipt report for display
+     * @return JTextPane formatted textpane field for displaying to screen
      */
-    /* generates receipt report for display */
     private JTextPane GenerateDisplayReceipt(){
         /* creating text pane for report */
         JTextPane reportTextPane = new JTextPane();
@@ -66,7 +70,12 @@ public class Receipts{
         return reportTextPane;
      }
 
-     /* generates receipt report for printing */
+
+     
+     /** 
+      * generates receipt report for printing
+      * @return JTextPane formatted textpane field for printing and downloading to pdf
+      */
      private JTextPane GeneratePrintReceipt(){
         /* creating text pane for report */
         JTextPane reportTextPane = new JTextPane();
@@ -95,12 +104,20 @@ public class Receipts{
       return reportTextPane;
      }
 
-     /* getter to display receipt */
+     
+    
+    /** 
+     * calls function to generate receipt for display and then returns the textpane to caller
+     * @return JTextPane populated with receipt report for display
+     */
     public JTextPane GetReceipt(){
         return GenerateDisplayReceipt();
     }
 
-    /* function to download or print the report */
+    /**
+     * calls function to generate receipt for download or print 
+     * then try to open pop up window for print/download functionality
+     */
     public void downloadOrPrintReceipt(){
         /* generates printer receipt */
         JTextPane textPane = GeneratePrintReceipt(); 

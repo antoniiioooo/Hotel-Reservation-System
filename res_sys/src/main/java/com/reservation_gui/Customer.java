@@ -1,6 +1,11 @@
 package com.reservation_gui;
-
 import java.util.*;
+
+/** 
+ * Class to house the customer information data
+ * @author Nexaly Orellana
+ * @version 1.1
+ * */
 
 
 class Customer{
@@ -47,61 +52,116 @@ class Customer{
         this.confirmation = cNum;
     }
 
-    /* randomized Customer ID */
+    /** 
+     * randomized Customer ID
+     * @return int for customer ID
+     */
     private int createCustID(){
         Random rand = new Random();
         return rand.nextInt(9000000) + 1000000;
     } 
 
-    /* customer ID getter */
+    /**
+     * customer ID getter 
+     * @return String to return customer ID as a String
+     */
     public String getCustID(){
         return this.custID;
     }
 
-    /* first name setter and getter */
+    /** 
+     * Sets first name from an input
+     * @param fNameInput passing in a first name
+     */
     public void setFirstName(String fNameInput){
         this.fName = fNameInput;
     }
+
+    /** 
+     * gets stored first name and returns to caller
+     * @return String to return first name
+     */
     public String getFirstName(){
         return this.fName;
     }
-
-    /* last name setter and getter */
+    
+    /** 
+     * Sets last name from an input
+     * @param lNameInput passing in a last name
+     */
     public void setLastName(String lNameInput){
         this.lName = lNameInput;
     }
+
+    /** 
+     * gets stored last name and returns to caller
+     * @return String to return last name
+     */
     public String getLastName(){
         return this.lName;
     }
 
-    /* phone number setter and getter */
+    
+    /** 
+     * sets phone number from an input
+     * @param phoneInput passing in a phone number
+     */
     public void setPhoneNum(String phoneInput){
         this.phoneNum = phoneInput;
     }
+
+    /**
+     *  gets stored phone number and returns to caller
+     * @return String to return phone number
+     */
     public String getPhoneNum(){
         return this.phoneNum;
     }
 
-    /* email setter and getter */
+    /**
+     *sets email from an input
+     @param emailInput passing in an email address  
+     */
     public void setEmail(String emailInput){
         this.email = emailInput;
     }
+
+    /**
+     * gets stored email and returns to caller
+     * @return String to return email address
+     */
     public String getEmail(){
         return this.email;
     }
 
-    /* transaction ID setter and getter */
+    /** 
+     * Sets transaction ID from an input
+     * @param id passing in a transaction ID 
+     */
     public void setTransID(String id){
         this.transID = id;
     }
+
+    /**
+     * gets stored transaction id and returns to caller
+     * @return String to return transaction ID
+     */
     public String getTransID(){
         return this.transID;
     }
 
-    /* confirmation number setter and getter */
+    /**
+     * sets confirmation number from an input
+     * @param confirmNum passing in a confirmation number
+     */
     public void setConfirmNum(String confirmNum){
         this.confirmation = confirmNum;
     }
+
+    /**
+     * gets stored confirmation number and returns to caller
+     * @return String to return confirmation number
+     */
     public String getConfrimNum(){
         return this.confirmation;
     }
