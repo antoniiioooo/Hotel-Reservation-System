@@ -3,9 +3,9 @@ package com.reservation_gui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Will format the Date objects into proper Strings and contains a method that will update the room availability 
@@ -18,8 +18,8 @@ public class ReservationOptions {
     /* Create private variables */
     private Customer customer;
     private Room roomChosen;
-    private Date checkInDate;
-    private Date checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private String checkInString;
     private String checkOutString;
 
@@ -30,16 +30,19 @@ public class ReservationOptions {
         
         this.customer = customer;
         this.roomChosen = room;
-        this.checkInDate = checkIn;
-        this.checkOutDate = checkOut;
+        this.checkInDate = checkIn.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.checkOutDate = checkOut.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.checkInString = df.format(checkIn);
         this.checkOutString = df.format(checkOut);
     }
 
     /* Constructor for string dates*/
     public ReservationOptions(Customer customer, Room room, String checkIn, String checkOut) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         this.customer = customer;
         this.roomChosen = room;
+        this.checkInDate = LocalDate.parse(checkIn, formatter);
+        this.checkOutDate = LocalDate.parse(checkOut, formatter);
         this.checkInString = checkIn;
         this.checkOutString = checkOut;
     }
@@ -109,7 +112,7 @@ public class ReservationOptions {
      * get method for that check in date for the room being reserved (Date)
      * @return will return that check in date
      */
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return checkInDate;
     }
     
@@ -126,14 +129,14 @@ public class ReservationOptions {
      * @param checkIn passing a Date object
      */
     public void setCheckInDate(Date checkIn) {
-        this.checkInDate = checkIn;
+        this.checkInDate = checkIn.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     /** 
      * get method for the check out date for that room being reserved (Date)
      * @return will return that check out date
      */
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
 
@@ -151,7 +154,7 @@ public class ReservationOptions {
      * @param checkOut passing a Date object
      */
     public void setCheckOutDate(Date checkOut) {
-        this.checkOutDate = checkOut;
+        this.checkOutDate = checkOut.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     

@@ -129,7 +129,7 @@ public class ManipFile {
                 // line split in this order: (String bed, int count, int roomNum, int floor, boolean access, boolean smoking, boolean occupancy, double price)
                 String[] split = line.split(", ");
                 rooms[track] = new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), 
-                Boolean.parseBoolean(split[4]), Boolean.parseBoolean(split[5]), Boolean.parseBoolean(split[6]), Double.parseDouble(split[7]));
+                split[4].toLowerCase().equals("yes") ? true : false,  split[5].toLowerCase().equals("yes") ? true : false, split[6].toLowerCase().equals("yes") ? true : false, Double.parseDouble(split[7]));
                 track++;
             }
             reader.close();
