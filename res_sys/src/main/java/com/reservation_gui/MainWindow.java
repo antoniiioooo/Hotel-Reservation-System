@@ -19,8 +19,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Properties;
 
 /**
@@ -192,7 +195,7 @@ public class MainWindow{
          @Override
          public void actionPerformed(ActionEvent e){
             centerPanel.setVisible(false);
-            roomsListPanel();
+            reserveRoomPanel();
          }
         });
 
@@ -244,310 +247,384 @@ public class MainWindow{
       *  creates center panel for displaying our list of rooms
       * allows users to choose a room to reserve and displays date pickers
       */
-     public void roomsListPanel(){
-
-        this.centerPanel = new JPanel(new BorderLayout());
-        this.centerPanel.setBackground(new Color(161, 158, 158));
-        
-        /* creating new top panel to hold check in and check out panels */
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
-        top.setBackground(new Color(161, 158, 158));
-
-        /* creating check in and check out panels to hold check in and check out date picker and label */
-        JPanel checkIPanel = new JPanel();
-        JPanel checkOutPanel = new JPanel();
-
-        /* setting background colors for check in/out labels */
-        checkIPanel.setBackground(new Color(161, 158, 158));
-        checkOutPanel.setBackground(new Color(161, 158, 158));
-
-        /* creating check in/out labels */
-        JLabel checkInLabel = new JLabel("Check-In Date:");
-        JLabel checkOutLabel = new JLabel("Check-Out Date:");
+     public void reserveRoomPanel(){
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));     
       
-        /* creating date models for check in/out */
-        UtilDateModel checkInModel = new UtilDateModel();
-        UtilDateModel checkOutModel = new UtilDateModel();
-        
-        /* creating date to hold current day's date */
-        Date today = new Date();
+      /* creating panels for top, middle, and bottom of the center panel */
+      JPanel top = new JPanel(new BorderLayout());
+      JPanel middle = new JPanel();
+      JPanel bottom = new JPanel();
 
-        /* creating date to hold next day's date */
-        Date tomorrow = new Date();
-        /* adding one day to current date to get next day's date */
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(today);
-        cal.add(Calendar.DATE, 1);
-        tomorrow = cal.getTime();
+      /* setting background colors for top, middle and bottom */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161, 158, 158));
+      bottom.setBackground(new Color(161, 158, 158));
 
-        /* adding today's date and tommorrow's date to the date model so they show up on creation */
-        checkInModel.setValue(today);
-        checkOutModel.setValue(tomorrow);
-        
+      /* creating panels for calander, filter and button attributes */
+      JPanel calanderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 10));
+      JPanel filterPanel = new JPanel(new GridLayout(2,2, 0, 0));
+      JPanel buttonPanel = new JPanel();
 
-        /* creating starting properties for the calendar */
-        Properties props=new Properties();
-        props.put("text.today","Today");
-        props.put("text.month","Month");
-        props.put("text.year","Year");
+      /* setting background colors for calander, filter, and button panels */
+      calanderPanel.setBackground(new Color(161, 158, 158));
+      filterPanel.setBackground(new Color(161, 158, 158));
+      buttonPanel.setBackground(new Color(161, 158, 158));
 
-        /* creating calendar objects and setting starting properties */
-        JDatePanelImpl checkInDatePanel = new JDatePanelImpl(checkInModel, props);
-        JDatePanelImpl checkOutDatePanel = new JDatePanelImpl(checkOutModel, props); 
+      /*creating checkin and checkout panels */
+      JPanel checkInPanel = new JPanel();
+      JPanel checkOutPanel = new JPanel();
 
-        /* creating check in/out date pickers (input bars and buttons) and adding previously created calendar objects */ 
-        JDatePickerImpl checkInDatePicker = new JDatePickerImpl(checkInDatePanel, new DateFormatter(){
-            //creating format for date display
-            private String datePatern = "MM/dd/yyyy";
-            private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
-         
-            @Override
-            public String valueToString(Object value) throws ParseException {
-               if (value != null) {
-                  Calendar cal = (Calendar) value;
-                  return dateFormatter.format(cal.getTime());
+      /* setting background colors for checkin and checkout panels */
+      checkInPanel.setBackground(new Color(161, 158, 158));
+      checkOutPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating check in/out labels */
+      JLabel checkInLabel = new JLabel("Check-In Date:");
+      JLabel checkOutLabel = new JLabel("Check-Out Date:");
+
+      /* creating date models for check in/out */
+      UtilDateModel checkInModel = new UtilDateModel();
+      UtilDateModel checkOutModel = new UtilDateModel();
+
+      /* creating dates to hold current day and next days date */
+      Date today = new Date();
+      Date tomorrow = new Date();
+
+      /*adding one day to current date to get next day's date */
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(today);
+      cal.add(Calendar.DATE, 1);
+      tomorrow = cal.getTime();
+
+      /* adding today and tomorrow dates to date model to show up on creation */
+      checkInModel.setValue(today);
+      checkOutModel.setValue(tomorrow);
+
+      /* creating starting properties for the calendar */
+      Properties props = new Properties();
+      props.put("text.today", "Today");
+      props.put("text.month", "Month");
+      props.put("text.year", "Year");
+
+      /* creating date picker panel objects and setting starting properties */
+      JDatePanelImpl checkInDatePanel = new JDatePanelImpl(checkInModel, props);
+      JDatePanelImpl checkOutDatePanel = new JDatePanelImpl(checkOutModel, props);
+
+      /* creating format for date display*/
+      String datePattern = "MM/dd/yyyy";
+      SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+      
+      /* creating date picker objects for check in/out dates */
+      JDatePickerImpl checkInDatePicker = new JDatePickerImpl(checkInDatePanel, new DateFormatter(){
+         @Override
+         public String valueToString(Object value) throws ParseException{
+            if(value != null){
+               Calendar cal = (Calendar) value;
+               return dateFormatter.format(cal.getTime());
+            }
+            return "";
+         }
+      });
+      JDatePickerImpl checkOutDatePicker = new JDatePickerImpl(checkOutDatePanel, new DateFormatter(){
+         @Override
+         public String valueToString(Object value) throws ParseException{
+            if(value != null){
+               Calendar cal = (Calendar) value;
+               return dateFormatter.format(cal.getTime());
+            }
+            return "";
+         }
+      });
+
+      /* adding check in label and date picker to check in panel */
+      checkInPanel.add(checkInLabel);
+      checkInPanel.add(checkInDatePicker);
+
+      /* adding check out label and date picker to check out panel */
+      checkOutPanel.add(checkOutLabel);
+      checkOutPanel.add(checkOutDatePicker);
+
+      /* adding the check in and check out panels to the calendar panel */
+      calanderPanel.add(checkInPanel);
+      calanderPanel.add(checkOutPanel);
+
+      /* creating panels for room, price, accessability, and smoking filters */
+      JPanel roomFilterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 10));
+      JPanel priceFilterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 10));
+      JPanel accessFilterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 10));
+      JPanel smokingFilterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 10));
+
+      /* setting background colors for filter panels */
+      roomFilterPanel.setBackground(new Color(161, 158, 158));
+      priceFilterPanel.setBackground(new Color(161, 158, 158));
+      accessFilterPanel.setBackground(new Color(161, 158, 158));
+      smokingFilterPanel.setBackground(new Color(161, 158, 158));
+
+      /* creating search paramater for combo boxes */
+      String roomTypes [] = {"", "Suite", "King", "Queen", "Twin"};
+      String prices[] = {"", "$999.99", "$749.99", "499.99", "249.99"};
+
+      /* creating combo boxes for room and price filters */
+      JComboBox<String> roomChoices = new JComboBox<String>(roomTypes);
+      JComboBox<String> priceChoices = new JComboBox<String>(prices);
+
+      /* setting combo boxes to empty on start */
+      roomChoices.setSelectedIndex(-1);
+      priceChoices.setSelectedIndex(-1);
+
+      /* creating labels for room and price combo boxes */
+      JLabel typeLabel = new JLabel("Room Type: ");
+      JLabel priceLabel = new JLabel("Price: ");
+
+      /* adding combo boxes and labels to appropriate panels */
+      roomFilterPanel.add(typeLabel);
+      roomFilterPanel.add(roomChoices);
+      priceFilterPanel.add(priceLabel);
+      priceFilterPanel.add(priceChoices);
+
+      /* overriding default boarders on price filter panel */
+      roomFilterPanel.setBorder(new EmptyBorder(0,20,0,0));
+      priceFilterPanel.setBorder(new EmptyBorder(0,45,0,0));
+      
+      /* creating label and check box for accessability filter */
+      JLabel accessLabel = new JLabel("Accessability: ");
+      JCheckBox accessability = new JCheckBox();
+      
+      /* creating label and check box for smoking filter */
+      JLabel smokingLabel =  new JLabel("Smoking: ");
+      JCheckBox smoking = new JCheckBox();
+
+      /* setting background colors for check boxes */
+      accessability.setBackground(new Color(161, 158, 158));
+      smoking.setBackground(new Color(161, 158, 158));
+
+      /* adding labels and check boxes to appropriate panels */
+      accessFilterPanel.add(accessLabel);
+      accessFilterPanel.add(accessability);
+      smokingFilterPanel.add(smokingLabel);
+      smokingFilterPanel.add(smoking);
+
+      /* aligning checkbox panels */
+      accessFilterPanel.setBorder(new EmptyBorder(0, 45, 0, 0));
+      smokingFilterPanel.setBorder(new EmptyBorder(0, 70, 0, 0));
+
+      /* adding different filter panels to main filter panel */
+      filterPanel.add(roomFilterPanel);
+      filterPanel.add(accessFilterPanel);
+      filterPanel.add(priceFilterPanel);
+      filterPanel.add(smokingFilterPanel);
+
+      filterPanel.setBorder(new EmptyBorder(0,0,0,0));
+
+      /* creating search button and setting background color */
+      JButton searchButton = new JButton("Search");
+      searchButton.setBackground(new Color(153, 153, 153));
+
+      searchButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            /* creating linked list for available rooms */
+            LinkedList<Room> availableRooms = new LinkedList<Room>();
+            availableRooms.clear();
+            LocalDate checkIn = checkInModel.getValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate checkOut = checkOutModel.getValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            boolean searchType = false, searchPrice = false, searchAccess = false, searchSmoke = false;
+            
+            /* checking if user is trying to search by room type  */
+            if(roomChoices.getSelectedItem() != null){
+               if(roomChoices.getSelectedItem() != ""){
+                  searchType = true;
                }
-               return "";
             }
-         });
-        JDatePickerImpl checkOutDatePicker = new JDatePickerImpl(checkOutDatePanel, new DateFormatter(){
-            //creating format for date display
-            private String datePatern = "MM/dd/yyyy";
-            private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
 
-            @Override
-            public String valueToString(Object value) throws ParseException {
-               if (value != null) {
-                  Calendar cal = (Calendar) value;
-                  return dateFormatter.format(cal.getTime());
+            /* checking if user is trying to search by price */
+            if(priceChoices.getSelectedItem() != null){
+               if(priceChoices.getSelectedItem() != ""){
+                  searchPrice = true;
                }
-               return "";
             }
-         });  
-         
-         /* creating action listeners for the  date calendar objects so date can be saved when chosen */
-         checkInDatePanel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               String checkInDate = Integer.toString(checkInDatePicker.getModel().getMonth() + 1) + "/" 
-               + Integer.toString(checkInDatePicker.getModel().getDay()) + "/"
-               + Integer.toString(checkInDatePicker.getModel().getYear()); 
- 
-               System.out.println(checkInDate);
+
+            /* checking if user is trying to search by accessability */
+            if(accessability.isSelected()){
+               searchAccess = true;
             }
-         });
 
-         checkOutDatePanel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               String checkOutDate = Integer.toString(checkOutDatePicker.getModel().getMonth() + 1) + "/" 
-               + Integer.toString(checkOutDatePicker.getModel().getDay()) + "/"
-               + Integer.toString(checkOutDatePicker.getModel().getYear()); 
- 
-               System.out.println(checkOutDate);
+            /* checking if user is trying to search by smoking/non-smoking */
+            if(smoking.isSelected()){
+               searchSmoke = true;
             }
-         });
-         
 
-        /* adding check in label and date picker to check in panel */
-        checkIPanel.add(checkInLabel);
-        checkIPanel.add(checkInDatePicker);
+            /* looping through all the rooms to check if each room has the search parameters */
+            for(Room room : hotelTest.getRoomsList()){
+               boolean addRoom = false;
 
-        /* adding check out label and date picker to check out panel */
-        checkOutPanel.add(checkOutLabel);
-        checkOutPanel.add(checkOutDatePicker);
-   
-        /* adding check in/out panels to top panel */
-        top.add(checkIPanel);
-        top.add(checkOutPanel);
+               /* checking if user is searching by room type*/
+               if(searchType){
+                  /* cheaking if the current room matches the chosen room type */
+                  if(room.GetRoomType().toLowerCase().equals(String.valueOf(roomChoices.getSelectedItem()).toLowerCase())){
+                     addRoom = true;
+                  }
+               }
 
-        /* adding top panel to center panel */
-        centerPanel.add(top, BorderLayout.NORTH);
-        
-         /*creating new middle panel for rooms list*/
-        JPanel middle = new JPanel(new GridLayout(13, 2, 10, 10));
-        middle.setBackground(new Color(161, 158, 158));
-        
-        for(Room room : hotelTest.getRoomsList()){
-         /*creating the labels, image icons and reservation buttons for each room*/
-           JPanel roomPics = new JPanel(new BorderLayout());
-           roomPics.setBackground(new Color(161, 158, 158));
+               /* checking if user is searching by room price */
+               if(searchPrice){
+                  /* checking if the user is also searching by room type */
+                  if(searchType){
+                     /* checking if room has passed previous search checks */
+                     if(addRoom){
+                        /*checking if the room does not match the chosen price */
+                        if(!room.GetRoomPriceString().toLowerCase().equals(String.valueOf(priceChoices.getSelectedItem()).toLowerCase())){
+                           addRoom = false;
+                        }
+                     }
+                  }
+                  /* user is only searching by price */ 
+                  else{
+                     /* checking if room price matches chosen price */
+                     if(room.GetRoomPriceString().toLowerCase().equals(String.valueOf(priceChoices.getSelectedItem()).toLowerCase())){
+                        addRoom = true;
+                     }
+                  }
+               }
 
-           JLabel label1 = new JLabel();
-           label1.setHorizontalTextPosition(SwingConstants.CENTER);
-           label1.setVerticalTextPosition(SwingConstants.BOTTOM);
-           label1.setHorizontalAlignment(SwingConstants.CENTER);
-           
-           try {
-            BufferedImage roomImg = null;
-           switch(room.GetRoomType().toLowerCase()){
-            case "king":
-               roomImg = ImageIO.read(new File("King.jpg"));
-               break;
-            case "queen":
-               roomImg = ImageIO.read(new File("Queen.jpg"));
-               break;
-            case "twin":
-               roomImg = ImageIO.read(new File("Twin.jpg"));
-               break;
-            case "suite":
-               roomImg = ImageIO.read(new File("Suite.jpg"));
-               break;
-            default:
-               roomImg = ImageIO.read(new File("Matador.png"));
+               /*checking if user is searching by accessability */
+               if(searchAccess){
+                  /* checking if user is also seraching by either of the previous search parameters */
+                  if(searchType || searchPrice){
+                     /* checking if room has passed previous search checks  */
+                     if(addRoom){
+                        /* checking if room is not accessible */
+                        if(!room.GetRoomAccessible()){
+                           addRoom = false;
+                        }
+                     }
+                  }
+                  /* user is only searching by accessibility */
+                  else{
+                     /* cheking if room is accessible */
+                     if(room.GetRoomAccessible()){
+                        addRoom = true;
+                     }
+                  }
+               }
+
+               /* checking if user is searching by smoking/non-smoking */
+               if(searchSmoke){
+                  /* checking if user is also seraching by any of the previous search parameters */
+                  if(searchType || searchPrice || searchAccess){
+                     /* checking if room has passed previous search checks */
+                     if(addRoom){
+                        /* checking if room is non-smoking */
+                        if(!room.GetRoomSmoking()){
+                           addRoom = false;
+                        }
+                     }
+                  }
+                  /* user is only searching by smoking/non-smoking */
+                  else{
+                     /* checking if room is a smoking room */
+                     if(room.GetRoomSmoking()){
+                        addRoom = true;
+                     }
+                  }
+               }
+
+               /* checking if the room should be added to available rooms list */
+               if(addRoom){
+                  availableRooms.add(room);
+               }
+
             }
-             
-           label1.setIcon(new ImageIcon(roomImg));
-           label1.setText(room.GetRoomType());
-           label1.setIconTextGap(0);
+            
 
-           }
-           catch(IOException e1){
-                  //TODO Auto-generated catch block
-                  e1.printStackTrace();
-           }
-           /*creating action listener for reserve button*/
-           JButton resButton = new JButton("Reserve This Room");
-           resButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               scrollPane.setVisible(false);
-               String checkInDate = Integer.toString(checkInDatePicker.getModel().getMonth() + 1) + "/" 
-               + Integer.toString(checkInDatePicker.getModel().getDay()) + "/"
-               + Integer.toString(checkInDatePicker.getModel().getYear());
+            /* checking if any rooms are available */
+            if(!availableRooms.isEmpty()){
+               
+               /* removes previous rooms list from the middle panel */
+               middle.removeAll();
+               /* adds new rooms list to the middle panel */
+               middle.add(RoomsListPanel(availableRooms, checkIn, checkOut));
+               
+               /* adds updated middle panel to the center panel */
+               centerPanel.add(middle, BorderLayout.CENTER);
+               
+               /* revalidates mainWin so rooms list shows properly */
+               mainWin.revalidate();
+               
 
-               String checkOutDate = Integer.toString(checkOutDatePicker.getModel().getMonth() + 1) + "/" 
-               + Integer.toString(checkOutDatePicker.getModel().getDay()) + "/"
-               + Integer.toString(checkOutDatePicker.getModel().getYear());
-               getCustInfoPanel(room, checkInDate,checkOutDate);
             }
-           });
+            /* there are no available rooms */
+            else{
+               JOptionPane.showMessageDialog(null, "No rooms matched these search parameters, please try again", 
+               "Invalid Search", JOptionPane.ERROR_MESSAGE);
+            }
 
-           resButton.setBackground(new Color(153, 153, 153));
-           resButton.setFocusable(false);
 
-           /*Overriding default boarders */
-           EmptyBorder rpBorder = new EmptyBorder(0, 50, 0, 100);
-           roomPics.setBorder(rpBorder);
-
-           /*adding label and button to picture panel */
-           roomPics.add(label1, BorderLayout.CENTER);
-           roomPics.add(resButton, BorderLayout.SOUTH);
-
-           /*creating the labels for the room information*/
-           JPanel roomInfo = new JPanel(new GridLayout(7, 2,0,-200));
-           roomInfo.setBackground(new Color(161, 158, 158));
-
-           Font font = new Font("MV Boli", Font.PLAIN ,15);
-          
-           JLabel roomTypeLabel = new JLabel("Room Type: ");
-           JLabel roomTypeVar = new JLabel(room.GetRoomType());
-           roomTypeLabel.setFont(font);
-           roomTypeVar.setFont(font);
-           roomTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-           
-           JLabel bedAmountLabel = new JLabel("Amount of Beds: ");
-           JLabel bedAmountVar = new JLabel(room.GetBedCountString());
-           bedAmountLabel.setFont(font);
-           bedAmountVar.setFont(font);
-           bedAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-
-           JLabel roomNumLabel = new JLabel("Room Number: ");
-           JLabel roomNumVar = new JLabel(room.GetRoomNumberString());
-           roomNumLabel.setFont(font);
-           roomNumVar.setFont(font);
-           roomNumLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-
-           JLabel roomFloorLabel = new JLabel("Room Floor: ");
-           JLabel roomFloorVar = new JLabel(room.GetRoomFloorString());
-           roomFloorLabel.setFont(font);
-           roomFloorVar.setFont(font);
-           roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-
-           JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
-           JLabel accessibilityVar = new JLabel(room.GetRoomAccessibleString());
-           accessibilityLabel.setFont(font);
-           accessibilityVar.setFont(font);
-           accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-           
-           JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
-           JLabel nonSmokingVar = new JLabel(room.GetRoomSmokingString());
-           nonSmokingLabel.setFont(font);
-           nonSmokingVar.setFont(font);
-           nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-
-           JLabel roomPriceLabel = new JLabel("Room Price: ");
-           JLabel roomPriceVar = new JLabel(room.GetRoomPriceString());
-           roomPriceLabel.setFont(font);
-           roomPriceVar.setFont(font);
-           roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-                      
-           /*adding labels to info panel */
-           roomInfo.add(roomTypeLabel);
-           roomInfo.add(roomTypeVar);
-           roomInfo.add(bedAmountLabel);
-           roomInfo.add(bedAmountVar);
-           roomInfo.add(roomNumLabel);
-           roomInfo.add(roomNumVar);
-           roomInfo.add(roomFloorLabel);
-           roomInfo.add(roomFloorVar);
-           roomInfo.add(accessibilityLabel);
-           roomInfo.add(accessibilityVar);
-           roomInfo.add(nonSmokingLabel);
-           roomInfo.add(nonSmokingVar);
-           roomInfo.add(roomPriceLabel);
-           roomInfo.add(roomPriceVar);
-
-           /* adding each panel to the center panel*/
-           middle.add(roomPics);
-           middle.add(roomInfo);
-
-           //this.centerPanel.add(top, BorderLayout.NORTH);
-           this.centerPanel.add(middle, BorderLayout.CENTER);
          }
 
+      });
 
-         JPanel bottom = new JPanel();
-         bottom.setBackground(new Color(161, 158,158));
-         /*creating button to go back */
-         JButton backButton = new JButton("Go Back");
-         backButton.setBackground(new Color(153, 153, 153));
+      buttonPanel.add(searchButton);
+      
+      /*adding calander, filter, and button panels to top panel */
+      top.add(calanderPanel, BorderLayout.NORTH);
+      top.add(filterPanel, BorderLayout.CENTER);
+      top.add(buttonPanel, BorderLayout.SOUTH);
 
-         /*creating action listener for back button */
-         backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-               //centerPanel.setVisible(false);
-               scrollPane.setVisible(false);
-               mainCenterPanel();
-            }
-         });
+      top.setBorder(new EmptyBorder(0,0,0,0));
 
-         /* adding back button to bottom panel */
-         bottom.add(backButton);
-         
-         /* taking automatic focus away from back button */
-         backButton.setFocusable(false);
+      /* converting today and tomorrow date objects into local date objects*/
+      LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      LocalDate localTomorrow = tomorrow.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      
+      /* making rooms list into linked list */
+      LinkedList<Room> availableRooms = new LinkedList<Room>();
+      for(Room room : hotelTest.getRoomsList()){
+         availableRooms.add(room);
+      }
 
+      /* showing all rooms in the middle panel */
+      middle.add(RoomsListPanel(availableRooms, localToday, localTomorrow));
 
-         /* adding bottom panel to center panel */
-         this.centerPanel.add(bottom, BorderLayout.SOUTH);
+      /* creating button to go back */
+      JButton backButton = new JButton("Go Back");
+      backButton.setBackground(new Color(153, 153, 153));
 
+      /* creating action listener for back button */
+      backButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            scrollPane.setVisible(false);
+            mainCenterPanel();
+         }
+      });
 
-         /* creating scroll pane and adding the center panel to the scroll pane */
-        scrollPane = new JScrollPane(centerPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(12);
-        
-        /*over riding default boreders around the scroll pane*/
-        EmptyBorder centerBorder = new EmptyBorder(0, 0, 0, 0);   
-        scrollPane.setBorder(centerBorder);
-         
-        /*adding the scroll pane to main window frame */
-        this.mainWin.add(scrollPane, BorderLayout.CENTER);
-        this.mainWin.setSize(1000, 800);
-        this.mainWin.setLocationRelativeTo(null);
+      /* adding back button to bottom panel */
+      bottom.add(backButton);
+
+      /* adding top, middle and bottom panels to center panel */
+      this.centerPanel.add(top, BorderLayout.NORTH);
+      this.centerPanel.add(middle, BorderLayout.CENTER);
+      this.centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      this.centerPanel.setBorder(new EmptyBorder(0,0,0,-150));
+
+      /* creating scroll pane and adding the center panel to the scroll pane */
+      this.scrollPane = new JScrollPane(centerPanel);
+      this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      this.scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      this.scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+      
+      /* overriding default borders around the scrollpane */
+      this.scrollPane.setBorder(new EmptyBorder(0, 0,0,0));
+
+      /* adding the scroll pane to main window frame */
+      this.mainWin.add(scrollPane, BorderLayout.CENTER);
+      this.mainWin.setSize(900,800);
+      this.mainWin.setLocationRelativeTo(null);
+
      }
 
      
@@ -558,7 +635,7 @@ public class MainWindow{
       * @param checkIn  to associate the customer and room to a reservation check in day
       * @param checkOut to associate the customer and room to a reservation check out day
       */
-     public void getCustInfoPanel(Room room, String checkIn, String checkOut){
+     public void getCustInfoPanel(Room room, LocalDate checkIn, LocalDate checkOut){
          /*creating new center panel for entering customer information*/
          this.centerPanel = new JPanel(new BorderLayout());
          this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -675,7 +752,7 @@ public class MainWindow{
                @Override
                public void actionPerformed(ActionEvent e){
                   centerPanel.setVisible(false);
-                  roomsListPanel();
+                  reserveRoomPanel();
                }
             });
 
@@ -1104,7 +1181,7 @@ public class MainWindow{
          @Override
          public void actionPerformed(ActionEvent e){
             scrollPane.setVisible(false);
-            roomsListPanel();
+            reserveRoomPanel();
          }
       });
 
@@ -1509,4 +1586,154 @@ public class MainWindow{
       this.mainWin.setSize(825, 750);
       this.mainWin.setLocationRelativeTo(null);
    }
+   
+
+   
+   /** 
+    * @author Nexaly Orellana
+    * takes in a list of rooms, a check in date, and a check out date and creates panels for each room's info to be displayed
+    * when a button is pressed to reserve a room, it passes the check in date and check out date to the getCustInfoPanel method
+    * @param roomsList
+    * @param checkIn
+    * @param checkOut
+    * @return JPanel
+    */
+   public JPanel RoomsListPanel(LinkedList<Room> roomsList, LocalDate checkIn, LocalDate checkOut){
+      JPanel roomsListPanel = new JPanel(new GridLayout(roomsList.size(), 2, 10, 10));
+      roomsListPanel.setBackground(new Color(161, 158, 158));
+
+      /* looping through the rooms list */
+      for(Room room : roomsList){
+         /* creating labels, image icons, and reservation buttons for each room */
+         JPanel roomPicPanel = new JPanel(new BorderLayout());
+         roomPicPanel.setBackground(new Color(161, 158, 158));
+
+         JLabel roomTypeLabel = new JLabel();
+         roomTypeLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+         roomTypeLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+         roomTypeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+         try{
+            BufferedImage roomImg = null;
+            switch (room.GetRoomType().toLowerCase()) {
+               case "king":
+                  roomImg = ImageIO.read(new File("King.jpg"));
+                  break;
+               case "queen":
+                  roomImg = ImageIO.read(new File("Queen.jpg"));
+                  break;
+               case "twin":
+                  roomImg = ImageIO.read(new File("Twin.jpg"));
+                  break;
+               case "suite":
+                  roomImg = ImageIO.read(new File("Suite.jpg"));
+                  break;
+               default:
+                  roomImg = ImageIO.read(new File("Matador.png"));
+                  break;
+            }
+
+            roomTypeLabel.setIcon(new ImageIcon(roomImg));
+            roomTypeLabel.setText(room.GetRoomType());
+            roomTypeLabel.setIconTextGap(0);
+         }catch(IOException e){
+            //TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+
+         /* creating action listener for reserve button */
+         JButton resButton = new JButton("Reserve This Room");
+         resButton.addActionListener(new ActionListener() {
+            @Override 
+            public void actionPerformed(ActionEvent e){
+               scrollPane.setVisible(false);
+               getCustInfoPanel(room, checkIn, checkOut);
+            }
+         });
+
+         /* setting background color for button and taking away auto focus */
+         resButton.setBackground((new Color(153, 153, 153)));
+         resButton.setFocusable(false);
+
+         /* overriding default borders for roomPic panel */
+         roomPicPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+         /* adding label and button to picture panel */
+         roomPicPanel.add(roomTypeLabel, BorderLayout.CENTER);
+         roomPicPanel.add(resButton, BorderLayout.SOUTH);
+
+         /* creating panel for room information and setting background color */
+         JPanel roomInfoPanel = new JPanel(new GridLayout(7, 2, 0, -200));
+         roomInfoPanel.setBackground(new Color(161, 158, 158));
+
+         /* creating font attribute for each label */
+         Font font = new Font("MV Boli", Font.PLAIN ,15);
+
+         /* creating labels for room information */
+         JLabel TypeLabel = new JLabel("Room Type: ");
+         JLabel roomTypeVar = new JLabel(room.GetRoomType());
+         TypeLabel.setFont(font);
+         roomTypeVar.setFont(font);
+         TypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           
+         JLabel bedAmountLabel = new JLabel("Amount of Beds: ");
+         JLabel bedAmountVar = new JLabel(room.GetBedCountString());
+         bedAmountLabel.setFont(font);
+         bedAmountVar.setFont(font);
+         bedAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+         JLabel roomNumLabel = new JLabel("Room Number: ");
+         JLabel roomNumVar = new JLabel(room.GetRoomNumberString());
+         roomNumLabel.setFont(font);
+         roomNumVar.setFont(font);
+         roomNumLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+         JLabel roomFloorLabel = new JLabel("Room Floor: ");
+         JLabel roomFloorVar = new JLabel(room.GetRoomFloorString());
+         roomFloorLabel.setFont(font);
+         roomFloorVar.setFont(font);
+         roomFloorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+         JLabel accessibilityLabel = new JLabel("Disability Accessible: ");
+         JLabel accessibilityVar = new JLabel(room.GetRoomAccessibleString());
+         accessibilityLabel.setFont(font);
+         accessibilityVar.setFont(font);
+         accessibilityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+           
+         JLabel nonSmokingLabel = new JLabel("Available Non-Smoking: ");
+         JLabel nonSmokingVar = new JLabel(room.GetRoomSmokingString());
+         nonSmokingLabel.setFont(font);
+         nonSmokingVar.setFont(font);
+         nonSmokingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+         JLabel roomPriceLabel = new JLabel("Room Price: ");
+         JLabel roomPriceVar = new JLabel(room.GetRoomPriceString());
+         roomPriceLabel.setFont(font);
+         roomPriceVar.setFont(font);
+         roomPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+         /* adding labels to info panel */
+         roomInfoPanel.add(TypeLabel);
+         roomInfoPanel.add(roomTypeVar);
+         roomInfoPanel.add(bedAmountLabel);
+         roomInfoPanel.add(bedAmountVar);
+         roomInfoPanel.add(roomNumLabel);
+         roomInfoPanel.add(roomNumVar);
+         roomInfoPanel.add(roomFloorLabel);
+         roomInfoPanel.add(roomFloorVar);
+         roomInfoPanel.add(accessibilityLabel);
+         roomInfoPanel.add(accessibilityVar);
+         roomInfoPanel.add(nonSmokingLabel);
+         roomInfoPanel.add(nonSmokingVar);
+         roomInfoPanel.add(roomPriceLabel);
+         roomInfoPanel.add(roomPriceVar);
+
+         /* adding roomPicPanel and roomInfoPanel to roomsListPanel */
+         roomsListPanel.add(roomPicPanel);
+         roomsListPanel.add(roomInfoPanel);
+      }
+      return roomsListPanel;
+   }
+
+
 }
