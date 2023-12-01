@@ -36,6 +36,19 @@ public class ReservationOptions {
         this.checkOutString = df.format(checkOut);
     }
 
+    /* Constructor for LocalDate dates */
+    public ReservationOptions(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut) {
+        /*  to format the Date objects into proper Strings */
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+        this.customer = customer;
+        this.roomChosen = room;
+        this.checkInDate = checkIn;
+        this.checkOutDate = checkOut;
+        this.checkInString = df.format(checkIn);
+        this.checkOutString = df.format(checkOut);
+    }
+
     /* Constructor for string dates*/
     public ReservationOptions(Customer customer, Room room, String checkIn, String checkOut) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
