@@ -431,7 +431,7 @@ public class MainWindow{
             LocalDate checkOut = checkOutModel.getValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             boolean searchType = false, searchPrice = false, searchAccess = false, searchSmoke = false;
-            
+
             /* checking if user is trying to search by room type  */
             if(roomChoices.getSelectedItem() != null){
                if(roomChoices.getSelectedItem() != ""){
@@ -459,7 +459,7 @@ public class MainWindow{
             /* looping through all the rooms to check if each room has the search parameters */
             for(Room room : hotelTest.getRoomsList()){
                boolean addRoom = false;
-
+               
                /* checking if user is searching by room type*/
                if(searchType){
                   /* cheaking if the current room matches the chosen room type */
@@ -530,6 +530,56 @@ public class MainWindow{
                      }
                   }
                }
+               
+               
+               boolean dateConflict = false;
+               /* loops through all reservations to see if there is a date conflict with the current room*/
+               for(ReservationOptions res : hotelTest.getReservationList()){
+                  /* checks if current room matches current reservation */
+                  if(room.GetRoomNumberString().equals(res.getRoomChosen().GetRoomNumberString())){
+                     /* if reservation check in and check out are the same as the chosen check in and check out */
+                     if(res.getCheckInDate().isEqual(checkIn) && res.getCheckOutDate().isEqual(checkOut)){
+                        dateConflict = true;
+                     /* if reservation check in is the same as chosen check in but check out dates are different */
+                     }else if(res.getCheckInDate().isEqual(checkIn) && !res.getCheckOutDate().isEqual(checkOut)){
+                        dateConflict = true;
+                     /* if reservation check in is different from chosen check in but check out dates are the same */
+                     }else if(!res.getCheckInDate().isEqual(checkIn) && res.getCheckOutDate().isEqual(checkOut)){
+                        dateConflict = true;
+                     /* if chosen check in is between the current reservations check in and check out */
+                     }else if(checkIn.isAfter(res.getCheckInDate()) && checkIn.isBefore(res.getCheckOutDate())){
+                        dateConflict = true;
+                     /* if chosen check out is between the current reservations check in and check out */
+                     }else if (checkOut.isAfter(res.getCheckInDate()) && checkOut.isBefore(res.getCheckOutDate())){
+                        dateConflict = true;
+                     }
+                  }
+               }
+
+               /* checks if any other search filters were used */
+               if(searchType || searchPrice || searchAccess || searchSmoke){
+                  /* if room currently matches other search filters */
+                  if(addRoom){
+                     /* if there is a date conflict */
+                     if(dateConflict){
+                        addRoom  = false;
+                     }
+                  }
+               /* no other search filters were used */
+               }else{
+                  /* if no date conflict */
+                  if(!dateConflict){
+                     addRoom = true;
+                  /* if there is a date conflict */
+                  }else{
+                     addRoom = false;
+                  }
+               }
+
+               /* if chosen check in is after chosen check out, no rooms should be available */
+               if(checkIn.isAfter(checkOut)){
+                  addRoom = false;
+               }
 
                /* checking if the room should be added to available rooms list */
                if(addRoom){
@@ -559,9 +609,10 @@ public class MainWindow{
             else{
                JOptionPane.showMessageDialog(null, "No rooms matched these search parameters, please try again", 
                "Invalid Search", JOptionPane.ERROR_MESSAGE);
+               scrollPane.setVisible(false);
+               reserveRoomPanel();
+               mainWin.revalidate();
             }
-
-
          }
 
       });
@@ -581,8 +632,33 @@ public class MainWindow{
       
       /* making rooms list into linked list */
       LinkedList<Room> availableRooms = new LinkedList<Room>();
+     /* searching for rooms that are available for check in today and check out tommorow */
       for(Room room : hotelTest.getRoomsList()){
-         availableRooms.add(room);
+         boolean addRoom = true;
+         for(ReservationOptions res : hotelTest.getReservationList()){
+            /* checking if the room matches the current reservation being checked */
+            if(room.GetRoomNumberString().equals(res.getRoomChosen().GetRoomNumberString())){
+               /* if check in and check out for current reservation is today and tomorrow  */
+               if(res.getCheckInDate().isEqual(localToday) && res.getCheckOutDate().isEqual(localTomorrow)){
+                  addRoom = false;
+               /* if current reservation has check in equal to today but check out date not tomorrow */   
+               }else if(res.getCheckInDate().isEqual(localToday) && !res.getCheckOutDate().isEqual(localTomorrow)){
+                  addRoom = false;
+               /* if current reservation has check in not today, but check out is tomorrow */
+               }else if(!res.getCheckInDate().isEqual(localToday) && res.getCheckOutDate().isEqual(localTomorrow)){
+                  addRoom = false;
+               /* if today is in between the current reservations check in and check out dates  */
+               }else if(localToday.isAfter(res.getCheckInDate()) && localToday.isBefore(res.getCheckOutDate())){
+                  addRoom = false;
+               /* if tomorrow is in between the current reservations check in and check out dates */
+               }else if (localTomorrow.isAfter(res.getCheckInDate()) && localTomorrow.isBefore(res.getCheckOutDate())){
+                  addRoom = false;
+               }
+            }
+         }
+         if(addRoom){
+            availableRooms.add(room);
+         }
       }
 
       /* showing all rooms in the middle panel */
@@ -1734,6 +1810,4 @@ public class MainWindow{
       }
       return roomsListPanel;
    }
-
-
 }
