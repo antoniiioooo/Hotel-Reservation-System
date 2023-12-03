@@ -17,7 +17,7 @@ class Customer{
     private String custID;
     private String transID;
     private String confirmation;
-    //private Payment paymentInfo;
+    private Payment paymentInfo;
 
     /* Default contructor */
     public Customer(){
@@ -166,11 +166,11 @@ class Customer{
         return this.confirmation;
     }
 
-    /* payment info setter and getter 
+    /* payment info setter and getter */
     public void setPaymentInfo(Payment payInfo){
         this.paymentInfo = payInfo;
     }
     public Payment getPaymentInfo(){
         return this.paymentInfo;
-    } */
+    } 
 }
