@@ -1327,15 +1327,14 @@ public class MainWindow{
 
             /* if the entered password is correct, it will allow access to the Manager Report menu */
             if (check.confirmAccess()) {
-               System.out.println("Passed");
                centerPanel.setVisible(false);
                managerReportsPanel();
             }
             /* when the password entered is incorrect */
             else {
-               System.out.println("Failed");
-               centerPanel.setVisible(false);
-               mainCenterPanel();
+               JOptionPane.showMessageDialog(null,
+               "Error: Incorrect Password, please try again", "Error Message", 
+               JOptionPane.ERROR_MESSAGE);
             }
          }
       });
