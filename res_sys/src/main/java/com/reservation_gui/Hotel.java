@@ -205,7 +205,7 @@ public class Hotel
             case "Customer ID":
                 for (ReservationOptions res : reservations){
                     // confirms that the name and the id number is matching within the list of reservations
-                    if (res.getCustomer().getFirstName().equals(first) && res.getCustomer().getLastName().equals(last) 
+                    if (res.getCustomer().getFirstName().toLowerCase().equals(first.toLowerCase()) && res.getCustomer().getLastName().toLowerCase().equals(last.toLowerCase()) 
                         && res.getCustomer().getCustID().equals(id)){
                             return res;
                         }
@@ -214,7 +214,7 @@ public class Hotel
             case "Confirmation Number":
                 for (ReservationOptions res : reservations){
                     // confirms that the name and the confirmation number is matching within the list of reservations
-                    if (res.getCustomer().getFirstName().equals(first) && res.getCustomer().getLastName().equals(last) 
+                    if (res.getCustomer().getFirstName().toLowerCase().equals(first.toLowerCase()) && res.getCustomer().getLastName().toLowerCase().equals(last.toLowerCase()) 
                         && res.getCustomer().getConfrimNum().equals(id)){
                             return res;
                         }

@@ -1025,23 +1025,43 @@ public class MainWindow{
             public void actionPerformed(ActionEvent e){    
                // checks if there is missing input for the first and last name
                if (firstName.getText().equals("") || lastName.getText().equals("")){
-                  System.out.println("Please enter a first and last name");
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Please Enter a First and Last Name", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
                }
                else if (typeToVerify.getText().equals("Confirmation Number:")){
                   // verifies for confirmation number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
                   ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Confirmation Number");
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(res);
+
+                  if (res.getCustomer() == null || res.getRoomChosen() == null || res.getCheckInString() == null || res.getCheckOutString() == null) {
+                     JOptionPane.showMessageDialog(null,
+                     "Error: Reservation was not found, please try again", "Error Message", 
+                     JOptionPane.ERROR_MESSAGE);
+                  }
+                  else {
+                     scrollPane.setVisible(false);
+                     reviewReservationPanel(res);
+                  }
                }
                else if (typeToVerify.getText().equals("Customer ID:")){
                   // verifies for id number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
                   ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Customer ID");
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(res);
+                  
+                  if (res.getCustomer() == null || res.getRoomChosen() == null || res.getCheckInString() == null || res.getCheckOutString() == null) {
+                     JOptionPane.showMessageDialog(null,
+                     "Error: Reservation was not found, please try again", "Error Message", 
+                     JOptionPane.ERROR_MESSAGE);
+                  }
+                  else {
+                     scrollPane.setVisible(false);
+                     reviewReservationPanel(res);
+                  }
                }
                else {
                   // error message for any potential misinputs
-                  System.out.println("Please enter a first and last name");
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Please Enter the Information Correctly", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
                }
 
                /* if both the customer id and confirmation number fields or the name field is empty */          
@@ -1839,15 +1859,17 @@ public class MainWindow{
 
       /* creating card number label and textfield adding border to label and adding label and textfield to appropiate panel */
       JLabel cardNumberLabel = new JLabel("Card Number:");
-      JTextField cardNumberInput = new JTextField(20);
       cardNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
       cardNumberPanel.add(cardNumberLabel);
-      cardNumberPanel.add(cardNumberInput);
 
       /* creating expiration date label and textfield adding label and textfield to appropiate panel */
       JLabel expirationDateLabel = new JLabel("Expiration Date:");
       expirationDatePanel.add(expirationDateLabel);
       try{
+         JFormattedTextField cardNumberInput = new JFormattedTextField(new MaskFormatter("####-####-####-####"));
+         cardNumberInput.setColumns(20);
+         cardNumberPanel.add(cardNumberInput);
+
          /* creating text field with input mask for expiration date */
          JFormattedTextField expirationDateInput = new JFormattedTextField(new MaskFormatter("(##/##)"));
          expirationDateInput.setColumns(20);
