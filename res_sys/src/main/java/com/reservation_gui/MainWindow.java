@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -1253,6 +1255,7 @@ public class MainWindow{
       JTextPane receiptTextPane = receipt.GetReceipt();
       receiptTextPane.setBackground(new Color( 161, 158, 158));
       receiptTextPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
+      receiptTextPane.setCaretPosition(0);
       middle.add(receiptTextPane);
 
       /*creating buttons and setting background color */
@@ -1291,10 +1294,12 @@ public class MainWindow{
       scrollPane = new JScrollPane(centerPanel);
       scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      
         
       /* over riding default boreders around the scroll pane */
       EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
       scrollPane.setBorder(scrollPaneBorder);
+      
          
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
@@ -1490,6 +1495,7 @@ public class MainWindow{
 
       /* retrieves the report and adds it to the middle panel for display */
       JTextPane resRep = reports.getReservationList();
+      resRep.setCaretPosition(0);
       middle.add(resRep);
 
       /* setting background colors for top and bottom panels */
@@ -1556,6 +1562,7 @@ public class MainWindow{
 
       /* retrieves the customer report and add to the middle panel */
       JTextPane cusRep = reports.getCustomerList();
+      cusRep.setCaretPosition(0);
       middle.add(cusRep);
 
       /* setting background colors for top and bottom panels */
@@ -1622,6 +1629,7 @@ public class MainWindow{
 
       /* retrieves the room report and adds to the middle panel */
       JTextPane roomRep = reports.getRoomList();
+      roomRep.setCaretPosition(0);
       middle.add(roomRep);
 
       /* setting background colors for top and bottom panels */
@@ -1853,7 +1861,7 @@ public class MainWindow{
       /* creating card holder name label and textfield, adding border to label and adding label and textfield to appropiate panel */
       JLabel cardHolderNameLabel = new JLabel("Name on Card: ");
       JTextField cardHolderNameInput = new JTextField(20);
-      cardHolderNameLabel.setBorder(new EmptyBorder(0, 0, 0, 24));
+      cardHolderNameLabel.setBorder(new EmptyBorder(0, 0, 0, 17));
       cardHolderNamePanel.add(cardHolderNameLabel);
       cardHolderNamePanel.add(cardHolderNameInput);
 
@@ -1864,6 +1872,7 @@ public class MainWindow{
 
       /* creating expiration date label and textfield adding label and textfield to appropiate panel */
       JLabel expirationDateLabel = new JLabel("Expiration Date:");
+      expirationDateLabel.setBorder(new EmptyBorder(0, 0,0,15));
       expirationDatePanel.add(expirationDateLabel);
       try{
          JFormattedTextField cardNumberInput = new JFormattedTextField(new MaskFormatter("####-####-####-####"));
@@ -1871,14 +1880,15 @@ public class MainWindow{
          cardNumberPanel.add(cardNumberInput);
 
          /* creating text field with input mask for expiration date */
-         JFormattedTextField expirationDateInput = new JFormattedTextField(new MaskFormatter("(##/##)"));
+         JFormattedTextField expirationDateInput = new JFormattedTextField(new MaskFormatter("##/##"));
          expirationDateInput.setColumns(20);
          expirationDatePanel.add(expirationDateInput);
-      
+
          /* creating CVV number label and textfield adding border to label and adding label and textfield to appropiate panel */
          JLabel cvvNumberLabel = new JLabel("CVV Number:");
-         JTextField cvvNumberInput = new JTextField(20);
-         cvvNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 55));
+         JFormattedTextField cvvNumberInput = new JFormattedTextField(new MaskFormatter("###"));
+         cvvNumberInput.setColumns(20);
+         cvvNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 30));
          cvvNumberPanel.add(cvvNumberLabel);
          cvvNumberPanel.add(cvvNumberInput);
 
@@ -1888,7 +1898,7 @@ public class MainWindow{
          middle.add(expirationDatePanel);
          middle.add(cvvNumberPanel);
       
-         /* creating continue button for customer info panel */      
+         /* creating continue button for payment info panel */      
          JButton continueButton = new JButton("Continue");
          continueButton.setBackground(new Color(153, 153, 153));
          
@@ -1897,13 +1907,20 @@ public class MainWindow{
             @Override
             public void actionPerformed(ActionEvent e){
                Payment payment = new Payment();
-               /* sets customer fields from text input */
+               /* sets payment fields from text input */
                payment.setCardHolderName(cardHolderNameInput.getText());
                payment.setCardNumber(cardNumberInput.getText());
-               payment.setExpirationDate(expirationDateInput.getText());
-               /* checking if cvv number is valid 3 digit */
-               if(cvvNumberInput.getText().matches("^\\d{3}$")){
-                  payment.setCvvNumber(cvvNumberInput.getText());
+               payment.setCvvNumber(cvvNumberInput.getText());
+               
+               /* date validation */
+               DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/yy");
+               YearMonth expDate = YearMonth.parse(expirationDateInput.getText(), format);
+               boolean expValid = expDate.isAfter(YearMonth.now());
+
+               /* checking if expiration date is valid */
+               if(expValid){
+                  /* setting expiration date */
+                  payment.setExpirationDate(expirationDateInput.getText());
                   customer.setPaymentInfo(payment);                   // creation of the reservation with all information received needed for the object
                   ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut);
                   // adding the reservation into the list within the hotel
@@ -1919,10 +1936,10 @@ public class MainWindow{
                }
                else 
              {
-                  /* if cvv number input does not have vaild length then error message will be shown
+                  /* if expiration date is not valid then error message will be shown
                      and user will be allowed to try again once the "ok" button has been pressed */
                   JOptionPane.showMessageDialog(null,
-                  "Error: Not a vaild cvv number, please try again", "Error Message", 
+                  "Error: Not a vaild expiration date, please try again", "Error Message", 
                   JOptionPane.ERROR_MESSAGE);
                }
             

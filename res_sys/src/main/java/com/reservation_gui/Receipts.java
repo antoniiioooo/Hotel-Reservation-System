@@ -107,7 +107,7 @@ public class Receipts{
         "\nPrice: $" + this.roomInfo.GetRoomPriceString() + " per day\n" +
         "------------------------------------------------------------------------------------------------------------------------------\n" +
         "Name on Card: " + this.custInfo.getPaymentInfo().getCardHolderName() +
-        "\t\tCard Number: " + this.custInfo.getPaymentInfo().getCardNumber() +
+        "\nCard Number: " + this.custInfo.getPaymentInfo().getCardNumber() +
         "\nExpiration Date: " + this.custInfo.getPaymentInfo().getExpirationDate() + "\t\t" +
         "CVV Code: " + this.custInfo.getPaymentInfo().getCvvNumber()
         );
