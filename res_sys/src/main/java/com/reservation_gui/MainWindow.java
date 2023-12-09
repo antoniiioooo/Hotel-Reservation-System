@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Properties;
 
 public class MainWindow{
@@ -28,10 +29,12 @@ public class MainWindow{
     private JPanel centerPanel;
     private JScrollPane scrollPane;
     private Hotel hotelTest;
+   
  
     public MainWindow(Hotel hotelChosen){
       hotelTest = hotelChosen;
       this.initialize();
+
     }
  
     private void initialize(){
@@ -64,7 +67,6 @@ public class MainWindow{
 
       /*makes all assets visible on the main window*/
       this.mainWin.setVisible(true);
-
     }
 
     public void createHeaderFooter(){
@@ -502,10 +504,8 @@ public class MainWindow{
          /* taking automatic focus away from back button */
          backButton.setFocusable(false);
 
-
          /* adding bottom panel to center panel */
          this.centerPanel.add(bottom, BorderLayout.SOUTH);
-
 
          /* creating scroll pane and adding the center panel to the scroll pane */
         scrollPane = new JScrollPane(centerPanel);
@@ -925,10 +925,9 @@ public class MainWindow{
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
-
      }
 
-     public void reviewReservationPanel(ReservationOptions reservation){   
+     public void reviewReservationPanel(ReservationOptions reservation){    
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
       this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -948,10 +947,18 @@ public class MainWindow{
       reviewResLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
       top.add(reviewResLabel);
 
+      /* creating the button to cancel reservation */
+      JButton cancelButton = new JButton("Cancel Reservation");
+      cancelButton.setBackground(new Color(153,153,153)); 
+
       /*creating button to go back */
       JButton backButton = new JButton("Go Back");
       backButton.setBackground(new Color(153, 153, 153));
 
+      /* creating button to change reservation */
+      JButton changeButton = new JButton("Change Reservation Info");
+      changeButton.setBackground(new Color(153, 153, 153));
+      
       /*creating action listener for back button */
       backButton.addActionListener(new ActionListener() {
          @Override
@@ -962,8 +969,14 @@ public class MainWindow{
          }
       });
 
+      /* adding cancel button to bottom panel */
+      bottom.add(cancelButton);
+
       /* adding back button to bottom panel */
       bottom.add(backButton);
+
+      /* adding the change button to the bottom of the panel next to the back button and cancel reservation */
+      bottom.add(changeButton);
 
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
@@ -983,9 +996,41 @@ public class MainWindow{
       this.mainWin.add(scrollPane);
       this.mainWin.setSize(825, 550);
       this.mainWin.setLocationRelativeTo(null);
-     }
+      
+      /* creating action listener for cancel button  */
+      /* this is the code I have so far for the cancel reservation button */
+      cancelButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+            /* when they click the button for cancel button a small screen will pop up to enter the customer ID */
+               JPanel panel = new JPanel(); 
+               JFrame frame = new JFrame("Cancel Reservation");
+               frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+               JLabel label = new JLabel("Enter Customer ID:");
+               JTextField customerIDTextField = new JTextField(10);
+               String customerID = customerIDTextField.getText();
+                if (!customerID.isEmpty()) {
+                    cancelReservation().cancelReservationById(customerID);
+                    JOptionPane.showMessageDialog(null, "Reservation canceled successfully");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid Customer ID");
+                }
+               panel.add(label);
+               panel.add(customerIDTextField);
+               panel.add(cancelButton);
 
-     public JPanel reservationReport(ReservationOptions res){
+               frame.getContentPane().add(panel);
+               frame.setSize(300, 150);
+               frame.setLocationRelativeTo(null);
+               frame.setVisible(true);
+           }
+       });
+      }
+     protected cancelReservation cancelReservation() {
+      return null;
+   }
+
+   public JPanel reservationReport(ReservationOptions res){
       /* creating panel for report and setting background color*/
       JPanel reportPanel = new JPanel();
       reportPanel.setBackground(new Color(161, 158, 158));
@@ -1424,3 +1469,8 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
 }
+
+
+
+
+
