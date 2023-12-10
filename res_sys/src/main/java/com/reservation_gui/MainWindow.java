@@ -855,27 +855,6 @@ public class MainWindow{
                   // error message for any potential misinputs
                   System.out.println("Please enter a first and last name");
                }
-
-               /* if both the customer id and confirmation number fields or the name field is empty */          
-               /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
-                  System.out.println(e.getActionCommand() + " was pressed.\n");
-               } */
-               /* if there is input in the Customer ID field, but not the Confirmation number field */
-               /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
-                  System.out.println(custID.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in the Confirmation number field but not the Customer ID field*/
-               /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
-                  System.out.println(confirmNum.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in both the Customer ID and Confirmation number fields
-               else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
             }
          });
          
@@ -927,7 +906,7 @@ public class MainWindow{
       }
      }
 
-     public void reviewReservationPanel(ReservationOptions reservation){    
+   public void reviewReservationPanel(ReservationOptions reservation){    
       /* creating panel for getting the reservation look up info */
       this.centerPanel = new JPanel(new BorderLayout());
       this.centerPanel.setBackground(new Color(161, 158, 158));
@@ -964,7 +943,6 @@ public class MainWindow{
          @Override
          public void actionPerformed(ActionEvent e){
             scrollPane.setVisible(false);
-            //getReservationInfoPanel();
             idConfirmChoicePanel();
          }
       });
@@ -1000,34 +978,16 @@ public class MainWindow{
       /* creating action listener for cancel button  */
       /* this is the code I have so far for the cancel reservation button */
       cancelButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-            /* when they click the button for cancel button a small screen will pop up to enter the customer ID */
-               JPanel panel = new JPanel(); 
-               JFrame frame = new JFrame("Cancel Reservation");
-               frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-               JLabel label = new JLabel("Enter Customer ID:");
-               JTextField customerIDTextField = new JTextField(10);
-               String customerID = customerIDTextField.getText();
-                if (!customerID.isEmpty()) {
-                    cancelReservation().cancelReservationById(customerID);
-                    JOptionPane.showMessageDialog(null, "Reservation canceled successfully");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter a valid Customer ID");
-                }
-               panel.add(label);
-               panel.add(customerIDTextField);
-               panel.add(cancelButton);
-
-               frame.getContentPane().add(panel);
-               frame.setSize(300, 150);
-               frame.setLocationRelativeTo(null);
-               frame.setVisible(true);
-           }
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            cancelReservation cancel = new cancelReservation();
+            cancel.cancelByCusID(hotelTest.getReservationList(), hotelTest.getCustomerList(), reservation.getCustomer().getCustID());
+            JOptionPane.showMessageDialog(null, "Reservation canceled successfully!");
+            scrollPane.setVisible(false);
+            mainCenterPanel();
+         }
        });
-      }
-     protected cancelReservation cancelReservation() {
-      return null;
+
    }
 
    public JPanel reservationReport(ReservationOptions res){

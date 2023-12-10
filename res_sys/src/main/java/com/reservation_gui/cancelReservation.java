@@ -11,6 +11,9 @@ import java.util.Iterator;
 public class cancelReservation {
     private String resFileLoc;
 
+    public cancelReservation() {
+    }
+
     public cancelReservation(String resFile) {
         this.resFileLoc = resFile;
     }
@@ -59,5 +62,30 @@ public class cancelReservation {
             writer.write(res + "\n");
         }
         writer.close();
+    }
+
+    public boolean cancelByCusID(LinkedList<ReservationOptions> resList, LinkedList<Customer> custList, String custID){
+        ReservationOptions removeRes = new ReservationOptions();
+
+        for (ReservationOptions res : resList){
+            if (res.getCustomer().getCustID() == custID){
+                removeRes = res;
+                break;
+            }
+        }
+
+        if (removeRes.equals(null)){
+            return false;
+        }
+        else {
+            resList.remove(removeRes);
+            for (Customer cus : custList){
+                if (cus.getCustID() == custID){
+                    custList.remove(cus);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
