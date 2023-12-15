@@ -65,7 +65,12 @@ public class Receipts{
         "Floor Number: " + roomInfo.GetRoomFloorString() + "\n" +
         "Accessibility: " + roomInfo.GetRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + roomInfo.GetRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + roomInfo.GetRoomPriceString()
+        "\nPrice: $" + roomInfo.GetRoomPriceString() + " per day\n" +
+        "------------------------------------------------------------------------------------------------------------------------------\n" +
+        "Name on Card: " + this.custInfo.getPaymentInfo().getCardHolderName() +
+        "\t\tCard Number: " + this.custInfo.getPaymentInfo().getCardNumber() +
+        "\nExpiration Date: " + this.custInfo.getPaymentInfo().getExpirationDate() + "\t\t" +
+        "CVV Code: " + this.custInfo.getPaymentInfo().getCvvNumber()
         );
         return reportTextPane;
      }
@@ -99,7 +104,12 @@ public class Receipts{
         "Floor Number: " + this.roomInfo.GetRoomFloorString() + "\n" +
         "Accessibility: " + this.roomInfo.GetRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + this.roomInfo.GetRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + this.roomInfo.GetRoomPriceString()
+        "\nPrice: $" + this.roomInfo.GetRoomPriceString() + " per day\n" +
+        "------------------------------------------------------------------------------------------------------------------------------\n" +
+        "Name on Card: " + this.custInfo.getPaymentInfo().getCardHolderName() +
+        "\nCard Number: " + this.custInfo.getPaymentInfo().getCardNumber() +
+        "\nExpiration Date: " + this.custInfo.getPaymentInfo().getExpirationDate() + "\t\t" +
+        "CVV Code: " + this.custInfo.getPaymentInfo().getCvvNumber()
         );
       return reportTextPane;
      }

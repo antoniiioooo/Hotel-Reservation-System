@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -795,19 +797,8 @@ public class MainWindow{
                   /* checking if email is valild */
                   if(emailInput.getText().contains("@") && emailInput.getText().contains(".com")){
                      customer.setEmail(emailInput.getText());
-                     
-                     // creation of the reservation with all information received needed for the object
-                     ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut);
-                     // adding the reservation into the list within the hotel
-                     hotelTest.addReservation(reserve);
-                     hotelTest.addCustomer(customer);
-
-                     /* hides current center panel */
                      centerPanel.setVisible(false);
-                     /* creates Receipt object and populates it with customer and room information */
-                     Receipts receipts = new Receipts(reserve);
-                     /* passes the receipts object to the display receipt method */
-                     displayReceipt(receipts);
+                     PaymentInfoPanel(customer, room ,checkIn, checkOut);
                   }
                   else{
                      /* if email input does not have vaild characters then error message will be shown
@@ -1036,23 +1027,43 @@ public class MainWindow{
             public void actionPerformed(ActionEvent e){    
                // checks if there is missing input for the first and last name
                if (firstName.getText().equals("") || lastName.getText().equals("")){
-                  System.out.println("Please enter a first and last name");
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Please Enter a First and Last Name", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
                }
                else if (typeToVerify.getText().equals("Confirmation Number:")){
                   // verifies for confirmation number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
                   ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Confirmation Number");
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(res);
+
+                  if (res.getCustomer() == null || res.getRoomChosen() == null || res.getCheckInString() == null || res.getCheckOutString() == null) {
+                     JOptionPane.showMessageDialog(null,
+                     "Error: Reservation was not found, please try again", "Error Message", 
+                     JOptionPane.ERROR_MESSAGE);
+                  }
+                  else {
+                     scrollPane.setVisible(false);
+                     reviewReservationPanel(res);
+                  }
                }
                else if (typeToVerify.getText().equals("Customer ID:")){
                   // verifies for id number search, retrieves the reservation based on provided info, passes reservation to create panel in GUI
                   ReservationOptions res = hotelTest.getReservation(firstName.getText(), lastName.getText(), inputToVerify.getText(), "Customer ID");
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(res);
+                  
+                  if (res.getCustomer() == null || res.getRoomChosen() == null || res.getCheckInString() == null || res.getCheckOutString() == null) {
+                     JOptionPane.showMessageDialog(null,
+                     "Error: Reservation was not found, please try again", "Error Message", 
+                     JOptionPane.ERROR_MESSAGE);
+                  }
+                  else {
+                     scrollPane.setVisible(false);
+                     reviewReservationPanel(res);
+                  }
                }
                else {
                   // error message for any potential misinputs
-                  System.out.println("Please enter a first and last name");
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Please Enter the Information Correctly", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
                }
 
                /* if both the customer id and confirmation number fields or the name field is empty */          
@@ -1244,6 +1255,7 @@ public class MainWindow{
       JTextPane receiptTextPane = receipt.GetReceipt();
       receiptTextPane.setBackground(new Color( 161, 158, 158));
       receiptTextPane.setFont(new Font("MV Boli", Font.PLAIN, 12));
+      receiptTextPane.setCaretPosition(0);
       middle.add(receiptTextPane);
 
       /*creating buttons and setting background color */
@@ -1282,10 +1294,12 @@ public class MainWindow{
       scrollPane = new JScrollPane(centerPanel);
       scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      
         
       /* over riding default boreders around the scroll pane */
       EmptyBorder scrollPaneBorder = new EmptyBorder(0, 0, 0, 0);   
       scrollPane.setBorder(scrollPaneBorder);
+      
          
       /* adding the scroll pane to main window frame */
       this.mainWin.add(scrollPane);
@@ -1338,15 +1352,14 @@ public class MainWindow{
 
             /* if the entered password is correct, it will allow access to the Manager Report menu */
             if (check.confirmAccess()) {
-               System.out.println("Passed");
                centerPanel.setVisible(false);
                managerReportsPanel();
             }
             /* when the password entered is incorrect */
             else {
-               System.out.println("Failed");
-               centerPanel.setVisible(false);
-               mainCenterPanel();
+               JOptionPane.showMessageDialog(null,
+               "Error: Incorrect Password, please try again", "Error Message", 
+               JOptionPane.ERROR_MESSAGE);
             }
          }
       });
@@ -1482,6 +1495,7 @@ public class MainWindow{
 
       /* retrieves the report and adds it to the middle panel for display */
       JTextPane resRep = reports.getReservationList();
+      resRep.setCaretPosition(0);
       middle.add(resRep);
 
       /* setting background colors for top and bottom panels */
@@ -1548,6 +1562,7 @@ public class MainWindow{
 
       /* retrieves the customer report and add to the middle panel */
       JTextPane cusRep = reports.getCustomerList();
+      cusRep.setCaretPosition(0);
       middle.add(cusRep);
 
       /* setting background colors for top and bottom panels */
@@ -1614,6 +1629,7 @@ public class MainWindow{
 
       /* retrieves the room report and adds to the middle panel */
       JTextPane roomRep = reports.getRoomList();
+      roomRep.setCaretPosition(0);
       middle.add(roomRep);
 
       /* setting background colors for top and bottom panels */
@@ -1810,4 +1826,159 @@ public class MainWindow{
       }
       return roomsListPanel;
    }
+   public void PaymentInfoPanel(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut){
+      /*creating new center panel for entering customer payment information*/
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+     
+      /* creating panels for top, middle, and bottom of customer payment information panel */
+      JPanel top = new JPanel();
+      JPanel middle = new JPanel(new GridLayout(4,1));
+      JPanel bottom = new JPanel();
+
+      /* setting background colors for top, middle, and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161,158, 158));
+      bottom.setBackground(new Color( 161, 158, 158));
+      
+      /*creating customer payment info label and adding it to top panel*/
+      JLabel paymentInfo = new JLabel("Customer Payment Information");
+      paymentInfo.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(paymentInfo);
+      
+      /* creating panels for card holder name, card number, expiration date, and cvv labels and input boxes */
+      JPanel cardHolderNamePanel = new JPanel();
+      JPanel cardNumberPanel = new JPanel();
+      JPanel expirationDatePanel = new JPanel();
+      JPanel cvvNumberPanel = new JPanel();
+
+      /* setting background color for each panel */
+      cardHolderNamePanel.setBackground(new Color(161,158, 158));
+      cardNumberPanel.setBackground(new Color(161,158, 158));
+      expirationDatePanel.setBackground(new Color(161,158, 158));
+      cvvNumberPanel.setBackground(new Color(161,158, 158));
+
+      /* creating card holder name label and textfield, adding border to label and adding label and textfield to appropiate panel */
+      JLabel cardHolderNameLabel = new JLabel("Name on Card: ");
+      JTextField cardHolderNameInput = new JTextField(20);
+      cardHolderNameLabel.setBorder(new EmptyBorder(0, 0, 0, 17));
+      cardHolderNamePanel.add(cardHolderNameLabel);
+      cardHolderNamePanel.add(cardHolderNameInput);
+
+      /* creating card number label and textfield adding border to label and adding label and textfield to appropiate panel */
+      JLabel cardNumberLabel = new JLabel("Card Number:");
+      cardNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+      cardNumberPanel.add(cardNumberLabel);
+
+      /* creating expiration date label and textfield adding label and textfield to appropiate panel */
+      JLabel expirationDateLabel = new JLabel("Expiration Date:");
+      expirationDateLabel.setBorder(new EmptyBorder(0, 0,0,15));
+      expirationDatePanel.add(expirationDateLabel);
+      try{
+         JFormattedTextField cardNumberInput = new JFormattedTextField(new MaskFormatter("####-####-####-####"));
+         cardNumberInput.setColumns(20);
+         cardNumberPanel.add(cardNumberInput);
+
+         /* creating text field with input mask for expiration date */
+         JFormattedTextField expirationDateInput = new JFormattedTextField(new MaskFormatter("##/##"));
+         expirationDateInput.setColumns(20);
+         expirationDatePanel.add(expirationDateInput);
+
+         /* creating CVV number label and textfield adding border to label and adding label and textfield to appropiate panel */
+         JLabel cvvNumberLabel = new JLabel("CVV Number:");
+         JFormattedTextField cvvNumberInput = new JFormattedTextField(new MaskFormatter("###"));
+         cvvNumberInput.setColumns(20);
+         cvvNumberLabel.setBorder(new EmptyBorder(0, 0, 0, 30));
+         cvvNumberPanel.add(cvvNumberLabel);
+         cvvNumberPanel.add(cvvNumberInput);
+
+         /* adding each attribute panel to the middle panel */
+         middle.add(cardHolderNamePanel);
+         middle.add(cardNumberPanel);
+         middle.add(expirationDatePanel);
+         middle.add(cvvNumberPanel);
+      
+         /* creating continue button for payment info panel */      
+         JButton continueButton = new JButton("Continue");
+         continueButton.setBackground(new Color(153, 153, 153));
+         
+         /* creating action listener for continue button */
+         continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               Payment payment = new Payment();
+               /* sets payment fields from text input */
+               payment.setCardHolderName(cardHolderNameInput.getText());
+               payment.setCardNumber(cardNumberInput.getText());
+               payment.setCvvNumber(cvvNumberInput.getText());
+               
+               /* date validation */
+               DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/yy");
+               YearMonth expDate = YearMonth.parse(expirationDateInput.getText(), format);
+               boolean expValid = expDate.isAfter(YearMonth.now());
+
+               /* checking if expiration date is valid */
+               if(expValid){
+                  /* setting expiration date */
+                  payment.setExpirationDate(expirationDateInput.getText());
+                  customer.setPaymentInfo(payment);                   // creation of the reservation with all information received needed for the object
+                  ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut);
+                  // adding the reservation into the list within the hotel
+                  hotelTest.addReservation(reserve);
+                  hotelTest.addCustomer(customer);
+
+                  /* hides current center panel */
+                  centerPanel.setVisible(false);
+                  /* creates Receipt object and populates it with customer and room information */
+                  Receipts receipts = new Receipts(reserve);
+                  /* passes the receipts object to the display receipt method */
+                  displayReceipt(receipts);
+               }
+               else 
+             {
+                  /* if expiration date is not valid then error message will be shown
+                     and user will be allowed to try again once the "ok" button has been pressed */
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Not a vaild expiration date, please try again", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
+               }
+            
+         }});
+         
+         /*creating button to go back */
+         JButton backButton = new JButton("Go Back");
+         backButton.setBackground(new Color(153, 153, 153));
+
+         /*creating action listener for back button */
+         backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               centerPanel.setVisible(false);
+               reserveRoomPanel();
+            }
+         });
+
+         /*taking focus away from buttons that are not being interacted with */
+         continueButton.setFocusable(false);
+         backButton.setFocusable(false);
+
+         /*adding buttons to bottom panel */
+         bottom.add(continueButton);
+         bottom.add(backButton);
+
+         /*adding panels to customer info panel */
+         centerPanel.add(top, BorderLayout.NORTH);
+         centerPanel.add(middle, BorderLayout.CENTER);
+         centerPanel.add(bottom, BorderLayout.SOUTH);
+
+         /*adding customer info panel to the main window, and setting window size and screen location */
+         this.mainWin.add(centerPanel);
+         this.mainWin.setSize(825, 400);
+         this.mainWin.setLocationRelativeTo(null);  
+      }catch(ParseException e){
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+  }
+
 }

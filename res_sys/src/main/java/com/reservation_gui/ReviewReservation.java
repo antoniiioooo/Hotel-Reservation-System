@@ -50,7 +50,7 @@ public class ReviewReservation {
         "Floor Number: " + this.room.GetRoomFloorString() + "\n" +
         "Accessibility: " + this.room.GetRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + this.room.GetRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + this.room.GetRoomPriceString()
+        "\n\t\tPrice: $" + this.room.GetRoomPriceString() + " per day"
         );
 
         return reportTextPane; 
