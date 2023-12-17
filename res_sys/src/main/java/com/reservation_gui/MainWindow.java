@@ -1176,9 +1176,22 @@ public class MainWindow{
             idConfirmChoicePanel();
          }
       });
+      JButton changeButton = new JButton("Change Reservation Info");
+      changeButton.setBackground(new Color(153, 153, 153));
+        /* action listener for change button */
+        changeButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            scrollPane.setVisible(false);
+            editInformationPanel(reservation.getCustomer(), reservation.getPayment());      
+         }
+       });
+
+   
 
       /* adding back button to bottom panel */
       bottom.add(backButton);
+      bottom.add(changeButton);
 
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
@@ -1922,7 +1935,7 @@ public class MainWindow{
                   /* setting expiration date */
                   payment.setExpirationDate(expirationDateInput.getText());
                   customer.setPaymentInfo(payment);                   // creation of the reservation with all information received needed for the object
-                  ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut);
+                  ReservationOptions reserve = new ReservationOptions(customer, room, checkIn, checkOut, payment);
                   // adding the reservation into the list within the hotel
                   hotelTest.addReservation(reserve);
                   hotelTest.addCustomer(customer);
@@ -1980,5 +1993,167 @@ public class MainWindow{
          e.printStackTrace();
       }
   }
+  
+   /* panel for editing reservation of the customer */
+   public void editInformationPanel(Customer customer, Payment payment){
+      /*creating new center panel for entering customer information*/
+      this.centerPanel = new JPanel(new BorderLayout());
+      this.centerPanel.setBackground(new Color(161, 158, 158));
+     
+      /* creating panels for top, middle, and bottom of customer information panel */
+      JPanel top = new JPanel();
+      JPanel middle = new JPanel(new GridLayout(4,1));
+      JPanel bottom = new JPanel();
+
+      /* setting background colors for top, middle, and bottom panels */
+      top.setBackground(new Color(161, 158, 158));
+      middle.setBackground(new Color(161,158, 158));
+      bottom.setBackground(new Color( 161, 158, 158));
+      
+      /*creating customer info label and adding it to top panel*/
+      JLabel custInfo = new JLabel("Customer Information");
+      custInfo.setFont(new Font("MV Boli", Font.PLAIN, 30));
+      top.add(custInfo);
+      
+      /* creating panels for first name, last name, phone, and email labels and input boxes */
+      JPanel fNamePanel = new JPanel();
+      JPanel lNamePanel = new JPanel();
+      JPanel phonePanel = new JPanel();
+      JPanel emailPanel = new JPanel();
+      JPanel cardHolderNamePanel = new JPanel();
+      JPanel cardNumberPanel = new JPanel();
+      JPanel expirationDatePanel = new JPanel();
+      JPanel cvvNumberPanel = new JPanel();
+
+      /* setting background color for each panel */
+      fNamePanel.setBackground(new Color(161,158, 158));
+      lNamePanel.setBackground(new Color(161,158, 158));
+      phonePanel.setBackground(new Color(161,158, 158));
+      emailPanel.setBackground(new Color(161,158, 158));
+      cardHolderNamePanel.setBackground(new Color(161,158, 158));
+      cardNumberPanel.setBackground(new Color(161,158, 158));
+      expirationDatePanel.setBackground(new Color(161,158, 158));
+      cvvNumberPanel.setBackground(new Color(161,158, 158));
+
+      /* creating first name label and textfield, adding border to label and adding label and textfield to appropiate panel */
+      JLabel fNameLabel = new JLabel("First Name:");
+      JTextField fNameInput = new JTextField(20);
+      fNameLabel.setBorder(new EmptyBorder(0, 0, 0, 24));
+      fNamePanel.add(fNameLabel);
+      fNamePanel.add(fNameInput);
+
+      /* creating last name label and textfield adding border to label and adding label and textfield to appropiate panel */
+      JLabel lNameLabel = new JLabel("Last Name:");
+      JTextField lNameInput = new JTextField(20);
+      lNameLabel.setBorder(new EmptyBorder(0, 0, 0, 25));
+      lNamePanel.add(lNameLabel);
+      lNamePanel.add(lNameInput);
+
+      /* creating phone number label and textfield adding label and textfield to appropiate panel */
+      JLabel phoneLabel = new JLabel("Phone Number:");
+      phonePanel.add(phoneLabel);
+      try{
+         /* creating text field with input mask for phone number */
+         JFormattedTextField phoneInput = new JFormattedTextField(new MaskFormatter("(###) ###-####"));
+         phoneInput.setColumns(20);
+         phonePanel.add(phoneInput);
+      
+         /* creating email label and textfield adding border to label and adding label and textfield to appropiate panel */
+         JLabel emailLabel = new JLabel("Email:");
+         JTextField emailInput = new JTextField(20);
+         emailLabel.setBorder(new EmptyBorder(0, 0, 0, 55));
+         emailPanel.add(emailLabel);
+         emailPanel.add(emailInput);
+      
+      
+      /* creating text field and label for card holder name, card number, expiration date, and cvv */
+      JLabel cardHolderNameLabel = new JLabel("Card Holder Name:");
+      JTextField cardHolderNameInput = new JTextField(20);
+      cardHolderNameInput.setText(payment.getCardHolderName()); 
+      cardHolderNamePanel.add(cardHolderNameLabel);
+      cardHolderNamePanel.add(cardHolderNameInput);
+
+      JLabel cardNumberLabel = new JLabel("Card Number:");
+      JTextField cardNumberInput = new JTextField(20);
+      cardNumberInput.setText(payment.getCardNumber()); 
+      cardNumberPanel.add(cardNumberLabel);
+      cardNumberPanel.add(cardNumberInput);
+
+      JLabel expirationDateLabel = new JLabel("Expiration Date:");
+      JFormattedTextField expirationDateInput = new JFormattedTextField(new MaskFormatter("##/##"));
+      expirationDateInput.setText(payment.getExpirationDate()); 
+      expirationDatePanel.add(expirationDateLabel);
+      expirationDatePanel.add(expirationDateInput);
+
+      JLabel cvvNumberLabel = new JLabel("CVV:");
+      JFormattedTextField cvvNumberInput = new JFormattedTextField(new MaskFormatter("###"));
+      cvvNumberInput.setText(payment.getCvvNumber()); 
+      cvvNumberPanel.add(cvvNumberLabel);
+      cvvNumberPanel.add(cvvNumberInput);
+         /* adding each attribute panel to the middle panel */
+         middle.add(fNamePanel);
+         middle.add(lNamePanel);
+         middle.add(phonePanel);
+         middle.add(emailPanel);
+         middle.add(cardHolderNamePanel);
+         middle.add(cardNumberPanel);
+         middle.add(expirationDatePanel);
+         middle.add(cvvNumberPanel);
+
+      
+         /* creating continue button for customer info panel */      
+         JButton saveButton = new JButton("Save");
+         saveButton.setBackground(new Color(153, 153, 153));
+         
+         /* creating action listener for continue button */
+         saveButton.addActionListener(new ActionListener(){ 
+            @Override
+            public void actionPerformed(ActionEvent E){
+               /* checking if email is valild */
+               if(emailInput.getText().contains("@") && emailInput.getText().contains(".com")){
+                  ChangeReservation changeCustomer = new ChangeReservation(customer, payment);
+               /* sets customer fields from text input */
+                  changeCustomer.updateCustomerInfo(fNameInput.getText(), lNameInput.getText(), phoneInput.getText(), emailInput.getText());
+                  
+                  // creation of the reservation with all information received needed for the object
+                  changeCustomer.updatePaymentInfo(cardHolderNameInput.getText(), cardNumberInput.getText(), expirationDateInput.getText(), cvvNumberInput.getText());
+                 
+
+                  /* hides current center panel */
+                  JOptionPane.showMessageDialog(null,"Your Information Has Been Updated.", "Update Confirmation", JOptionPane.ERROR_MESSAGE);
+                  centerPanel.setVisible(false);
+                  mainCenterPanel();
+
+               }
+               else{
+                  /* if email input does not have vaild characters then error message will be shown
+                     and user will be allowed to try again once the "ok" button has been pressed */
+                  JOptionPane.showMessageDialog(null,
+                  "Error: Not a vaild email, please try again", "Error Message", 
+                  JOptionPane.ERROR_MESSAGE);
+               }
+         }});
+               bottom.add(saveButton);
+
+      }catch(ParseException e){
+         e.printStackTrace();
+      }/* catch(IOException e){
+         e.printStackTrace();
+      } */
+   
+
+       
+      /*adding panels to customer info panel */
+      centerPanel.add(top, BorderLayout.NORTH);
+      centerPanel.add(middle, BorderLayout.CENTER);
+      centerPanel.add(bottom, BorderLayout.SOUTH);
+
+      /*adding customer info panel to the main window, and setting window size and screen location */
+      this.mainWin.add(centerPanel);
+      this.mainWin.setSize(825, 400);
+      this.mainWin.setLocationRelativeTo(null);  
+   }
+
 
 }
+
