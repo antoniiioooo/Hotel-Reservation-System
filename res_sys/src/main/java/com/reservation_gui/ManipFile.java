@@ -60,8 +60,9 @@ public class ManipFile {
                 
                 // loop through the customer list to find specific customer with unique ID, retrieve the full customer
                 for (Customer cust : customers){
-                    if (cust.getCustID().equals(split[0]))
+                    if (cust.getCustID().equals(split[0])){
                         custChosen = cust;
+                    }
                 }
 
                 // loop through rooms list to find specific room number, retrieve the full room
@@ -71,7 +72,7 @@ public class ManipFile {
                 }
 
                 // add reservation to the list with appropriate information retrieved
-                reservations.add(new ReservationOptions(custChosen, roomChosen, split[2], split[3]));
+                reservations.add(new ReservationOptions(custChosen, roomChosen, split[2], split[3], custChosen.getPaymentInfo()));
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -97,9 +98,9 @@ public class ManipFile {
             reader.readLine();
             while ((line = reader.readLine()) != null)
             {
-                // line input from file is split, where order goes from (firstName, lastName, phone, email, customer ID, confirmation number, transaction ID)
+                // line input from file is split, order goes from (firstName, lastName, phone, email, customer ID, confirm number, trans ID, card name, card number, exp date, CVV num)
                 String[] split = line.split(", ");
-                customers.add(new Customer(split[0], split[1], split[2], split[3], split[4], split[5], split[6]));
+                customers.add(new Customer(split[0], split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8], split[9], split[10]));
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -178,7 +179,7 @@ public class ManipFile {
     {
         try {
             writer = new BufferedWriter(new FileWriter(cusFileLoc));
-            writer.write("First, Last, Phone, Email, CustID, ConfirmNum, TransID\n");
+            writer.write("First, Last, Phone, Email, CustID, ConfirmNum, TransID, CardName, CardNum, CardExp, CardCVV\n");
             for (Customer cus : customers)
             {
                 // syntax for the customer data file with all the required info for populating the list in another run of the program
@@ -188,7 +189,11 @@ public class ManipFile {
                 writer.write(cus.getEmail() + ", ");
                 writer.write(cus.getCustID() + ", ");
                 writer.write(cus.getConfrimNum() + ", ");
-                writer.write(cus.getTransID() + "\n");
+                writer.write(cus.getTransID() + ", ");
+                writer.write(cus.getPaymentInfo().getCardHolderName() + ", ");
+                writer.write(cus.getPaymentInfo().getCardNumber() + ", ");
+                writer.write(cus.getPaymentInfo().getExpirationDate() + ", ");
+                writer.write(cus.getPaymentInfo().getCvvNumber() + "\n");
             }
             writer.close();
         } catch (IOException e) {

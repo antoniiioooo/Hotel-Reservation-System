@@ -50,7 +50,12 @@ public class ReviewReservation {
         "Floor Number: " + this.room.GetRoomFloorString() + "\n" +
         "Accessibility: " + this.room.GetRoomAccessibleString() + "\t\t" +
         "Smoking / Non-Smoking: " + this.room.GetRoomSmokingString() + "\n" +
-        "\n\t\tPrice: $" + this.room.GetRoomPriceString() + " per day"
+        "\n\t\tPrice: $" + this.room.GetRoomPriceString() + " per day\n" + 
+        "------------------------------------------------------------------------------------------------------------------------------\n" +
+        "Name on Card: " + this.cust.getPaymentInfo().getCardHolderName() +
+        "\t\tCard Number: " + this.cust.getPaymentInfo().getCardNumber() +
+        "\nExpiration Date: " + this.cust.getPaymentInfo().getExpirationDate() + "\t\t" +
+        "CVV Code: " + this.cust.getPaymentInfo().getCvvNumber()
         );
 
         return reportTextPane; 

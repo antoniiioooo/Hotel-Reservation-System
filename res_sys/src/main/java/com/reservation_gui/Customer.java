@@ -52,6 +52,20 @@ class Customer{
         this.confirmation = cNum;
     }
 
+    /* parameterized constructor, takes first name, last name, phone number, and email along with the ID values of the customer and reservation itself as well as payment information*/
+    public Customer(String first, String last, String phone, String email, String cID, String cNum, String tID, String cardName, String cardNum, String cardExp, String cardCVV){
+        this.fName = first;
+        this.lName = last;
+        this.phoneNum = phone;
+        this. email = email;
+        
+        this.custID = cID;
+        this.transID = tID;
+        this.confirmation = cNum;
+
+        this.paymentInfo = new Payment(cardName, cardNum, cardExp, cardCVV);
+    }
+
     /** 
      * randomized Customer ID
      * @return int for customer ID
