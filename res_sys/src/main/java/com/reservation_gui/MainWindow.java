@@ -2120,7 +2120,7 @@ public class MainWindow{
                  
 
                   /* hides current center panel */
-                  JOptionPane.showMessageDialog(null,"Your Information Has Been Updated.", "Update Confirmation", JOptionPane.ERROR_MESSAGE);
+                  JOptionPane.showMessageDialog(null,"Your Information Has Been Updated.", "Update Confirmation", JOptionPane.INFORMATION_MESSAGE);
                   centerPanel.setVisible(false);
                   mainCenterPanel();
 
