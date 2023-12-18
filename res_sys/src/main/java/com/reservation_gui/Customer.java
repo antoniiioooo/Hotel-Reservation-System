@@ -187,4 +187,10 @@ class Customer{
     public Payment getPaymentInfo(){
         return this.paymentInfo;
     } 
+    
+    public boolean confirmCustomer() {
+        return this.fName != null && !this.fName.isEmpty();
+
+    }
+
 }

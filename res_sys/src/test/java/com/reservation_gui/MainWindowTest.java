@@ -15,25 +15,14 @@ public class MainWindowTest {
         assertFalse(incorrectPassWord.confirmAccess());
     }
 
-    public void testGetReservationInfoPanel() {
-        // Correct inputs
-        ReviewReservation correctInputs = new ReviewReservation("David, Martinez, 3086694, 4190333");
-        assertTrue(correctInputs.isValidInput());
+        @Test
+        public void testGetReservationInfoPanel() 
+        {
+            
+            Customer correctFirstName = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
+            Customer wrongFirstName = new Customer("", "Doe", "555-555-5555", "jd@jd.com");
     
-        // Incorrect first name
-        ReviewReservation incorrectFirstName = new ReviewReservation("", "Martinez", "3086694", "4190333");
-        assertFalse(incorrectFirstName.isValidInput());
-    
-        // Incorrect last name
-        ReviewReservation incorrectLastName = new ReviewReservation("David", "", "3086694", "4190333");
-        assertFalse(incorrectLastName.isValidInput());
-    
-        // Incorrect customer ID
-        ReviewReservation incorrectCustomerID = new ReviewReservation("David", "Martinez", "", "4190333");
-        assertFalse(incorrectCustomerID.isValidInput());
-    
-        // Incorrect confirmation number
-        ReviewReservation incorrectConfirmationNumber = new ReviewReservation("David", "Martinez", "12345", "");
-        assertFalse(incorrectConfirmationNumber.isValidInput());
-    }
+            assertTrue(correctFirstName.confirmCustomer());
+            assertFalse(wrongFirstName.confirmCustomer());
+        } 
 }
