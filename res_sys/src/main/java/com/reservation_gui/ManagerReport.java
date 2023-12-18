@@ -88,7 +88,6 @@ public class ManagerReport {
         return customers;
     }
 
-    
     /** 
      * displays the list of rooms for within he hotel
      * @author Joshua

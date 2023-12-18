@@ -105,13 +105,4 @@ public class Payment
     public void setCardHolderName(String cardHolderName){
         this.cardHolderName = cardHolderName;
     }
-
-    /**
-     * void method for the payment information
-     * 
-     */
-    public void setPaymentInfo()
-    {
-
-    }
 }

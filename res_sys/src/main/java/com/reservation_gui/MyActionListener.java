@@ -6,7 +6,5 @@ class MyActionListener implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent event){ 
        System.out.println(event.getActionCommand() + " was pressed.");
-       
- 
     }
  }

@@ -1066,26 +1066,6 @@ public class MainWindow{
                   JOptionPane.ERROR_MESSAGE);
                }
 
-               /* if both the customer id and confirmation number fields or the name field is empty */          
-               /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
-                  System.out.println(e.getActionCommand() + " was pressed.\n");
-               } */
-               /* if there is input in the Customer ID field, but not the Confirmation number field */
-               /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
-                  System.out.println(custID.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in the Confirmation number field but not the Customer ID field*/
-               /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
-                  System.out.println(confirmNum.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in both the Customer ID and Confirmation number fields
-               else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
             }
          });
          
@@ -1163,6 +1143,9 @@ public class MainWindow{
       reviewResLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
       top.add(reviewResLabel);
 
+      JButton cancelButton = new JButton("Cancel Reservation");
+      cancelButton.setBackground(new Color(153, 153, 153));
+
       /*creating button to go back */
       JButton backButton = new JButton("Go Back");
       backButton.setBackground(new Color(153, 153, 153));
@@ -1176,6 +1159,7 @@ public class MainWindow{
             idConfirmChoicePanel();
          }
       });
+
       JButton changeButton = new JButton("Change Reservation Info");
       changeButton.setBackground(new Color(153, 153, 153));
         /* action listener for change button */
@@ -1185,14 +1169,32 @@ public class MainWindow{
             scrollPane.setVisible(false);
             editInformationPanel(reservation.getCustomer(), reservation.getPayment());      
          }
-       });
+      });
 
-   
+      cancelButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            CancelReservation cancel = new CancelReservation();
+            boolean confirm = cancel.cancelByCusID(hotelTest.getReservationList(), hotelTest.getCustomerList(), reservation.getCustomer().getCustID());
+            
+            if (confirm){
+               JOptionPane.showMessageDialog(null, "Reservation Cancelled Successfully!");
+               scrollPane.setVisible(false);
+               mainCenterPanel();
+            }
+            else {
+               JOptionPane.showMessageDialog(null, "ERROR: Reservation Was Not Found!");
+               scrollPane.setVisible(false);
+               mainCenterPanel();
+            }
+         }
+      });
 
       /* adding back button to bottom panel */
+      bottom.add(cancelButton);
       bottom.add(backButton);
       bottom.add(changeButton);
-
+      
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
       centerPanel.add(middle, BorderLayout.CENTER);
@@ -1692,8 +1694,6 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
    
-
-   
    /** 
     * @author Nexaly Orellana
     * takes in a list of rooms, a check in date, and a check out date and creates panels for each room's info to be displayed
@@ -2137,12 +2137,8 @@ public class MainWindow{
 
       }catch(ParseException e){
          e.printStackTrace();
-      }/* catch(IOException e){
-         e.printStackTrace();
-      } */
-   
-
-       
+      }
+      
       /*adding panels to customer info panel */
       centerPanel.add(top, BorderLayout.NORTH);
       centerPanel.add(middle, BorderLayout.CENTER);
@@ -2153,7 +2149,5 @@ public class MainWindow{
       this.mainWin.setSize(825, 400);
       this.mainWin.setLocationRelativeTo(null);  
    }
-
-
 }
 
