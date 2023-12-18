@@ -1211,10 +1211,10 @@ public class MainWindow{
       });
 
       /* adding back button to bottom panel */
+      bottom.add(cancelButton);
       bottom.add(backButton);
       bottom.add(changeButton);
-      bottom.add(cancelButton);
-
+      
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
       centerPanel.add(middle, BorderLayout.CENTER);
