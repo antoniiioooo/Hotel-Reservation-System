@@ -933,10 +933,6 @@ public class MainWindow{
       /*creating button to go back */
       JButton backButton = new JButton("Go Back");
       backButton.setBackground(new Color(153, 153, 153));
-
-      /* creating button to change reservation */
-      JButton changeButton = new JButton("Change Reservation Info");
-      changeButton.setBackground(new Color(153, 153, 153));
       
       /*creating action listener for back button */
       backButton.addActionListener(new ActionListener() {
@@ -952,9 +948,6 @@ public class MainWindow{
 
       /* adding back button to bottom panel */
       bottom.add(backButton);
-
-      /* adding the change button to the bottom of the panel next to the back button and cancel reservation */
-      bottom.add(changeButton);
 
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
