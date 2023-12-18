@@ -114,8 +114,6 @@ public class Receipts{
       return reportTextPane;
      }
 
-     
-    
     /** 
      * calls function to generate receipt for display and then returns the textpane to caller
      * @return JTextPane populated with receipt report for display

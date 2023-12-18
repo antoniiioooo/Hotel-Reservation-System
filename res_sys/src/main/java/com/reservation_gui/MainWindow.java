@@ -1066,26 +1066,6 @@ public class MainWindow{
                   JOptionPane.ERROR_MESSAGE);
                }
 
-               /* if both the customer id and confirmation number fields or the name field is empty */          
-               /* if((custID.getText().equals("") && confirmNum.getText().equals("")) || (name.getText().equals("")) ){
-                  System.out.println(e.getActionCommand() + " was pressed.\n");
-               } */
-               /* if there is input in the Customer ID field, but not the Confirmation number field */
-               /*  else if(!custID.getText().equals("") && confirmNum.getText().equals("")){
-                  System.out.println(custID.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in the Confirmation number field but not the Customer ID field*/
-               /* else if(custID.getText().equals("") && !confirmNum.getText().equals("")){
-                  System.out.println(confirmNum.getText());
-                  System.out.println(name.getText());
-                  scrollPane.setVisible(false);
-                  reviewReservationPanel(cust, room);
-               } */
-               /* if there is input in both the Customer ID and Confirmation number fields
-               else if(!custID.getText().equals("") && !confirmNum.getText().equals("")){} */
             }
          });
          
@@ -1714,8 +1694,6 @@ public class MainWindow{
       this.mainWin.setLocationRelativeTo(null);
    }
    
-
-   
    /** 
     * @author Nexaly Orellana
     * takes in a list of rooms, a check in date, and a check out date and creates panels for each room's info to be displayed
@@ -2159,12 +2137,8 @@ public class MainWindow{
 
       }catch(ParseException e){
          e.printStackTrace();
-      }/* catch(IOException e){
-         e.printStackTrace();
-      } */
-   
-
-       
+      }
+      
       /*adding panels to customer info panel */
       centerPanel.add(top, BorderLayout.NORTH);
       centerPanel.add(middle, BorderLayout.CENTER);
@@ -2175,7 +2149,5 @@ public class MainWindow{
       this.mainWin.setSize(825, 400);
       this.mainWin.setLocationRelativeTo(null);  
    }
-
-
 }
 

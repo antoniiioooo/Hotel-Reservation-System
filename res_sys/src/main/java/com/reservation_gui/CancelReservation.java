@@ -11,6 +11,7 @@ import java.util.Iterator;
 public class CancelReservation {
     private String resFileLoc;
 
+    // empty constructor for default initialization
     public CancelReservation() {
     }
 

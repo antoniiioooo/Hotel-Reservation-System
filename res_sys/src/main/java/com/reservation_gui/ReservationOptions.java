@@ -85,8 +85,6 @@ public class ReservationOptions {
         this.payment = null;
     }
 
-
-    
     /** 
      * Method that will go into the Hotel class and update the room availability  
      * @param hotel passing a hotel object 
