@@ -1163,6 +1163,9 @@ public class MainWindow{
       reviewResLabel.setFont(new Font("MV Boli", Font.PLAIN, 30));
       top.add(reviewResLabel);
 
+      JButton cancelButton = new JButton("Cancel Reservation");
+      cancelButton.setBackground(new Color(153, 153, 153));
+
       /*creating button to go back */
       JButton backButton = new JButton("Go Back");
       backButton.setBackground(new Color(153, 153, 153));
@@ -1176,6 +1179,7 @@ public class MainWindow{
             idConfirmChoicePanel();
          }
       });
+
       JButton changeButton = new JButton("Change Reservation Info");
       changeButton.setBackground(new Color(153, 153, 153));
         /* action listener for change button */
@@ -1185,13 +1189,31 @@ public class MainWindow{
             scrollPane.setVisible(false);
             editInformationPanel(reservation.getCustomer(), reservation.getPayment());      
          }
-       });
+      });
 
-   
+      cancelButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e){
+            CancelReservation cancel = new CancelReservation();
+            boolean confirm = cancel.cancelByCusID(hotelTest.getReservationList(), hotelTest.getCustomerList(), reservation.getCustomer().getCustID());
+            
+            if (confirm){
+               JOptionPane.showMessageDialog(null, "Reservation Cancelled Successfully!");
+               scrollPane.setVisible(false);
+               mainCenterPanel();
+            }
+            else {
+               JOptionPane.showMessageDialog(null, "ERROR: Reservation Was Not Found!");
+               scrollPane.setVisible(false);
+               mainCenterPanel();
+            }
+         }
+      });
 
       /* adding back button to bottom panel */
       bottom.add(backButton);
       bottom.add(changeButton);
+      bottom.add(cancelButton);
 
       /* adding top, middle and bottom panels to the center panel */
       centerPanel.add(top, BorderLayout.NORTH);
