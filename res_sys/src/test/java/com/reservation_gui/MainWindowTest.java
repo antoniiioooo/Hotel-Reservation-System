@@ -30,8 +30,15 @@ public class MainWindowTest {
             assertTrue(correctLastName.confirmLastName());
             assertFalse(wrongLastName.confirmLastName());
 
-            Customer correctCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
-            Customer wrongCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
+            Customer correctCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com", "0000001", "1000001", "2000001");
+            Customer wrongCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com", "", "1000001", "2000001");
+    
+            assertTrue(correctCustomerID.validateCustomerID());
+            assertFalse(wrongCustomerID.validateCustomerID());
 
+            Customer correctConfirmationNumber = new Customer("John", "Doe", "555-555-5555", "jd@jd.com", "0000001", "1000001", "2000001");
+            Customer wrongConfirmationNumber = new Customer("John", "Doe", "555-555-5555", "jd@jd.com", "0000001", "", "2000001");
+            assertTrue(correctConfirmationNumber.validateConfirmationNumber());
+            assertFalse(wrongConfirmationNumber.validateConfirmationNumber());
         } 
 }
