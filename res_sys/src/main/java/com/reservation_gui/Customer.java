@@ -188,9 +188,13 @@ class Customer{
         return this.paymentInfo;
     } 
     
-    public boolean confirmCustomer() {
+    public boolean confirmFirstName() {
         return this.fName != null && !this.fName.isEmpty();
 
     }
 
+    public boolean confirmLastName() {
+        return this.lName != null && !this.lName.isEmpty();
+
+    }
 }

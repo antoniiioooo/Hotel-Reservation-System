@@ -22,7 +22,16 @@ public class MainWindowTest {
             Customer correctFirstName = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
             Customer wrongFirstName = new Customer("", "Doe", "555-555-5555", "jd@jd.com");
     
-            assertTrue(correctFirstName.confirmCustomer());
-            assertFalse(wrongFirstName.confirmCustomer());
+            assertTrue(correctFirstName.confirmFirstName());
+            assertFalse(wrongFirstName.confirmFirstName());
+
+            Customer correctLastName = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
+            Customer wrongLastName = new Customer("John", "","555-555-5555", "jd@jd.com");
+            assertTrue(correctLastName.confirmLastName());
+            assertFalse(wrongLastName.confirmLastName());
+
+            Customer correctCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
+            Customer wrongCustomerID = new Customer("John", "Doe", "555-555-5555", "jd@jd.com");
+
         } 
 }
