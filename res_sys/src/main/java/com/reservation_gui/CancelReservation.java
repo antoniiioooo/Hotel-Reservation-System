@@ -8,6 +8,12 @@ import java.util.LinkedList;
 
 import java.util.Iterator;
 
+
+/** 
+ * CancelReservation is used for removing instances of reservations and customers associated due to cancellation decision on behalf of the customer
+ * @author Antonio, Joshua
+ * @version 1.2
+ */
 public class CancelReservation {
     private String resFileLoc;
 
@@ -19,7 +25,12 @@ public class CancelReservation {
         this.resFileLoc = resFile;
     }
 
-    /* canceling the reservation with Customer ID */
+    
+    /** canceling the reservation with Customer ID
+     * @author Antonio
+     * @version 1.2
+     * @param custID is used to find the specific customer ID to erase within the reservation file
+     */
     public void cancelReservationById(String custID) {
         try {
             // Read existing reservations from the file
@@ -44,7 +55,12 @@ public class CancelReservation {
         }
     }
 
-    /* will help with reading the information */
+    /** will help with reading the information
+     * @author Antonio
+     * @version 1.2
+     * @return LinkedList<String> to get the list of reservations into a container for use in the search for the reservation to cancel
+     * @throws IOException
+     */
     private LinkedList<String> readReservationsFromFile() throws IOException {
         LinkedList<String> reservations = new LinkedList<>();
         BufferedReader reader = new BufferedReader(new FileReader(resFileLoc));
@@ -56,7 +72,13 @@ public class CancelReservation {
         return reservations;
     }
 
-    /* will help with updating the file */
+    
+    /** will help with updating the file
+     * @author Antonio
+     * @version 1.2
+     * @param reservations is the list of reservations to be put into the file to update the data file for reservations itself
+     * @throws IOException
+     */
     private void updateResFile(LinkedList<String> reservations) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(resFileLoc));
         for (String res : reservations) {
@@ -65,6 +87,15 @@ public class CancelReservation {
         writer.close();
     }
 
+    
+    /** cancel reservation within list of reservations and customers by customer ID search
+     * @author Joshua
+     * @version 1.2
+     * @param resList is the reservations list of hotel
+     * @param custList is the customer list of hotel
+     * @param custID is the reservation and customer to be cancelled by customer ID search
+     * @return boolean for clearance of reservation and customer cancellation
+     */
     public boolean cancelByCusID(LinkedList<ReservationOptions> resList, LinkedList<Customer> custList, String custID){
         ReservationOptions removeRes = new ReservationOptions();
 

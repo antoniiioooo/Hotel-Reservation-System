@@ -1839,6 +1839,15 @@ public class MainWindow{
       }
       return roomsListPanel;
    }
+   
+   /** PaymentInfoPanel creates the panel to which the customer can enter their pertinent payment information for reserving a room
+    * @author Joey Gomez
+    * @version 1.2
+    * @param customer the customer reserving a room
+    * @param room the room being reserved by the customer
+    * @param checkIn the starting date of the reservation
+    * @param checkOut the ending date of the reservation
+    */
    public void PaymentInfoPanel(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut){
       /*creating new center panel for entering customer payment information*/
       this.centerPanel = new JPanel(new BorderLayout());
@@ -1994,7 +2003,13 @@ public class MainWindow{
       }
   }
   
-   /* panel for editing reservation of the customer */
+   
+   /** panel for editing reservation of the customer
+    * @author Joey Gomez
+    * @version 1.2
+    * @param customer customer to be changed information of
+    * @param payment payment associated to customer that may need information changes on
+    */
    public void editInformationPanel(Customer customer, Payment payment){
       /*creating new center panel for entering customer information*/
       this.centerPanel = new JPanel(new BorderLayout());
