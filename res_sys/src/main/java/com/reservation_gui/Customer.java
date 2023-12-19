@@ -189,20 +189,4 @@ class Customer{
         return this.paymentInfo;
     } 
     
-    public boolean confirmFirstName() {
-        return this.fName != null && !this.fName.isEmpty();
-
-    }
-
-    public boolean confirmLastName() {
-        return this.lName != null && !this.lName.isEmpty();
-
-    }
-    public boolean validateCustomerID() {
-        return this.custID.equals("0000001");
-    }
-
-     public boolean validateConfirmationNumber() {
-        return this.confirmation.equals("1000001");
-    }
 }
