@@ -182,9 +182,17 @@ class Customer{
     }
 
     /* payment info setter and getter */
+    /**
+     * sets payment type from a passes parameter
+     * @param payInfo
+     */
     public void setPaymentInfo(Payment payInfo){
         this.paymentInfo = payInfo;
     }
+    /**
+     * gets stored payment information and returns to caller
+     * @return Payment
+     */
     public Payment getPaymentInfo(){
         return this.paymentInfo;
     } 

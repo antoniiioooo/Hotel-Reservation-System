@@ -199,9 +199,18 @@ public class ReservationOptions {
         }
     }
 
+    /**
+     * get method for payment information
+     * @return Payment
+     */
     public Payment getPayment(){
         return payment;
     }
+    
+    /**
+     * set method for the payment information
+     * @param payment
+     */
     public void setPayment(Payment payment){
         this.payment = payment;
     }

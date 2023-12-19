@@ -9,7 +9,6 @@ public class Room
 {
     // variables
     private String roomType;
-    private String bedType;
     private int bedCount;
     private int roomNumber;
     private int roomFloor;
@@ -22,7 +21,6 @@ public class Room
     public Room()
     {
         roomType = "N/A";
-        bedType = "N/A";
         bedCount = 0;
         roomNumber = 0;
         roomFloor = 0;
@@ -35,7 +33,6 @@ public class Room
     public Room(String bed, int count, int roomNum, int floor, boolean access, boolean smoking, boolean occupancy, double price)
     {
         roomType = bed;
-        bedType = bed;
         bedCount = count;
         roomNumber = roomNum;
         roomFloor = floor;
