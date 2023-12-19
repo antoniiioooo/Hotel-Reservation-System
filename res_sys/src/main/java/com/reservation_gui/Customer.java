@@ -19,6 +19,7 @@ class Customer{
     private String confirmation;
     private Payment paymentInfo;
 
+
     /* Default contructor */
     public Customer(){
         /* randomize customer ID, Transaction ID, and Confirmation Number */
@@ -187,4 +188,5 @@ class Customer{
     public Payment getPaymentInfo(){
         return this.paymentInfo;
     } 
+    
 }
